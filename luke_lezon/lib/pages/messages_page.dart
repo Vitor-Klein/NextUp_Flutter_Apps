@@ -32,19 +32,7 @@ class _MessagesPageState extends State<MessagesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mensagens Recebidas'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.delete),
-            onPressed: () async {
-              final prefs = await SharedPreferences.getInstance();
-              await prefs.remove('push_messages');
-              setState(() => messages.clear());
-            },
-          ),
-        ],
-      ),
+      appBar: AppBar(title: const Text('Mensagens Recebidas')),
       body:
           messages.isEmpty
               ? const Center(child: Text('Nenhuma mensagem ainda.'))
