@@ -8,7 +8,7 @@ class SocialPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('SocialPage')),
+      appBar: AppBar(title: const Text('Social')),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(

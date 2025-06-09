@@ -36,7 +36,7 @@ class _MeetGreetDetailPageState extends State<MeetGreetDetailPage> {
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Horário agendado: ${picked.format(context)}')),
+        SnackBar(content: Text('Scheduled time: ${picked.format(context)}')),
       );
     }
   }
