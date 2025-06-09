@@ -7,18 +7,20 @@ class MeetGreetPage extends StatelessWidget {
   final Color backgroundColor = const Color(0xFFF5F5F5);
   final Color cardColor = const Color(0xFFd4def7);
 
-  final List<Map<String, String>> events = const [
+  static const List<Map<String, String>> events = [
     {
       'title': 'Fan Meet - São Paulo',
       'date': 'June 15, 2025',
       'location': 'Shopping Eldorado',
       'description': 'Autograph signing and photo session with fans.',
+      'startTime': '5:00 PM CST',
     },
     {
       'title': 'Meet & Greet - Rio de Janeiro',
       'date': 'June 22, 2025',
       'location': 'BarraShopping',
       'description': 'Exclusive chat with guests and giveaways!',
+      'startTime': '3:30 PM CST',
     },
   ];
 
@@ -87,6 +89,7 @@ class MeetGreetPage extends StatelessWidget {
                           const SizedBox(height: 8),
                           Text('📅 ${event['date']}'),
                           Text('📍 ${event['location']}'),
+                          Text('🕔 ${event['startTime']}'),
                         ],
                       ),
                     ),

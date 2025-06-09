@@ -54,12 +54,16 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: const Color(0xFFF5F5F5),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFFF5F5F5),
+          backgroundColor: const Color(0xFF5280d5),
           titleTextStyle: TextStyle(
-            color: Colors.black,
+            color: Colors.white,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
+          iconTheme: const IconThemeData(
+            color: Colors.white, // Ícones da AppBar
+          ),
+          elevation: 0,
         ),
       ),
       home: const SplashScreen(), // 👈 Define a SplashScreen como tela inicial
