@@ -9,6 +9,9 @@ import 'pages/about_page.dart';
 import 'pages/videos_page.dart';
 import 'pages/messages_page.dart';
 import 'pages/social_page.dart';
+import 'pages/more_page.dart';
+import 'pages/Meet_And_Greet/meet_greet_page.dart';
+import 'pages/splash_screen.dart'; // ⬅️ Certifique-se de importar isso
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -56,12 +59,45 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const HomePage(),
-      routes: {
-        '/about': (_) => const AboutPage(),
-        '/videos': (_) => const VideosPage(),
-        '/messages': (_) => const MessagesPage(),
-        '/social': (_) => const SocialPage(),
+      home: const SplashScreen(), // 👈 Define a SplashScreen como tela inicial
+      onGenerateRoute: (settings) {
+        WidgetBuilder builder;
+
+        switch (settings.name) {
+          case '/home':
+            builder = (_) => const HomePage();
+            break;
+          case '/about':
+            builder = (_) => const AboutPage();
+            break;
+          case '/videos':
+            builder = (_) => const VideosPage();
+            break;
+          case '/messages':
+            builder = (_) => const MessagesPage();
+            break;
+          case '/social':
+            builder = (_) => const SocialPage();
+            break;
+          case '/more':
+            builder = (_) => const MorePage();
+            break;
+          case '/meet_greet':
+            builder = (_) => const MeetGreetPage();
+            break;
+          default:
+            builder = (_) => const HomePage(); // fallback
+        }
+
+        return PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              builder(context),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+          transitionDuration: const Duration(milliseconds: 600),
+          settings: settings,
+        );
       },
     );
   }

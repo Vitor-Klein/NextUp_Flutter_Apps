@@ -146,7 +146,7 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               children: [
                 const Spacer(
-                  flex: 7,
+                  flex: 8,
                 ), // Espaço antes dos botões (empurra eles para baixo)
 
                 Align(
@@ -174,13 +174,17 @@ class _HomePageState extends State<HomePage> {
                           () => Navigator.pushNamed(context, '/messages'),
                         ),
                         _buildGradientButton("SHARE", _compartilharApp),
+                        _buildGradientButton(
+                          "MORE",
+                          () => Navigator.pushNamed(context, '/more'),
+                        ),
                       ],
                     ),
                   ),
                 ),
 
                 const Spacer(
-                  flex: 3,
+                  flex: 2,
                 ), // Espaço depois dos botões (ajusta altura final)
               ],
             ),
