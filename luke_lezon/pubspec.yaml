@@ -43,7 +43,6 @@ dependencies:
   just_audio: ^0.9.36
   provider: ^6.1.1
   share_plus: ^11.0.0
-  flutter_native_splash: ^2.4.6
 
 dev_dependencies:
   flutter_test:
@@ -104,20 +103,3 @@ flutter:
   #         weight: 700
   #
   # For details regarding fonts from package dependencies,
-flutter_native_splash:
-  background_image: "assets/splash.png"
-  image: assets/splash.png
-  background_image_dark: "assets/splash.png"
-  image_dark: assets/splash.png
-
-  android_12:
-    image: assets/splash.png
-    background_image_android: "assets/splash.png"
-    image_dark: assets/splash.png
-    background_image_dark_android: "assets/splash.png"
-
-  android_gravity: fill
-  ios_content_mode: scaleToFill
-
-  fullscreen: true
-  web: false

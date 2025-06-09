@@ -9,6 +9,7 @@ import 'pages/about_page.dart';
 import 'pages/books_page.dart';
 import 'pages/messages_page.dart';
 import 'pages/podcast_page.dart';
+import 'pages/splash_screen.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -56,12 +57,39 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const HomePage(),
-      routes: {
-        '/about': (_) => const AboutPage(),
-        '/books': (_) => const BooksPage(),
-        '/messages': (_) => const MessagesPage(),
-        '/podcast': (_) => const PodcastPage(),
+      home: const SplashScreen(),
+      onGenerateRoute: (settings) {
+        WidgetBuilder builder;
+
+        switch (settings.name) {
+          case '/home':
+            builder = (_) => const HomePage();
+            break;
+          case '/about':
+            builder = (_) => const AboutPage();
+            break;
+          case '/books':
+            builder = (_) => const BooksPage();
+            break;
+          case '/messages':
+            builder = (_) => const MessagesPage();
+            break;
+          case '/podcast':
+            builder = (_) => const PodcastPage();
+            break;
+          default:
+            builder = (_) => const HomePage(); // fallback
+        }
+
+        return PageRouteBuilder(
+          pageBuilder:
+              (context, animation, secondaryAnimation) => builder(context),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+          transitionDuration: const Duration(milliseconds: 500),
+          settings: settings,
+        );
       },
     );
   }
