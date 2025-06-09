@@ -27,6 +27,9 @@ void main() async {
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  await messaging.subscribeToTopic('all');
+
   FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
     print('Received in foreground: ${message.notification?.title}');
     await saveMessageLocally(message); // 💾 salvando localmente
