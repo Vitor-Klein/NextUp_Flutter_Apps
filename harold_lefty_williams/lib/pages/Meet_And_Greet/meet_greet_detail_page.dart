@@ -64,7 +64,7 @@ class _MeetGreetDetailPageState extends State<MeetGreetDetailPage> {
             ElevatedButton.icon(
               onPressed: _selectTime,
               icon: const Icon(Icons.access_time),
-              label: const Text('Selecionar horário'),
+              label: const Text('Select Time'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: primaryDark,
                 foregroundColor: Colors.white,
@@ -80,7 +80,7 @@ class _MeetGreetDetailPageState extends State<MeetGreetDetailPage> {
             if (_selectedTime != null) ...[
               const SizedBox(height: 16),
               Text(
-                'Você agendou para: ${_selectedTime!.format(context)}',
+                'You scheduled it at: ${_selectedTime!.format(context)}',
                 style: TextStyle(color: primaryDark, fontSize: 16),
               ),
             ],

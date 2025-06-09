@@ -87,7 +87,7 @@ class _VideosPageState extends State<VideosPage> {
       controller: _controller,
       builder: (context, player) {
         return Scaffold(
-          appBar: AppBar(title: const Text('Dare 2 Dream - Vídeos')),
+          appBar: AppBar(title: const Text('Videos')),
           body: Column(
             children: [
               AspectRatio(aspectRatio: 16 / 9, child: player),
