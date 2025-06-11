@@ -27,6 +27,12 @@ void main() async {
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
+  await FirebaseMessaging.instance.requestPermission(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
   FirebaseMessaging messaging = FirebaseMessaging.instance;
   await messaging.subscribeToTopic('all');
 
