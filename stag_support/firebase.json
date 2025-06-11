@@ -1,0 +1,1 @@
+{"flutter":{"platforms":{"android":{"default":{"projectId":"stag-support","appId":"1:824853315749:android:b5d844ccaecbb8b7014d4c","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"stag-support","configurations":{"android":"1:824853315749:android:b5d844ccaecbb8b7014d4c","ios":"1:824853315749:ios:63e739f630f794c2014d4c"}}}}}}

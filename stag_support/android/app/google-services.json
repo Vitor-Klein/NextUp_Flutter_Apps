@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "824853315749",
+    "project_id": "stag-support",
+    "storage_bucket": "stag-support.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:824853315749:android:a76516d04f93d868014d4c",
+        "android_client_info": {
+          "package_name": "app.android.stagsupport"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrKTFOzJd2ppCNlE3Fd0qW7zPgr97JHQo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:824853315749:android:b5d844ccaecbb8b7014d4c",
+        "android_client_info": {
+          "package_name": "com.example.stag_support"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrKTFOzJd2ppCNlE3Fd0qW7zPgr97JHQo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
