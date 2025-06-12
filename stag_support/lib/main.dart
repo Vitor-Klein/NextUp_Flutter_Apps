@@ -8,6 +8,7 @@ import 'pages/home_page.dart';
 import 'pages/help_line_page.dart';
 import 'pages/resources_page.dart';
 import 'pages/splash_screen.dart';
+import 'pages/messages_page.dart';
 
 import 'pages/resources/about_page.dart';
 import 'pages/resources/calling_988_lifeline_page.dart';
@@ -88,6 +89,9 @@ class MyApp extends StatelessWidget {
             break;
           case '/resources':
             builder = (_) => const ResourcesPage();
+            break;
+          case '/messages':
+            builder = (_) => const MessagesPage();
             break;
           case '/calling_988_lifeline':
             builder = (_) => const Calling988LifelinePage();

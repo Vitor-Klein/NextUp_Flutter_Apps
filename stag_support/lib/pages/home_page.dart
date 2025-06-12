@@ -114,17 +114,41 @@ class _HomePageState extends State<HomePage> {
               children: [
                 // Ícone de compartilhamento no topo direito
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 10.0,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      GestureDetector(
-                        onTap: _compartilharApp,
-                        child: const Icon(
-                          Icons.share,
-                          size: 28,
+                      PopupMenuButton<String>(
+                        icon: const Icon(
+                          Icons.menu,
+                          size: 36,
                           color: Colors.white,
                         ),
+                        color: Colors.white,
+                        onSelected: (value) {
+                          Navigator.pushNamed(context, value);
+                        },
+                        itemBuilder: (BuildContext context) => [
+                          PopupMenuItem<String>(
+                            value: '/messages',
+                            child: Row(
+                              children: const [
+                                Icon(Icons.message, color: Colors.black),
+                                SizedBox(width: 8),
+                                Text(
+                                  'Messages',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
