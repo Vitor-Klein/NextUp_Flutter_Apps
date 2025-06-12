@@ -1,4 +1,4 @@
-package com.example.stag_support
+package app.android.stagsupport
 
 import io.flutter.embedding.android.FlutterActivity
 
