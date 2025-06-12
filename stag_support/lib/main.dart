@@ -5,7 +5,6 @@ import 'firebase_options.dart';
 import 'services/message_storage.dart';
 
 import 'pages/home_page.dart';
-import 'pages/help_line_page.dart';
 import 'pages/resources_page.dart';
 import 'pages/splash_screen.dart';
 import 'pages/messages_page.dart';
@@ -83,9 +82,6 @@ class MyApp extends StatelessWidget {
         switch (settings.name) {
           case '/home':
             builder = (_) => const HomePage();
-            break;
-          case '/help_line':
-            builder = (_) => const HelpLinePage();
             break;
           case '/resources':
             builder = (_) => const ResourcesPage();

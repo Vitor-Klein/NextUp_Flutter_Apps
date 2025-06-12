@@ -8,56 +8,67 @@ class ResourcesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Resources')),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Image.asset('assets/header.jpg'),
-            const SizedBox(height: 24),
-            ResourcesButton(
-              label: 'Calling the 988 Lifeline',
-              icon: FontAwesomeIcons.phone,
-              onPressed: () {
-                Navigator.pushNamed(context, '/calling_988_lifeline');
-              },
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Image.asset(
+            'assets/header.png',
+            fit: BoxFit.cover,
+            width: double.infinity,
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  const SizedBox(height: 8),
+                  ResourcesButton(
+                    label: 'Calling the 988 Lifeline',
+                    icon: FontAwesomeIcons.phone,
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/calling_988_lifeline');
+                    },
+                  ),
+                  ResourcesButton(
+                    label: 'Texting the 988 Lifeline',
+                    icon: FontAwesomeIcons.commentDots,
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/texting_988_lifeline');
+                    },
+                  ),
+                  ResourcesButton(
+                    label: '988 Lifeline Chat',
+                    icon: FontAwesomeIcons.comments,
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/lifeline_chat');
+                    },
+                  ),
+                  ResourcesButton(
+                    label: 'About Us',
+                    icon: FontAwesomeIcons.circleInfo,
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/about');
+                    },
+                  ),
+                  ResourcesButton(
+                    label: 'Promoting the Lifeline',
+                    icon: FontAwesomeIcons.bullhorn,
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/promoting_lifeline');
+                    },
+                  ),
+                  ResourcesButton(
+                    label: 'Research and Evaluation',
+                    icon: FontAwesomeIcons.chartLine,
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/research_evaluation');
+                    },
+                  ),
+                ],
+              ),
             ),
-            ResourcesButton(
-              label: 'Texting the 988 Lifeline',
-              icon: FontAwesomeIcons.commentDots,
-              onPressed: () {
-                Navigator.pushNamed(context, '/texting_988_lifeline');
-              },
-            ),
-            ResourcesButton(
-              label: '988 Lifeline Chat',
-              icon: FontAwesomeIcons.comments,
-              onPressed: () {
-                Navigator.pushNamed(context, '/lifeline_chat');
-              },
-            ),
-            ResourcesButton(
-              label: 'About Us',
-              icon: FontAwesomeIcons.circleInfo,
-              onPressed: () {
-                Navigator.pushNamed(context, '/about');
-              },
-            ),
-            ResourcesButton(
-              label: 'Promoting the Lifeline',
-              icon: FontAwesomeIcons.bullhorn,
-              onPressed: () {
-                Navigator.pushNamed(context, '/promoting_lifeline');
-              },
-            ),
-            ResourcesButton(
-              label: 'Research and Evaluation',
-              icon: FontAwesomeIcons.chartLine,
-              onPressed: () {
-                Navigator.pushNamed(context, '/research_evaluation');
-              },
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
