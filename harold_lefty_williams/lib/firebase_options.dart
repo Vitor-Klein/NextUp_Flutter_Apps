@@ -22,9 +22,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       default:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions are not supported for this platform.',
-        );
+        return ios; // fallback to iOS if platform detection fails
     }
   }
 
