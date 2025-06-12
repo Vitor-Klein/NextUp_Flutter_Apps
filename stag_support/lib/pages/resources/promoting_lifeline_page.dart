@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class PromotingLifelinePage extends StatelessWidget {
   const PromotingLifelinePage({super.key});
+  void _launchMore() async {
+    final Uri _url = Uri.parse(
+      'https://988lifeline.org/faq/promoting-or-joining-the-lifeline/',
+    );
+    if (await canLaunchUrl(_url)) {
+      await launchUrl(_url, mode: LaunchMode.externalApplication);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,12 +59,16 @@ class PromotingLifelinePage extends StatelessWidget {
                 ),
 
                 const SizedBox(height: 20),
-                const Text(
-                  'MORE ON PROMOTING OR JOINING THE LIFELINE',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Color(0xFF5280d5),
+                GestureDetector(
+                  onTap: _launchMore,
+                  child: const Text(
+                    'MORE ON PROMOTING OR JOINING THE LIFELINE',
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      color: Color(0xFF5280d5),
+                    ),
                   ),
                 ),
               ],

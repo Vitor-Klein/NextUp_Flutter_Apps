@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Calling988LifelinePage extends StatelessWidget {
   const Calling988LifelinePage({super.key});
+  void _launchMore() async {
+    final Uri _url = Uri.parse(
+      'https://988lifeline.org/faq/calling-the-988-lifeline/',
+    );
+    if (await canLaunchUrl(_url)) {
+      await launchUrl(_url, mode: LaunchMode.externalApplication);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,12 +64,16 @@ class Calling988LifelinePage extends StatelessWidget {
                       'Interpreters receive special training to provide this service over the phone and they follow a code of ethics related to confidentiality, accuracy, and impartiality.',
                 ),
                 const SizedBox(height: 20),
-                const Text(
-                  'MORE ON CALLING THE 988 LIFELINE',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14,
-                    color: Color(0xFF5280d5),
+                GestureDetector(
+                  onTap: _launchMore,
+                  child: const Text(
+                    'MORE ON CALLING THE 988 LIFELINE',
+                    style: TextStyle(
+                      decoration: TextDecoration.underline,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      color: Color(0xFF5280d5),
+                    ),
                   ),
                 ),
               ],
