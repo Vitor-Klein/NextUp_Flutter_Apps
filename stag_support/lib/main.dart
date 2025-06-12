@@ -41,12 +41,12 @@ void main() async {
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
     print('Received in foreground: ${message.notification?.title}');
-    await saveMessageLocally(message); // 💾 salvando localmente
+    await saveMessageLocally(message);
   });
 
   FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
     print('Opened app from notification: ${message.notification?.title}');
-    await saveMessageLocally(message); // 💾 salvando localmente
+    await saveMessageLocally(message);
   });
 
   runApp(const MyApp());
@@ -69,13 +69,11 @@ class MyApp extends StatelessWidget {
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
-          iconTheme: const IconThemeData(
-            color: Colors.white, // Ícones da AppBar
-          ),
+          iconTheme: const IconThemeData(color: Colors.white),
           elevation: 0,
         ),
       ),
-      home: const SplashScreen(), // 👈 Define a SplashScreen como tela inicial
+      home: const SplashScreen(),
       onGenerateRoute: (settings) {
         WidgetBuilder builder;
 
@@ -109,7 +107,7 @@ class MyApp extends StatelessWidget {
             break;
 
           default:
-            builder = (_) => const HomePage(); // fallback
+            builder = (_) => const HomePage();
         }
 
         return PageRouteBuilder(
