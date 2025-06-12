@@ -16,6 +16,9 @@ import 'package:flutter/foundation.dart'
 /// ```
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
+    if (kIsWeb) {
+      return web;
+    }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
@@ -41,5 +44,15 @@ class DefaultFirebaseOptions {
     projectId: 'harold-lefty-williams',
     storageBucket: 'harold-lefty-williams.firebasestorage.app',
     iosBundleId: 'app.ios.haroldleftywilliams',
+  );
+
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: "AIzaSyBDUihOvaSJLM1YC3xLWfpIfQrbdlZnsso",
+    authDomain: "harold-lefty-williams.firebaseapp.com",
+    projectId: "harold-lefty-williams",
+    storageBucket: "harold-lefty-williams.firebasestorage.app",
+    messagingSenderId: "521464985669",
+    appId: "1:521464985669:web:3d665da2461a70b57e4b2c",
+    measurementId: "G-6W7E9Y5WL7",
   );
 }
