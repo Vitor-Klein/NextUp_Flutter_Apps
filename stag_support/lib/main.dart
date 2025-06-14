@@ -22,6 +22,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
   print("Handling a background message: ${message.messageId}");
   print('Message data: ${message.data}');
+
+  await saveMessageLocally(message); // 💾 Salvar mesmo com app fechado
 }
 
 void main() async {

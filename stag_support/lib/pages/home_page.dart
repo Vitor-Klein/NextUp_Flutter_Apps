@@ -90,10 +90,10 @@ class _HomePageState extends State<HomePage> {
 
   void _compartilharApp() async {
     final String link = Platform.isAndroid
-        ? 'https://play.google.com/store/apps/details?id=com.seuapp.android'
-        : 'https://apps.apple.com/app/id0000000000';
+        ? 'https://play.google.com/store/apps/details?id=app.android.stagsupport'
+        : 'https://apps.apple.com/app/stag-support/id6738068730';
 
-    final String mensagem = 'Confira o app STAG Support! Baixe agora:\n$link';
+    final String mensagem = 'Check out this amazing app! Download now:\n$link';
 
     await SharePlus.instance.share(ShareParams(text: mensagem));
   }
