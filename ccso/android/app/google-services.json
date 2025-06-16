@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "117056213737",
+    "project_id": "ccso-2e783",
+    "storage_bucket": "ccso-2e783.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:117056213737:android:359c4cd3dbc5b7b63f5678",
+        "android_client_info": {
+          "package_name": "app.android.ccso"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAl3rk7n6FEAqo5GWOuzVtmEnb5tFoG62U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:117056213737:android:27967c58eddaeebf3f5678",
+        "android_client_info": {
+          "package_name": "com.example.ccso"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAl3rk7n6FEAqo5GWOuzVtmEnb5tFoG62U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
