@@ -26,6 +26,7 @@ class AboutPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Image.asset('assets/header.jpg'),
             const Text(
               'About Us',
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
@@ -55,7 +56,7 @@ class AboutPage extends StatelessWidget {
                   icon: const Icon(Icons.phone),
                   label: const Text('(918) 585-1213'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFE0E0E0),
+                    backgroundColor: const Color(0xFFEAEAEA),
                     foregroundColor: Colors.black87,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6),
@@ -67,7 +68,7 @@ class AboutPage extends StatelessWidget {
                   icon: const Icon(Icons.phone),
                   label: const Text('(405) 943-3700'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFE0E0E0),
+                    backgroundColor: const Color(0xFFEAEAEA),
                     foregroundColor: Colors.black87,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(6),
@@ -97,7 +98,7 @@ class AboutPage extends StatelessWidget {
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFE0E0E0),
+                  backgroundColor: const Color(0xFFEAEAEA),
                   foregroundColor: Colors.black87,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   textStyle: const TextStyle(fontSize: 18),
