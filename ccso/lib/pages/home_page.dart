@@ -4,6 +4,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:share_plus/share_plus.dart';
 import 'dart:io';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -88,9 +89,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _compartilharApp() async {
+    final remoteConfig = FirebaseRemoteConfig.instance;
+
     final String link = Platform.isAndroid
-        ? 'https://play.google.com/store/apps/details?id=com.seuapp.android'
-        : 'https://apps.apple.com/app/id0000000000';
+        ? remoteConfig.getString('android_share_url')
+        : remoteConfig.getString('ios_share_url');
 
     final String mensagem = 'Check out this amazing app! Download now:\n$link';
 
