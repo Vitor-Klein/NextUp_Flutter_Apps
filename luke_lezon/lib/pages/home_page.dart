@@ -1,8 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:share_plus/share_plus.dart';
-import 'dart:io';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,12 +17,30 @@ class _HomePageState extends State<HomePage> {
   final FlutterLocalNotificationsPlugin _localNotifications =
       FlutterLocalNotificationsPlugin();
 
+  bool showMeetGreetButton = false;
+
   @override
   void initState() {
     super.initState();
     _requestNotificationPermissions();
     _initializeFirebaseMessaging();
     _initializeLocalNotifications();
+    _loadRemoteConfigValues();
+  }
+
+  Future<void> _loadRemoteConfigValues() async {
+    try {
+      final remoteConfig = FirebaseRemoteConfig.instance;
+      final visible = remoteConfig.getBool('meet_greet_visible');
+
+      setState(() {
+        showMeetGreetButton = visible;
+      });
+
+      print('🎯 Meet & Greet visível? $visible');
+    } catch (e) {
+      print('❌ Erro ao acessar Remote Config: $e');
+    }
   }
 
   void _requestNotificationPermissions() async {
@@ -46,7 +65,6 @@ class _HomePageState extends State<HomePage> {
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('Usuário abriu a notificação');
-      // Navegação futura, se necessário
     });
 
     _firebaseMessaging.getToken().then((token) {
@@ -88,10 +106,12 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _compartilharApp() async {
+    final remoteConfig = FirebaseRemoteConfig.instance;
+
     final String link =
         Platform.isAndroid
-            ? 'https://play.google.com/store/apps/details?id=com.seuapp.android'
-            : 'https://apps.apple.com/app/id0000000000';
+            ? remoteConfig.getString('android_share_url')
+            : remoteConfig.getString('ios_share_url');
 
     final String mensagem = 'Check out this amazing app! Download now:\n$link';
 
@@ -106,16 +126,12 @@ class _HomePageState extends State<HomePage> {
           SizedBox.expand(
             child: Image.asset('assets/Luke_background.png', fit: BoxFit.cover),
           ),
-
           SafeArea(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10.0,
-                    vertical: 0,
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -137,31 +153,32 @@ class _HomePageState extends State<HomePage> {
                         onSelected: (value) {
                           Navigator.pushNamed(context, value);
                         },
-                        itemBuilder:
-                            (BuildContext context) => [
-                              PopupMenuItem<String>(
-                                value: '/podcast',
-                                child: Row(
-                                  children: const [
-                                    Icon(
-                                      Icons.mic_outlined,
+                        itemBuilder: (BuildContext context) {
+                          final items = <PopupMenuEntry<String>>[
+                            const PopupMenuItem<String>(
+                              value: '/podcast',
+                              child: Row(
+                                children: [
+                                  Icon(Icons.mic_outlined, color: Colors.black),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    'Podcast',
+                                    style: TextStyle(
+                                      fontSize: 16,
                                       color: Colors.black,
                                     ),
-                                    SizedBox(width: 8),
-                                    Text(
-                                      'Podcast',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              PopupMenuItem<String>(
+                            ),
+                          ];
+
+                          if (showMeetGreetButton) {
+                            items.add(
+                              const PopupMenuItem<String>(
                                 value: '/meet_greet',
                                 child: Row(
-                                  children: const [
+                                  children: [
                                     Icon(
                                       Icons.people_outline,
                                       color: Colors.black,
@@ -177,19 +194,18 @@ class _HomePageState extends State<HomePage> {
                                   ],
                                 ),
                               ),
-                            ],
+                            );
+                          }
+
+                          return items;
+                        },
                       ),
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 280),
-
                 Container(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 0,
-                    vertical: 10,
-                  ),
+                  margin: const EdgeInsets.symmetric(vertical: 10),
                   width: double.infinity,
                   height: 200,
                   decoration: BoxDecoration(
@@ -200,9 +216,7 @@ class _HomePageState extends State<HomePage> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-
                 const SizedBox(height: 20),
-
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 0),
                   child: Row(
@@ -266,7 +280,6 @@ class _ImageButton extends StatelessWidget {
                 image: AssetImage(imageAsset),
                 fit: BoxFit.contain,
               ),
-              borderRadius: BorderRadius.circular(0),
             ),
           ),
           const SizedBox(height: 8),
