@@ -10,6 +10,7 @@ import 'pages/books_page.dart';
 import 'pages/messages_page.dart';
 import 'pages/podcast_page.dart';
 import 'pages/splash_screen.dart';
+import 'pages/Meet_And_Greet/meet_greet_page.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -25,6 +26,15 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  await FirebaseMessaging.instance.requestPermission(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  await messaging.subscribeToTopic('all');
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
     print('Received in foreground: ${message.notification?.title}');
@@ -77,6 +87,9 @@ class MyApp extends StatelessWidget {
             break;
           case '/podcast':
             builder = (_) => const PodcastPage();
+            break;
+          case '/meet_greet':
+            builder = (_) => const MeetGreetPage();
             break;
           default:
             builder = (_) => const HomePage(); // fallback
