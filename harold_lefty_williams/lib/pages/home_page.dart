@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
         ? 'https://play.google.com/store/apps/details?id=com.seuapp.android'
         : 'https://apps.apple.com/app/id0000000000';
 
-    final mensagem = 'Confira este app incrível! Baixe agora:\n$link';
+    final mensagem = 'Check out this amazing app! Download now:\n$link';
 
     await SharePlus.instance.share(ShareParams(text: mensagem));
   }
