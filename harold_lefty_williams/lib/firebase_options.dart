@@ -47,12 +47,13 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: "AIzaSyBDUihOvaSJLM1YC3xLWfpIfQrbdlZnsso",
-    authDomain: "harold-lefty-williams.firebaseapp.com",
-    projectId: "harold-lefty-williams",
-    storageBucket: "harold-lefty-williams.firebasestorage.app",
-    messagingSenderId: "521464985669",
-    appId: "1:521464985669:web:3d665da2461a70b57e4b2c",
-    measurementId: "G-6W7E9Y5WL7",
+    apiKey: 'AIzaSyBDUihOvaSJLM1YC3xLWfpIfQrbdlZnsso',
+    appId: '1:521464985669:web:3d665da2461a70b57e4b2c',
+    messagingSenderId: '521464985669',
+    projectId: 'harold-lefty-williams',
+    authDomain: 'harold-lefty-williams.firebaseapp.com',
+    storageBucket: 'harold-lefty-williams.firebasestorage.app',
+    measurementId: 'G-6W7E9Y5WL7',
   );
+
 }

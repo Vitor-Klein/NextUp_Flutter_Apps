@@ -33,9 +33,9 @@ class _MessagesPageState extends State<MessagesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Mensagens Recebidas')),
+      appBar: AppBar(title: const Text('Messages')),
       body: messages.isEmpty
-          ? const Center(child: Text('Nenhuma mensagem ainda.'))
+          ? const Center(child: Text('No messages yet.'))
           : ListView.builder(
               itemCount: messages.length,
               itemBuilder: (context, index) {

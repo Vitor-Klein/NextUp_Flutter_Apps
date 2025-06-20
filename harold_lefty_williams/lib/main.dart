@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'firebase_options.dart';
 import 'services/message_storage.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'pages/home_page.dart';
 import 'pages/about_page.dart';
@@ -25,6 +26,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   final remoteConfig = FirebaseRemoteConfig.instance;
@@ -36,26 +38,28 @@ void main() async {
   );
   await remoteConfig.fetchAndActivate();
 
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  if (!kIsWeb) {
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
-  await FirebaseMessaging.instance.requestPermission(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
+    await FirebaseMessaging.instance.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
 
-  FirebaseMessaging messaging = FirebaseMessaging.instance;
-  await messaging.subscribeToTopic('all');
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    await messaging.subscribeToTopic('all');
 
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-    print('Received in foreground: ${message.notification?.title}');
-    await saveMessageLocally(message); // 💾 salvando localmente
-  });
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      print('Received in foreground: ${message.notification?.title}');
+      await saveMessageLocally(message);
+    });
 
-  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
-    print('Opened app from notification: ${message.notification?.title}');
-    await saveMessageLocally(message); // 💾 salvando localmente
-  });
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) async {
+      print('Opened app from notification: ${message.notification?.title}');
+      await saveMessageLocally(message);
+    });
+  }
 
   runApp(const MyApp());
 }
