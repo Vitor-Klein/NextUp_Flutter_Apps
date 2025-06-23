@@ -5,6 +5,7 @@ import 'package:share_plus/share_plus.dart';
 import 'dart:io';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,12 +19,17 @@ class _HomePageState extends State<HomePage> {
   final FlutterLocalNotificationsPlugin _localNotifications =
       FlutterLocalNotificationsPlugin();
 
+  bool showBanner = false;
+  String bannerImageUrl = '';
+  String bannerLinkUrl = '';
+
   @override
   void initState() {
     super.initState();
     _requestNotificationPermissions();
     _initializeFirebaseMessaging();
     _initializeLocalNotifications();
+    _loadBannerConfig();
   }
 
   void _requestNotificationPermissions() async {
@@ -93,6 +99,24 @@ class _HomePageState extends State<HomePage> {
     await SharePlus.instance.share(ShareParams(text: mensagem));
   }
 
+  Future<void> _loadBannerConfig() async {
+    final remoteConfig = FirebaseRemoteConfig.instance;
+    await remoteConfig.fetchAndActivate();
+
+    setState(() {
+      showBanner = remoteConfig.getBool('show_banner');
+      bannerImageUrl = remoteConfig.getString('banner_image_url');
+      bannerLinkUrl = remoteConfig.getString('banner_link_url');
+    });
+  }
+
+  void _launchBanner() async {
+    final Uri _url = Uri.parse(bannerLinkUrl);
+    if (await canLaunchUrl(_url)) {
+      await launchUrl(_url, mode: LaunchMode.platformDefault);
+    }
+  }
+
   Widget _buildGradientButton(String text, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
@@ -102,18 +126,11 @@ class _HomePageState extends State<HomePage> {
         margin: const EdgeInsets.symmetric(vertical: 6),
         decoration: BoxDecoration(
           gradient: const LinearGradient(
-            colors: [
-              Color(
-                0x00FFFFFF,
-              ), // branco totalmente transparente (00 = 0% opacidade)
-              Color(0xFFd4def7), // azul claro
-              Color(0xFF5280d5), // azul escuro
-            ],
+            colors: [Color(0x00FFFFFF), Color(0xFFd4def7), Color(0xFF5280d5)],
             begin: Alignment.centerLeft,
             end: Alignment.centerRight,
             stops: [0.0, 0.4, 1.2],
           ),
-
           borderRadius: BorderRadius.circular(8),
         ),
         alignment: Alignment.centerRight,
@@ -141,17 +158,14 @@ class _HomePageState extends State<HomePage> {
         children: [
           SizedBox.expand(
             child: Image.asset(
-              'assets/background_image.jpg', // Substitua pela imagem correta
+              'assets/background_image.jpg',
               fit: BoxFit.cover,
             ),
           ),
           SafeArea(
             child: Column(
               children: [
-                const Spacer(
-                  flex: 8,
-                ), // Espaço antes dos botões (empurra eles para baixo)
-
+                const Spacer(flex: 15),
                 Align(
                   alignment: Alignment.centerRight,
                   child: Padding(
@@ -185,10 +199,31 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
+                const Spacer(flex: 1),
 
-                const Spacer(
-                  flex: 2,
-                ), // Espaço depois dos botões (ajusta altura final)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 0),
+                  child: GestureDetector(
+                    onTap: showBanner && bannerImageUrl.isNotEmpty
+                        ? _launchBanner
+                        : null,
+                    child: Container(
+                      width: double.infinity,
+                      height: 100,
+                      decoration: BoxDecoration(
+                        color: showBanner && bannerImageUrl.isNotEmpty
+                            ? null
+                            : Colors.transparent,
+                        image: showBanner && bannerImageUrl.isNotEmpty
+                            ? DecorationImage(
+                                image: NetworkImage(bannerImageUrl),
+                                fit: BoxFit.cover,
+                              )
+                            : null,
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
