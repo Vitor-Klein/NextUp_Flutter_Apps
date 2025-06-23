@@ -22,6 +22,7 @@ class _HomePageState extends State<HomePage> {
   bool showBanner = false;
   String bannerImageUrl = '';
   String bannerLinkUrl = '';
+  bool showMoreButton = true;
 
   @override
   void initState() {
@@ -107,6 +108,7 @@ class _HomePageState extends State<HomePage> {
       showBanner = remoteConfig.getBool('show_banner');
       bannerImageUrl = remoteConfig.getString('banner_image_url');
       bannerLinkUrl = remoteConfig.getString('banner_link_url');
+      showMoreButton = remoteConfig.getBool('show_more');
     });
   }
 
@@ -191,10 +193,11 @@ class _HomePageState extends State<HomePage> {
                           () => Navigator.pushNamed(context, '/messages'),
                         ),
                         _buildGradientButton("SHARE", _compartilharApp),
-                        _buildGradientButton(
-                          "MORE",
-                          () => Navigator.pushNamed(context, '/more'),
-                        ),
+                        if (showMoreButton)
+                          _buildGradientButton(
+                            "MORE",
+                            () => Navigator.pushNamed(context, '/more'),
+                          ),
                       ],
                     ),
                   ),

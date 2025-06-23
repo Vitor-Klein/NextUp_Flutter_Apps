@@ -18,12 +18,28 @@ class _HomePageState extends State<HomePage> {
   final FlutterLocalNotificationsPlugin _localNotifications =
       FlutterLocalNotificationsPlugin();
 
+  bool showBanner = false;
+  String bannerImageUrl = '';
+  String bannerLinkUrl = '';
+
   @override
   void initState() {
     super.initState();
     _requestNotificationPermissions();
     _initializeFirebaseMessaging();
     _initializeLocalNotifications();
+    _loadBannerConfig();
+  }
+
+  Future<void> _loadBannerConfig() async {
+    final remoteConfig = FirebaseRemoteConfig.instance;
+    await remoteConfig.fetchAndActivate();
+
+    setState(() {
+      showBanner = remoteConfig.getBool('show_banner');
+      bannerImageUrl = remoteConfig.getString('banner_image_url');
+      bannerLinkUrl = remoteConfig.getString('banner_link_url');
+    });
   }
 
   void _requestNotificationPermissions() async {
@@ -48,7 +64,6 @@ class _HomePageState extends State<HomePage> {
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('Usuário abriu a notificação');
-      // Navegação futura, se necessário
     });
 
     _firebaseMessaging.getToken().then((token) {
@@ -101,6 +116,13 @@ class _HomePageState extends State<HomePage> {
     await SharePlus.instance.share(ShareParams(text: mensagem));
   }
 
+  void _launchBanner() async {
+    final Uri uri = Uri.parse(bannerLinkUrl);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.platformDefault);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,7 +137,7 @@ class _HomePageState extends State<HomePage> {
           SafeArea(
             child: Column(
               children: [
-                const Spacer(flex: 7),
+                const Spacer(flex: 14),
 
                 // Container branco com os 3 botões
                 Padding(
@@ -159,7 +181,32 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
 
-                const Spacer(flex: 2),
+                const Spacer(flex: 1),
+
+                // Banner dinâmico
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 0),
+                  child: GestureDetector(
+                    onTap: showBanner && bannerImageUrl.isNotEmpty
+                        ? _launchBanner
+                        : null,
+                    child: Container(
+                      width: double.infinity,
+                      height: 110,
+                      decoration: BoxDecoration(
+                        color: showBanner && bannerImageUrl.isNotEmpty
+                            ? null
+                            : Colors.transparent,
+                        image: showBanner && bannerImageUrl.isNotEmpty
+                            ? DecorationImage(
+                                image: NetworkImage(bannerImageUrl),
+                                fit: BoxFit.cover,
+                              )
+                            : null,
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

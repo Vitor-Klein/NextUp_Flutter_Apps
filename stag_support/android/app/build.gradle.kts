@@ -20,13 +20,16 @@ android {
     ndkVersion = "27.0.12077973"
 
     signingConfigs {
-        create("release") {
+    create("release") {
+        if (keystorePropertiesFile.exists()) {
             keyAlias = keystoreProperties["keyAlias"] as String
             keyPassword = keystoreProperties["keyPassword"] as String
-            storeFile = keystoreProperties["storeFile"]?.let { file(it) }
+            storeFile = file(keystoreProperties["storeFile"].toString())
             storePassword = keystoreProperties["storePassword"] as String
+            }
         }
-    }
+    }   
+
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
