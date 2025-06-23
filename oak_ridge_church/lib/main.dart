@@ -6,10 +6,12 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'services/message_storage.dart';
 
 import 'pages/home_page.dart';
-import 'pages/resources_page.dart';
-import 'pages/splash_screen.dart';
-import 'pages/messages_page.dart';
+import 'pages/calendar_page.dart';
+// import 'pages/splash_screen.dart';
+import 'pages/visit_page.dart';
 import 'pages/about_page.dart';
+import 'pages/watch_online_page.dart';
+import 'pages/worship_page.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -79,7 +81,8 @@ class MyApp extends StatelessWidget {
           elevation: 0,
         ),
       ),
-      home: const SplashScreen(),
+      // home: const SplashScreen(),
+      // home: const HomePage(),
       onGenerateRoute: (settings) {
         WidgetBuilder builder;
 
@@ -87,11 +90,17 @@ class MyApp extends StatelessWidget {
           case '/home':
             builder = (_) => const HomePage();
             break;
-          case '/resources':
-            builder = (_) => const ResourcesPage();
+          case '/calendar':
+            builder = (_) => const CalendarPage();
             break;
-          case '/messages':
-            builder = (_) => const MessagesPage();
+          case '/visit':
+            builder = (_) => const VisitPage();
+            break;
+          case '/watch-online':
+            builder = (_) => const WatchOnlinePage();
+            break;
+          case '/worship':
+            builder = (_) => const WorshipPage();
             break;
           case '/about':
             builder = (_) => const AboutPage();

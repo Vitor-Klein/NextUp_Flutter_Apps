@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "963849600697",
+    "project_id": "oak-ridge-baptist-church-b7162",
+    "storage_bucket": "oak-ridge-baptist-church-b7162.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:963849600697:android:b0f227b3f2b79b3cb12568",
+        "android_client_info": {
+          "package_name": "app.android.oakridgebaptistchurch"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_Z3j1IhTBJE1-M30Jg8R2VgyslV_CZHw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
