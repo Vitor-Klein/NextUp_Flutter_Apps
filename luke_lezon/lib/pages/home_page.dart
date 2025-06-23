@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,6 +19,9 @@ class _HomePageState extends State<HomePage> {
       FlutterLocalNotificationsPlugin();
 
   bool showMeetGreetButton = false;
+  bool showBanner = false;
+  String bannerImageUrl = '';
+  String bannerLinkUrl = '';
 
   @override
   void initState() {
@@ -31,10 +35,18 @@ class _HomePageState extends State<HomePage> {
   Future<void> _loadRemoteConfigValues() async {
     try {
       final remoteConfig = FirebaseRemoteConfig.instance;
+      await remoteConfig.fetchAndActivate();
+
       final visible = remoteConfig.getBool('meet_greet_visible');
+      final bannerVisible = remoteConfig.getBool('show_banner');
+      final bannerImage = remoteConfig.getString('banner_image_url');
+      final bannerLink = remoteConfig.getString('banner_link_url');
 
       setState(() {
         showMeetGreetButton = visible;
+        showBanner = bannerVisible;
+        bannerImageUrl = bannerImage;
+        bannerLinkUrl = bannerLink;
       });
 
       print('🎯 Meet & Greet visível? $visible');
@@ -116,6 +128,13 @@ class _HomePageState extends State<HomePage> {
     final String mensagem = 'Check out this amazing app! Download now:\n$link';
 
     await SharePlus.instance.share(ShareParams(text: mensagem));
+  }
+
+  void _launchBanner() async {
+    final Uri uri = Uri.parse(bannerLinkUrl);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.platformDefault);
+    }
   }
 
   @override
@@ -216,7 +235,7 @@ class _HomePageState extends State<HomePage> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 8.5),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 0),
                   child: Row(
@@ -244,6 +263,32 @@ class _HomePageState extends State<HomePage> {
                         },
                       ),
                     ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 0),
+                  child: GestureDetector(
+                    onTap:
+                        showBanner && bannerImageUrl.isNotEmpty
+                            ? _launchBanner
+                            : null,
+                    child: Container(
+                      width: double.infinity,
+                      height: 110,
+                      decoration: BoxDecoration(
+                        color:
+                            showBanner && bannerImageUrl.isNotEmpty
+                                ? null
+                                : Colors.transparent,
+                        image:
+                            showBanner && bannerImageUrl.isNotEmpty
+                                ? DecorationImage(
+                                  image: NetworkImage(bannerImageUrl),
+                                  fit: BoxFit.cover,
+                                )
+                                : null,
+                      ),
+                    ),
                   ),
                 ),
               ],
