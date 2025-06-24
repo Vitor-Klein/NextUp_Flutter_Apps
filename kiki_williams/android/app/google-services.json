@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "575220937158",
+    "project_id": "kiki-williams-f6028",
+    "storage_bucket": "kiki-williams-f6028.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:575220937158:android:e8ebec22bd8c792eaf02c7",
+        "android_client_info": {
+          "package_name": "app.com.kikiwilliams"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgNbYjI-JV0W2XYpvEa660TDinE0trbOs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:575220937158:android:7b9fac4d8089b3feaf02c7",
+        "android_client_info": {
+          "package_name": "com.example.kiki_williams"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgNbYjI-JV0W2XYpvEa660TDinE0trbOs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
