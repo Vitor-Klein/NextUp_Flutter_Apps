@@ -188,7 +188,7 @@ class _HomePageState extends State<HomePage> {
                         Navigator.pushNamed(context, '/messages');
                       }),
                       _buildIconButton(Icons.share, 'Share', _compartilharApp),
-                      _buildMoreDropdown(),
+                      if (meetGreetVisible) _buildMoreDropdown(),
                     ],
                   ),
                   const SizedBox(height: 24),
