@@ -26,29 +26,13 @@ class _HomePageState extends State<HomePage> {
   final FlutterLocalNotificationsPlugin _localNotifications =
       FlutterLocalNotificationsPlugin();
 
-  // bool showBanner = false;
-  // String bannerImageUrl = '';
-  // String bannerLinkUrl = '';
-
   @override
   void initState() {
     super.initState();
     _requestNotificationPermissions();
     _initializeFirebaseMessaging();
     _initializeLocalNotifications();
-    // _loadBannerConfig();
   }
-
-  // Future<void> _loadBannerConfig() async {
-  //   final remoteConfig = FirebaseRemoteConfig.instance;
-  //   await remoteConfig.fetchAndActivate();
-
-  //   setState(() {
-  //     showBanner = remoteConfig.getBool('show_banner');
-  //     bannerImageUrl = remoteConfig.getString('banner_image_url');
-  //     bannerLinkUrl = remoteConfig.getString('banner_link_url');
-  //   });
-  // }
 
   void _requestNotificationPermissions() async {
     NotificationSettings settings = await _firebaseMessaging.requestPermission(
@@ -124,12 +108,6 @@ class _HomePageState extends State<HomePage> {
     await SharePlus.instance.share(ShareParams(text: mensagem));
   }
 
-  // void _launchBanner() async {
-  //   final Uri uri = Uri.parse(bannerLinkUrl);
-  //   if (await canLaunchUrl(uri)) {
-  //     await launchUrl(uri, mode: LaunchMode.platformDefault);
-  //   }
-  // }
   int _selectedIndex = 2;
 
   final List<Widget> _pages = const [
@@ -144,46 +122,73 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _pages[_selectedIndex],
-      bottomNavigationBar: CurvedNavigationBar(
-        index: _selectedIndex,
-        height: 65,
-        backgroundColor: Colors.transparent,
-        color: Colors.brown.shade700,
-        animationDuration: const Duration(milliseconds: 300),
-        items: const [
-          CurvedNavigationBarItem(
-            child: Icon(Icons.calendar_month, color: Colors.white),
-            label: 'Calendar',
-          ),
-          CurvedNavigationBarItem(
-            child: Icon(Icons.tv, color: Colors.white),
-            label: 'Watch',
-          ),
-          CurvedNavigationBarItem(
-            child: Icon(Icons.home, color: Colors.white),
-            label: 'Home',
-          ),
-          CurvedNavigationBarItem(
-            child: Icon(Icons.place, color: Colors.white),
-            label: 'Visit',
-          ),
-          CurvedNavigationBarItem(
-            child: Icon(Icons.info_outline, color: Colors.white),
-            label: 'About',
+      bottomNavigationBar: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          Container(height: 45, color: const Color(0xFFe5e5e5)),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 42),
+            child: CurvedNavigationBar(
+              index: _selectedIndex,
+              height: 80,
+              backgroundColor: Colors.transparent,
+              color: const Color(0xFFe5e5e5),
+              animationDuration: const Duration(milliseconds: 300),
+              iconPadding: 18,
+              items: const [
+                CurvedNavigationBarItem(
+                  child: Icon(Icons.calendar_month, color: Color(0xFF2b4a83)),
+                  label: 'Calendar',
+                ),
+                CurvedNavigationBarItem(
+                  child: Icon(Icons.share, color: Color(0xFF2b4a83)),
+                  label: 'Share',
+                ),
+                CurvedNavigationBarItem(
+                  child: Icon(Icons.home, color: Color(0xFF2b4a83)),
+                  label: 'Home',
+                ),
+                CurvedNavigationBarItem(
+                  child: Icon(Icons.place, color: Color(0xFF2b4a83)),
+                  label: 'Visit Us',
+                ),
+                CurvedNavigationBarItem(
+                  child: Icon(Icons.info_outline, color: Color(0xFF2b4a83)),
+                  label: 'About',
+                ),
+              ],
+              onTap: (index) {
+                if (index == 1) {
+                  _compartilharApp();
+                } else {
+                  setState(() {
+                    _selectedIndex = index;
+                  });
+                }
+              },
+            ),
           ),
         ],
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
       ),
     );
   }
 }
 
-class HomeBody extends StatelessWidget {
+class HomeBody extends StatefulWidget {
   const HomeBody({super.key});
+
+  @override
+  State<HomeBody> createState() => _HomeBodyState();
+}
+
+class _HomeBodyState extends State<HomeBody> {
+  int _currentIndex = 0;
+
+  final List<String> _carouselImages = [
+    'assets/header.png',
+    'assets/header.png',
+    'assets/header.png',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -193,39 +198,69 @@ class HomeBody extends StatelessWidget {
       child: Column(
         children: [
           SizedBox(
-            height: height * 0.33,
-            child: CarouselSlider(
-              options: CarouselOptions(autoPlay: true, viewportFraction: 1.0),
-              items:
-                  [
-                    'assets/header.png',
-                    'assets/header.png',
-                    'assets/header.png',
-                  ].map((img) {
+            height: 320,
+            width: double.infinity,
+            child: Stack(
+              alignment: Alignment.bottomCenter,
+              children: [
+                CarouselSlider(
+                  options: CarouselOptions(
+                    autoPlay: true,
+                    height: 320,
+                    viewportFraction: 1.0,
+                    onPageChanged: (index, reason) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                    },
+                  ),
+                  items: _carouselImages.map((img) {
                     return Image.asset(
                       img,
                       fit: BoxFit.cover,
                       width: double.infinity,
                     );
                   }).toList(),
+                ),
+                Positioned(
+                  bottom: 10,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: _carouselImages.asMap().entries.map((entry) {
+                      return AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        width: _currentIndex == entry.key ? 12.0 : 8.0,
+                        height: 10.0,
+                        margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: _currentIndex == entry.key
+                              ? Colors.white
+                              : Colors.white.withOpacity(0.4),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              ],
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            child: Image.asset('assets/Text.png', height: 60),
+            padding: const EdgeInsets.symmetric(vertical: 18),
+            child: Image.asset('assets/Text.png', height: 80),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 14),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _circleButton('assets/Watch_Online.png', 'Watch Online', () {
+                _imageButton('assets/Watch_Online.png', () {
                   Navigator.pushNamed(context, '/watch-online');
                 }),
-                _circleButton('assets/Worship.png', 'Worship', () {
+                _imageButton('assets/Worship.png', () {
                   Navigator.pushNamed(context, '/worship');
                 }),
-                _circleButton('assets/About_Us.png', 'About Us', () {
+                _imageButton('assets/About_Us.png', () {
                   Navigator.pushNamed(context, '/about');
                 }),
               ],
@@ -236,15 +271,15 @@ class HomeBody extends StatelessWidget {
     );
   }
 
-  Widget _circleButton(String asset, String label, VoidCallback onTap) {
+  Widget _imageButton(String asset, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
-      child: Column(
-        children: [
-          CircleAvatar(radius: 30, backgroundImage: AssetImage(asset)),
-          const SizedBox(height: 6),
-          Text(label, style: const TextStyle(fontSize: 12)),
-        ],
+      child: Container(
+        width: 110,
+        height: 240,
+        decoration: BoxDecoration(
+          image: DecorationImage(image: AssetImage(asset), fit: BoxFit.contain),
+        ),
       ),
     );
   }
