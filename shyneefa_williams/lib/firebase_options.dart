@@ -63,6 +63,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '980154190356',
     projectId: 'shyneefa-williams',
     storageBucket: 'shyneefa-williams.firebasestorage.app',
-    iosBundleId: 'com.example.shyneefaWilliams',
+    iosBundleId: 'app.ios.shyneefawilliams',
   );
 }
