@@ -153,8 +153,8 @@ class _HomePageState extends State<HomePage> {
                   label: 'Visit Us',
                 ),
                 CurvedNavigationBarItem(
-                  child: Icon(Icons.info_outline, color: Color(0xFF2b4a83)),
-                  label: 'About',
+                  child: Icon(Icons.more_horiz, color: Color(0xFF2b4a83)),
+                  label: 'More',
                 ),
               ],
               onTap: (index) {
