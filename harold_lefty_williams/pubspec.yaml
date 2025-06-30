@@ -45,6 +45,7 @@ dependencies:
   youtube_player_iframe: ^5.2.1
   firebase_remote_config: ^5.4.5
   url_launcher: ^6.3.1
+  pwa_install: ^0.0.6
 
 dev_dependencies:
   flutter_test:

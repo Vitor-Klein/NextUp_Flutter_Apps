@@ -41,36 +41,32 @@
     let deferredPrompt;
 
     window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault(); // Impede o prompt automático
       deferredPrompt = e;
-
-      // Cria botão
-      const installBtn = document.createElement('button');
-      installBtn.textContent = 'Instalar App';
-      installBtn.style.position = 'fixed';
-      installBtn.style.bottom = '20px';
-      installBtn.style.right = '20px';
-      installBtn.style.padding = '12px 18px';
-      installBtn.style.background = '#0175C2';
-      installBtn.style.color = 'white';
-      installBtn.style.border = 'none';
-      installBtn.style.borderRadius = '10px';
-      installBtn.style.fontSize = '16px';
-      installBtn.style.zIndex = '9999';
-      installBtn.style.cursor = 'pointer';
-
-      installBtn.onclick = async () => {
-        installBtn.remove();
-        deferredPrompt.prompt();
-        const result = await deferredPrompt.userChoice;
-        console.log(`Instalação: ${result.outcome}`);
-        deferredPrompt = null;
-      };
-
-      document.body.appendChild(installBtn);
     });
-  </script>
 
+    function promptInstall() {
+      deferredPrompt.prompt();
+    }
+
+    // Listen for app install event
+    window.addEventListener('appinstalled', () => {
+      deferredPrompt = null;
+      appInstalled();
+    });
+
+    // Track how PWA was launched (either from browser or as PWA)
+    function getLaunchMode() {
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+      if (deferredPrompt) hasPrompt();
+      if (document.referrer.startsWith('android-app://')) {
+        appLaunchedAsTWA();
+      } else if (navigator.standalone || isStandalone) {
+        appLaunchedAsPWA();
+      } else {
+        window.appLaunchedInBrowser();
+      }
+    }
+  </script>
 </body>
 
 </html>
