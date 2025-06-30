@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <!--
     If you are serving your web app in a path other than the root, change the
@@ -14,11 +15,12 @@
     This is a placeholder for base href that will be replaced by the value of
     the `--base-href` argument provided to `flutter build`.
   -->
-  <base href="$FLUTTER_BASE_HREF">
+  <base href="/">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="A new Flutter project.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- iOS meta tags & icons -->
   <meta name="mobile-web-app-capable" content="yes">
@@ -27,12 +29,48 @@
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+  <link rel="icon" type="image/png" href="favicon.png" />
 
   <title>harold_lefty_williams</title>
   <link rel="manifest" href="manifest.json">
 </head>
+
 <body>
   <script src="flutter_bootstrap.js" async></script>
+  <script>
+    let deferredPrompt;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault(); // Impede o prompt automático
+      deferredPrompt = e;
+
+      // Cria botão
+      const installBtn = document.createElement('button');
+      installBtn.textContent = 'Instalar App';
+      installBtn.style.position = 'fixed';
+      installBtn.style.bottom = '20px';
+      installBtn.style.right = '20px';
+      installBtn.style.padding = '12px 18px';
+      installBtn.style.background = '#0175C2';
+      installBtn.style.color = 'white';
+      installBtn.style.border = 'none';
+      installBtn.style.borderRadius = '10px';
+      installBtn.style.fontSize = '16px';
+      installBtn.style.zIndex = '9999';
+      installBtn.style.cursor = 'pointer';
+
+      installBtn.onclick = async () => {
+        installBtn.remove();
+        deferredPrompt.prompt();
+        const result = await deferredPrompt.userChoice;
+        console.log(`Instalação: ${result.outcome}`);
+        deferredPrompt = null;
+      };
+
+      document.body.appendChild(installBtn);
+    });
+  </script>
+
 </body>
+
 </html>
