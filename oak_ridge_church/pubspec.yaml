@@ -46,6 +46,10 @@ dependencies:
   carousel_slider: ^5.1.1
   curved_labeled_navigation_bar: ^2.0.6
   webview_flutter: ^4.13.0
+  table_calendar: ^3.2.0
+  google_maps_flutter: ^2.6.1
+  geolocator: ^11.0.0
+  permission_handler: ^11.3.0
 
 dev_dependencies:
   flutter_test:
