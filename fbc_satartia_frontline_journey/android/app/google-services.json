@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "989326397589",
+    "project_id": "fbc-satartia-frontline-journey",
+    "storage_bucket": "fbc-satartia-frontline-journey.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:989326397589:android:b57763704e295e4c5c8b9c",
+        "android_client_info": {
+          "package_name": "app.android.frontlinejourney"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXcw-5rnqSCNGquS_n5d2Rq55IPlWjRwE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:989326397589:android:a8ae1ce9b52dac3d5c8b9c",
+        "android_client_info": {
+          "package_name": "com.example.fbc_satartia_frontline_journey"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXcw-5rnqSCNGquS_n5d2Rq55IPlWjRwE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
