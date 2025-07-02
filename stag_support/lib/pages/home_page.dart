@@ -200,7 +200,7 @@ class _HomePageState extends State<HomePage> {
                         image: showBanner && bannerImageUrl.isNotEmpty
                             ? DecorationImage(
                                 image: NetworkImage(bannerImageUrl),
-                                fit: BoxFit.cover,
+                                fit: BoxFit.contain,
                               )
                             : null,
                       ),
