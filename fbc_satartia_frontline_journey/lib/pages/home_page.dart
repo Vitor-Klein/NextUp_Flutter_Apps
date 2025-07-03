@@ -139,8 +139,6 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               children: [
                 const Spacer(),
-
-                // Botão "Latest Message"
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
@@ -187,8 +185,9 @@ class _HomePageState extends State<HomePage> {
                         Navigator.pushNamed(context, '/contact');
                       }),
                       _circleIconButton('assets/share.png', () {
-                        Navigator.pushNamed(context, '/share');
+                        _compartilharApp();
                       }),
+
                       _circleIconButton('assets/more.png', () {
                         Navigator.pushNamed(context, '/more');
                       }),
@@ -198,11 +197,8 @@ class _HomePageState extends State<HomePage> {
 
                 const SizedBox(height: 40),
 
-                // Botão com imagem "Sponser"
                 GestureDetector(
-                  onTap: () {
-                    // TODO: ação do botão "Sponser"
-                  },
+                  onTap: () {},
                   child: Image.asset(
                     'assets/Sponser.jpg',
                     fit: BoxFit.cover,
@@ -214,11 +210,7 @@ class _HomePageState extends State<HomePage> {
                 // Banner remoto (visível apenas se showBanner for true)
                 if (showBanner && bannerImageUrl.isNotEmpty)
                   GestureDetector(
-                    onTap: () async {
-                      if (await canLaunchUrl(Uri.parse(bannerLinkUrl))) {
-                        launchUrl(Uri.parse(bannerLinkUrl));
-                      }
-                    },
+                    onTap: _launchBanner,
                     child: Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child: Image.network(
