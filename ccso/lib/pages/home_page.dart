@@ -18,12 +18,35 @@ class _HomePageState extends State<HomePage> {
   final FlutterLocalNotificationsPlugin _localNotifications =
       FlutterLocalNotificationsPlugin();
 
+  bool showBanner = false;
+  String bannerImageUrl = '';
+  String bannerLinkUrl = '';
+
   @override
   void initState() {
     super.initState();
     _requestNotificationPermissions();
     _initializeFirebaseMessaging();
     _initializeLocalNotifications();
+    _loadBannerConfig();
+  }
+
+  Future<void> _loadBannerConfig() async {
+    final remoteConfig = FirebaseRemoteConfig.instance;
+    await remoteConfig.fetchAndActivate();
+
+    setState(() {
+      showBanner = remoteConfig.getBool('show_banner');
+      bannerImageUrl = remoteConfig.getString('banner_image_url');
+      bannerLinkUrl = remoteConfig.getString('banner_link_url');
+    });
+  }
+
+  void _launchBanner() async {
+    final Uri uri = Uri.parse(bannerLinkUrl);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.platformDefault);
+    }
   }
 
   void _requestNotificationPermissions() async {
@@ -210,6 +233,25 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
+
+                // BANNER CONTROLADO POR REMOTE CONFIG
+                const SizedBox(height: 10),
+                if (showBanner && bannerImageUrl.isNotEmpty)
+                  GestureDetector(
+                    onTap: _launchBanner,
+                    child: Container(
+                      height: 100,
+                      width: double.infinity,
+                      margin: const EdgeInsets.symmetric(horizontal: 0),
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(bannerImageUrl),
+                          fit: BoxFit.contain,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
               ],
             ),
           ),
