@@ -1,4 +1,4 @@
-package com.example.fbc_satartia_frontline_journey
+package app.android.fbcsatartiafrontlinejourney
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -12,6 +12,7 @@ import 'pages/contact_page.dart';
 import 'pages/splash_screen.dart';
 import 'pages/messages_page.dart';
 import 'pages/about_page.dart';
+import 'pages/Schedule_an_Appointment/schedule_an_appointment_page.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -103,6 +104,9 @@ class MyApp extends StatelessWidget {
             break;
           case '/social':
             builder = (_) => const SocialPage();
+            break;
+          case '/schedule_an_appointment':
+            builder = (_) => const ScheduleAnAppointmentPage();
             break;
           default:
             builder = (_) => const HomePage();

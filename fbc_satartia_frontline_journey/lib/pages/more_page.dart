@@ -1,7 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 
-class MorePage extends StatelessWidget {
+class MorePage extends StatefulWidget {
   const MorePage({super.key});
+
+  @override
+  State<MorePage> createState() => _MorePageState();
+}
+
+class _MorePageState extends State<MorePage> {
+  bool showScheduleButton = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadRemoteConfig();
+  }
+
+  Future<void> _loadRemoteConfig() async {
+    final remoteConfig = FirebaseRemoteConfig.instance;
+    await remoteConfig.fetchAndActivate();
+
+    setState(() {
+      showScheduleButton = remoteConfig.getBool('show_schedule_button');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +62,7 @@ class MorePage extends StatelessWidget {
 
           const SizedBox(height: 30),
 
+          // Botão de Messages
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: ElevatedButton.icon(
@@ -58,6 +82,33 @@ class MorePage extends StatelessWidget {
               ),
             ),
           ),
+
+          const SizedBox(height: 20),
+
+          // Botão de agendamento condicional
+          if (showScheduleButton)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/schedule_an_appointment');
+                },
+                icon: const Icon(Icons.calendar_today),
+                label: const Text(
+                  'Schedule an Appointment',
+                  style: TextStyle(fontSize: 18),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.brown.shade700,
+                  foregroundColor: Colors.white,
+                  minimumSize: const Size.fromHeight(50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  elevation: 4,
+                ),
+              ),
+            ),
         ],
       ),
     );

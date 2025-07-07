@@ -24,7 +24,7 @@ class SocialPage extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => const WebViewPage(
                       title: 'Instagram',
-                      url: 'https://www.instagram.com/',
+                      url: 'https://www.instagram.com/broroyce',
                     ),
                   ),
                 );
@@ -39,7 +39,7 @@ class SocialPage extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => const WebViewPage(
                       title: 'X (Twitter)',
-                      url: 'https://twitter.com/',
+                      url: 'https://www.twitter.com/celebratelcs',
                     ),
                   ),
                 );
@@ -54,7 +54,7 @@ class SocialPage extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => const WebViewPage(
                       title: 'Facebook',
-                      url: 'https://facebook.com/',
+                      url: 'https://www.facebook.com/153255615079166',
                     ),
                   ),
                 );
@@ -69,7 +69,8 @@ class SocialPage extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => const WebViewPage(
                       title: 'Youtube',
-                      url: 'https://youtube.com/',
+                      url:
+                          'https://www.youtube.com/channel/UC1G2MywiczQHaDBIqbeamKQ',
                     ),
                   ),
                 );
