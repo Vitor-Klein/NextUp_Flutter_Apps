@@ -7,11 +7,12 @@ import 'services/message_storage.dart';
 
 import 'pages/home_page.dart';
 import 'pages/calendar_page.dart';
-// import 'pages/splash_screen.dart';
+import 'pages/splash_screen.dart';
 import 'pages/visit_page.dart';
 import 'pages/about_page.dart';
 import 'pages/watch_online_page.dart';
 import 'pages/worship_page.dart';
+import 'pages/more_page.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -81,7 +82,7 @@ class MyApp extends StatelessWidget {
           elevation: 0,
         ),
       ),
-      // home: const SplashScreen(),
+      home: const SplashScreen(),
       // home: const HomePage(),
       onGenerateRoute: (settings) {
         WidgetBuilder builder;
@@ -104,6 +105,9 @@ class MyApp extends StatelessWidget {
             break;
           case '/about':
             builder = (_) => const AboutPage();
+            break;
+          case '/more':
+            builder = (_) => const MorePage();
             break;
 
           default:

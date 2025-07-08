@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:oak_ridge_church/pages/more_page.dart';
 import 'package:share_plus/share_plus.dart';
 import 'dart:io';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -115,7 +116,7 @@ class _HomePageState extends State<HomePage> {
     WatchOnlinePage(),
     HomeBody(),
     VisitPage(),
-    AboutPage(),
+    MorePage(),
   ];
 
   @override
@@ -186,8 +187,8 @@ class _HomeBodyState extends State<HomeBody> {
 
   final List<String> _carouselImages = [
     'assets/header.png',
-    'assets/header.png',
-    'assets/header.png',
+    'assets/header2.jpg',
+    'assets/header3.jpg',
   ];
 
   @override

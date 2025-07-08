@@ -80,6 +80,12 @@ flutter:
     - assets/Worship.png
     - assets/Text.png
     - assets/header.png
+    - assets/header2.jpg
+    - assets/header3.jpg
+    - assets/history1.png
+    - assets/history2.png
+    - assets/history3.png
+    - assets/splash.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
