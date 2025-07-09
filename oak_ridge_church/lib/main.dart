@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:oak_ridge_church/pages/social_page.dart';
 import 'firebase_options.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'services/message_storage.dart';
@@ -13,6 +14,7 @@ import 'pages/about_page.dart';
 import 'pages/watch_online_page.dart';
 import 'pages/worship_page.dart';
 import 'pages/more_page.dart';
+import 'pages/messages_page.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -108,6 +110,12 @@ class MyApp extends StatelessWidget {
             break;
           case '/more':
             builder = (_) => const MorePage();
+            break;
+          case '/social':
+            builder = (_) => const SocialPage();
+            break;
+          case '/messages':
+            builder = (_) => const MessagesPage();
             break;
 
           default:
