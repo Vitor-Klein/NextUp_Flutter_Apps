@@ -54,14 +54,14 @@ class SocialPage extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => const WebViewPage(
                       title: 'Facebook',
-                      url: 'https://www.facebook.com/153255615079166',
+                      url: 'https://www.facebook.com/lifecoachsouth',
                     ),
                   ),
                 );
               },
             ),
             SocialButton(
-              label: 'Facebook',
+              label: 'YouTube',
               icon: FontAwesomeIcons.youtube,
               onPressed: () {
                 Navigator.push(
