@@ -1,105 +1,78 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'webview_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SocialPage extends StatelessWidget {
   const SocialPage({super.key});
+
+  void _launchUrl(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      throw Exception('Could not launch $url');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Social')),
-      body: Padding(
-        padding: const EdgeInsets.all(4),
-        child: Column(
-          children: [
-            Image.asset('assets/header.png'),
-            const SizedBox(height: 24),
-            SocialButton(
-              label: 'Instagram',
-              icon: FontAwesomeIcons.instagram,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const WebViewPage(
-                      title: 'Instagram',
-                      url: 'https://www.instagram.com/broroyce',
-                    ),
-                  ),
-                );
-              },
+      body: ListView(
+        padding: const EdgeInsets.all(16.0),
+        children: [
+          // Header image
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: Image.asset(
+              'assets/header.png',
+              height: 180,
+              width: double.infinity,
+              fit: BoxFit.cover,
             ),
-            SocialButton(
-              label: 'X (Twitter)',
-              icon: FontAwesomeIcons.xTwitter,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const WebViewPage(
-                      title: 'X (Twitter)',
-                      url: 'https://www.twitter.com/celebratelcs',
-                    ),
-                  ),
-                );
-              },
+          ),
+          const SizedBox(height: 24),
+
+          // Botões de redes sociais
+          _buildButton(
+            context,
+            'Instagram',
+            FontAwesomeIcons.instagram,
+            () => _launchUrl('https://www.instagram.com/broroyce'),
+          ),
+          _buildButton(
+            context,
+            'X (Twitter)',
+            FontAwesomeIcons.xTwitter,
+            () => _launchUrl('https://www.twitter.com/celebratelcs'),
+          ),
+          _buildButton(
+            context,
+            'Facebook',
+            FontAwesomeIcons.facebookF,
+            () => _launchUrl('https://www.facebook.com/lifecoachsouth'),
+          ),
+          _buildButton(
+            context,
+            'YouTube',
+            FontAwesomeIcons.youtube,
+            () => _launchUrl(
+              'https://www.youtube.com/channel/UC1G2MywiczQHaDBIqbeamKQ',
             ),
-            SocialButton(
-              label: 'Facebook',
-              icon: FontAwesomeIcons.facebookF,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const WebViewPage(
-                      title: 'Facebook',
-                      url: 'https://www.facebook.com/lifecoachsouth',
-                    ),
-                  ),
-                );
-              },
-            ),
-            SocialButton(
-              label: 'YouTube',
-              icon: FontAwesomeIcons.youtube,
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const WebViewPage(
-                      title: 'Youtube',
-                      url:
-                          'https://www.youtube.com/channel/UC1G2MywiczQHaDBIqbeamKQ',
-                    ),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
+          ),
+
+          const SizedBox(height: 40),
+        ],
       ),
     );
   }
-}
 
-class SocialButton extends StatelessWidget {
-  final String label;
-  final IconData icon;
-  final VoidCallback onPressed;
-
-  const SocialButton({
-    super.key,
-    required this.label,
-    required this.icon,
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 6),
-      width: double.infinity,
+  Widget _buildButton(
+    BuildContext context,
+    String label,
+    IconData icon,
+    VoidCallback onPressed,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
       child: ElevatedButton.icon(
         onPressed: onPressed,
         icon: FaIcon(icon, color: const Color(0xFF9b8a53), size: 18),
@@ -107,11 +80,9 @@ class SocialButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: const Color(0xFFf9ecd8),
           side: const BorderSide(color: Color(0xFF9b8a53)),
-          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-          alignment: Alignment.centerLeft,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(6), // Menos arredondado
-          ),
+          minimumSize: const Size(double.infinity, 50),
+          textStyle: const TextStyle(fontSize: 16),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
       ),
     );
