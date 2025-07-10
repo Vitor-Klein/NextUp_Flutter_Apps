@@ -50,6 +50,9 @@ dependencies:
   google_maps_flutter: ^2.6.1
   geolocator: ^11.0.0
   permission_handler: ^11.3.0
+  syncfusion_flutter_pdfviewer: ^30.1.39
+  path_provider: ^2.1.2
+  flutter_file_dialog: ^3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -86,7 +89,19 @@ flutter:
     - assets/history2.png
     - assets/history3.png
     - assets/splash.png
-
+    - assets/ministries/worship.png
+    - assets/ministries/education.png
+    - assets/ministries/outreach.png
+    - assets/ministries/service.png
+    - assets/ministries/spiritual.png
+    - assets/ministries/ambassadors.jpg
+    - assets/gallery/01.jpg
+    - assets/gallery/02.jpg
+    - assets/gallery/03.jpg
+    - assets/gallery/04.jpg
+    - assets/gallery/05.jpg
+    - assets/gallery/06.jpg
+    - assets/bible/bible.pdf
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 

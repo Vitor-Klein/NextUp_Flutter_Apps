@@ -38,7 +38,7 @@ class MorePage extends StatelessWidget {
             Navigator.pushNamed(context, '/ministries');
           }),
           _buildButton(context, 'Galery', () {
-            Navigator.pushNamed(context, '/galery');
+            Navigator.pushNamed(context, '/gallery');
           }),
           _buildButton(context, 'ORYD School', () {
             _launchUrl('https://orydschool.org');
@@ -50,7 +50,7 @@ class MorePage extends StatelessWidget {
             _launchUrl('https://app.easytithe.com/app/giving/oakr0629223');
           }),
           _buildButton(context, 'Notifications', () {
-            Navigator.pushNamed(context, '/notification');
+            Navigator.pushNamed(context, '/messages');
           }),
           SizedBox(height: 40),
         ],
