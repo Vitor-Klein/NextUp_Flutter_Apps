@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:oak_ridge_church/pages/bible_page.dart';
+import 'package:oak_ridge_church/pages/contact_page.dart';
 import 'package:oak_ridge_church/pages/gallery_page.dart';
 import 'package:oak_ridge_church/pages/ministries_page.dart';
 import 'package:oak_ridge_church/pages/social_page.dart';
@@ -128,6 +129,9 @@ class MyApp extends StatelessWidget {
             break;
           case '/bible':
             builder = (_) => const BiblePage();
+            break;
+          case '/contact':
+            builder = (_) => const ContactPage();
             break;
           default:
             builder = (_) => const HomePage();

@@ -30,51 +30,104 @@ class MorePage extends StatelessWidget {
           ),
           const SizedBox(height: 24),
 
-          // Botões
-          _buildButton(context, 'Social Media', () {
-            Navigator.pushNamed(context, '/social');
-          }),
-          _buildButton(context, 'Ministries', () {
-            Navigator.pushNamed(context, '/ministries');
-          }),
-          _buildButton(context, 'Galery', () {
-            Navigator.pushNamed(context, '/gallery');
-          }),
-          _buildButton(context, 'ORYD School', () {
-            _launchUrl('https://orydschool.org');
-          }),
-          _buildButton(context, '1 Peter Bible Study - October', () {
-            Navigator.pushNamed(context, '/bible');
-          }),
-          _buildButton(context, 'Give', () {
-            _launchUrl('https://app.easytithe.com/app/giving/oakr0629223');
-          }),
-          _buildButton(context, 'Notifications', () {
-            Navigator.pushNamed(context, '/messages');
-          }),
-          SizedBox(height: 40),
+          // Botão de Contato em destaque
+          _buildHighlightButton(
+            context,
+            icon: Icons.phone,
+            title: 'Contact',
+            onPressed: () => Navigator.pushNamed(context, '/contact'),
+          ),
+
+          _buildButton(
+            context,
+            icon: Icons.people,
+            title: 'Social Media',
+            onPressed: () => Navigator.pushNamed(context, '/social'),
+          ),
+          _buildButton(
+            context,
+            icon: Icons.volunteer_activism,
+            title: 'Ministries',
+            onPressed: () => Navigator.pushNamed(context, '/ministries'),
+          ),
+          _buildButton(
+            context,
+            icon: Icons.photo_library,
+            title: 'Galery',
+            onPressed: () => Navigator.pushNamed(context, '/gallery'),
+          ),
+          _buildButton(
+            context,
+            icon: Icons.school,
+            title: 'ORYD School',
+            onPressed: () => _launchUrl('https://orydschool.org'),
+          ),
+          _buildButton(
+            context,
+            icon: Icons.book,
+            title: '1 Peter Bible Study - October',
+            onPressed: () => Navigator.pushNamed(context, '/bible'),
+          ),
+          _buildButton(
+            context,
+            icon: Icons.favorite,
+            title: 'Give',
+            onPressed: () =>
+                _launchUrl('https://app.easytithe.com/app/giving/oakr0629223'),
+          ),
+          _buildButton(
+            context,
+            icon: Icons.notifications,
+            title: 'Notifications',
+            onPressed: () => Navigator.pushNamed(context, '/messages'),
+          ),
+
+          const SizedBox(height: 40),
         ],
       ),
     );
   }
 
   Widget _buildButton(
-    BuildContext context,
-    String title,
-    VoidCallback onPressed,
-  ) {
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required VoidCallback onPressed,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6.0),
-      child: ElevatedButton(
+      child: ElevatedButton.icon(
         onPressed: onPressed,
+        icon: Icon(icon, size: 20),
+        label: Text(title),
         style: ElevatedButton.styleFrom(
           minimumSize: const Size(double.infinity, 50),
           textStyle: const TextStyle(fontSize: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8), // menos arredondado
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
-        child: Text(title),
+      ),
+    );
+  }
+
+  Widget _buildHighlightButton(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required VoidCallback onPressed,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6.0),
+      child: ElevatedButton.icon(
+        onPressed: onPressed,
+        icon: Icon(icon, color: Colors.white, size: 20),
+        label: Text(title),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xFF2B4A83),
+          foregroundColor: Colors.white,
+          minimumSize: const Size(double.infinity, 50),
+          textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
       ),
     );
   }
