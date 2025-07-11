@@ -125,6 +125,13 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  void _launchUrl(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      throw Exception('Could not launch $url');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -198,7 +205,8 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: 40),
 
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () =>
+                      _launchUrl('https://www.hometownpropertygroupllc.com/'),
                   child: Image.asset(
                     'assets/Sponser.jpg',
                     fit: BoxFit.cover,
