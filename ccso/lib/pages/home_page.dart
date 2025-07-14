@@ -18,9 +18,9 @@ class _HomePageState extends State<HomePage> {
   final FlutterLocalNotificationsPlugin _localNotifications =
       FlutterLocalNotificationsPlugin();
 
-  bool showBanner = false;
-  String bannerImageUrl = '';
-  String bannerLinkUrl = '';
+  bool showStatus = false;
+  String statusImageUrl = '';
+  String statusLinkUrl = '';
 
   @override
   void initState() {
@@ -36,14 +36,14 @@ class _HomePageState extends State<HomePage> {
     await remoteConfig.fetchAndActivate();
 
     setState(() {
-      showBanner = remoteConfig.getBool('show_banner');
-      bannerImageUrl = remoteConfig.getString('banner_image_url');
-      bannerLinkUrl = remoteConfig.getString('banner_link_url');
+      showStatus = remoteConfig.getBool('show_status');
+      statusImageUrl = remoteConfig.getString('status_image_url');
+      statusLinkUrl = remoteConfig.getString('status_link_url');
     });
   }
 
   void _launchBanner() async {
-    final Uri uri = Uri.parse(bannerLinkUrl);
+    final Uri uri = Uri.parse(statusLinkUrl);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.platformDefault);
     }
@@ -236,7 +236,7 @@ class _HomePageState extends State<HomePage> {
 
                 // BANNER CONTROLADO POR REMOTE CONFIG
                 const SizedBox(height: 10),
-                if (showBanner && bannerImageUrl.isNotEmpty)
+                if (showStatus && statusImageUrl.isNotEmpty)
                   GestureDetector(
                     onTap: _launchBanner,
                     child: Container(
@@ -245,7 +245,7 @@ class _HomePageState extends State<HomePage> {
                       margin: const EdgeInsets.symmetric(horizontal: 0),
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image: NetworkImage(bannerImageUrl),
+                          image: NetworkImage(statusImageUrl),
                           fit: BoxFit.contain,
                         ),
                         borderRadius: BorderRadius.circular(8),
