@@ -1,4 +1,4 @@
-package com.example.brandon_first_responders
+package app.android.brandonfirstresponders
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "204642367313",
+    "project_id": "brandon-first-responders",
+    "storage_bucket": "brandon-first-responders.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:204642367313:android:929d42b68b1b41b5fe8570",
+        "android_client_info": {
+          "package_name": "app.android.brandonfirstresponders"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9Xb3wMD-Uhmu8um_mho82y8H82DBC4Ew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:204642367313:android:80f07905748de1a2fe8570",
+        "android_client_info": {
+          "package_name": "app.android.brandonfirstresponders"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9Xb3wMD-Uhmu8um_mho82y8H82DBC4Ew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
