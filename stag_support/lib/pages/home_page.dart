@@ -18,9 +18,9 @@ class _HomePageState extends State<HomePage> {
   final FlutterLocalNotificationsPlugin _localNotifications =
       FlutterLocalNotificationsPlugin();
 
-  bool showBanner = false;
-  String bannerImageUrl = '';
-  String bannerLinkUrl = '';
+  bool showStatus = false;
+  String statusImageUrl = '';
+  String statusLinkUrl = '';
 
   @override
   void initState() {
@@ -36,9 +36,9 @@ class _HomePageState extends State<HomePage> {
     await remoteConfig.fetchAndActivate();
 
     setState(() {
-      showBanner = remoteConfig.getBool('show_banner');
-      bannerImageUrl = remoteConfig.getString('banner_image_url');
-      bannerLinkUrl = remoteConfig.getString('banner_link_url');
+      showStatus = remoteConfig.getBool('show_status');
+      statusImageUrl = remoteConfig.getString('status_image_url');
+      statusLinkUrl = remoteConfig.getString('status_link_url');
     });
   }
 
@@ -117,7 +117,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _launchBanner() async {
-    final Uri uri = Uri.parse(bannerLinkUrl);
+    final Uri uri = Uri.parse(statusLinkUrl);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.platformDefault);
     }
@@ -187,19 +187,19 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 0),
                   child: GestureDetector(
-                    onTap: showBanner && bannerImageUrl.isNotEmpty
+                    onTap: showStatus && statusImageUrl.isNotEmpty
                         ? _launchBanner
                         : null,
                     child: Container(
                       width: double.infinity,
                       height: 110,
                       decoration: BoxDecoration(
-                        color: showBanner && bannerImageUrl.isNotEmpty
+                        color: showStatus && statusImageUrl.isNotEmpty
                             ? null
                             : Colors.transparent,
-                        image: showBanner && bannerImageUrl.isNotEmpty
+                        image: showStatus && statusImageUrl.isNotEmpty
                             ? DecorationImage(
-                                image: NetworkImage(bannerImageUrl),
+                                image: NetworkImage(statusImageUrl),
                                 fit: BoxFit.contain,
                               )
                             : null,
