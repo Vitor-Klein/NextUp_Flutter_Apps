@@ -76,7 +76,7 @@ class _CalendarPageState extends State<CalendarPage> {
         : [];
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Calendário')),
+      appBar: AppBar(title: const Text('Calendar')),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(

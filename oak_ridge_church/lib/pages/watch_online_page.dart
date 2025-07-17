@@ -7,7 +7,7 @@ class WatchOnlinePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WebViewPage(
-      title: 'WatchOnline',
+      title: 'Watch Online',
       url: 'https://ormbc.org/church-online/',
     );
   }
