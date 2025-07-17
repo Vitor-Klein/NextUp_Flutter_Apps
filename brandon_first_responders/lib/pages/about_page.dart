@@ -26,14 +26,14 @@ class AboutPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset('assets/header.jpg'),
+            Image.asset('assets/header.png'),
             const Text(
               'About Us',
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
             const Text(
-              'Standing Together for Canadian County\n\n'
+              'Standing Together for Brandon First\n\n'
               'This app was created as a safe and supportive space for anyone in Canadian County who is experiencing emotional distress, mental health struggles, or thoughts of suicide. Backed by the Canadian County Sheriff\'s Office, our mission is simple: reach out, find support, and know that you\'re not alone.\n\n'
               'We believe in the power of community and the importance of timely support. Through this app, you can access trusted resources, connect with professionals, and find hope when you need it most. Whether you’re seeking help for yourself or someone else, we\'re here 24/7.\n\n'
               'Our goal is to make sure every person in Canadian County feels seen, supported, and safe. Together, we can build a stronger, more caring community.\n\n'

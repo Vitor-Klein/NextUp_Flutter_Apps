@@ -53,7 +53,7 @@ class ResourcesPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset('assets/header.jpg'),
+            Image.asset('assets/header.png'),
             const Text(
               'About Us',
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
