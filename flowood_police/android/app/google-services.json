@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "650091558904",
+    "project_id": "flowood-police",
+    "storage_bucket": "flowood-police.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:650091558904:android:20e8f5a1d1bba88063480d",
+        "android_client_info": {
+          "package_name": "app.android.flowoodpolice"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDpvKsRuK-bmktnQYKD0c11H8IXXB1jBQg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
