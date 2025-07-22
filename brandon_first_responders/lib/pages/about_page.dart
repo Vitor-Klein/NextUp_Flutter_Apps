@@ -33,15 +33,25 @@ class AboutPage extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             const Text(
-              'Standing Together for Brandon First\n\n'
-              'This app was created as a safe and supportive space for anyone in Canadian County who is experiencing emotional distress, mental health struggles, or thoughts of suicide. Backed by the Canadian County Sheriff\'s Office, our mission is simple: reach out, find support, and know that you\'re not alone.\n\n'
-              'We believe in the power of community and the importance of timely support. Through this app, you can access trusted resources, connect with professionals, and find hope when you need it most. Whether you’re seeking help for yourself or someone else, we\'re here 24/7.\n\n'
-              'Our goal is to make sure every person in Canadian County feels seen, supported, and safe. Together, we can build a stronger, more caring community.\n\n'
-              'Mental Health Assistance Center\n\n'
-              'Get information and resources from our caring mental health professionals on topics related to mental illness, suicide prevention, employment and housing support. For many, finding mental health information and connecting with services is daunting and requires navigating a complex network of community resources. Our free resource referral line provides one-on-one customer service to help find the best referral option for individuals in need. We’re here to work with you and help you navigate the mental health system.\n',
+              'The Brandon First Responders Suicide Prevention App is a vital tool created to support the mental health and well-being of our community. '
+              'Backed by the dedicated men and women of the Brandon Police Department, this app is part of a citywide commitment to save lives, offer hope, and connect individuals in crisis to immediate help.\n\n'
+              'Our Purpose\n\n'
+              'In Brandon, we believe that protecting life goes beyond emergency response—it includes recognizing the silent struggles many face every day. '
+              'This app is designed to offer direct access to suicide prevention resources, crisis tools, and guidance when it’s needed most.\n\n'
+              'What We Offer\n'
+              '• Crisis Help – Immediate access to local and national suicide prevention hotlines, including 988.\n'
+              '• Warning Signs & Support Tools – Learn how to identify signs of mental distress and what steps to take.\n'
+              '• Community Resources – Find local counseling services, support groups, and mental health professionals.\n'
+              '• Safety Planning – Tools for individuals and families to create personalized safety plans.\n'
+              '• Educational Materials – Empowering residents with knowledge about suicide prevention, self-care, and how to support others.\n\n'
+              'Our Commitment\n\n'
+              'The Brandon Police Department, along with other first responders, is committed to serving not just with protection, but with compassion. '
+              'Through this app, we aim to reduce stigma, raise awareness, and ensure that no one in our community feels alone in their time of need.\n\n'
+              'Whether you’re struggling yourself or worried about someone else, the Brandon First Responders App is here for you—24/7. '
+              'Together, we can build a safer, more compassionate Brandon.',
               style: TextStyle(fontSize: 16, height: 1.6),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 24),
             const Text(
               'Contact us by phone:',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -77,7 +87,6 @@ class AboutPage extends StatelessWidget {
                 ),
               ],
             ),
-
             const SizedBox(height: 16),
             const Text(
               'Available Monday–Friday from 8:30 a.m. to 5:00 p.m., or anytime by completing the form below.',

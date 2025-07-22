@@ -133,8 +133,8 @@ class _HomePageState extends State<HomePage> {
           ),
           SafeArea(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                // Top menu
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Row(
@@ -159,10 +159,7 @@ class _HomePageState extends State<HomePage> {
                                 SizedBox(width: 8),
                                 Text(
                                   'Messages',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black,
-                                  ),
+                                  style: TextStyle(fontSize: 16),
                                 ),
                               ],
                             ),
@@ -172,77 +169,82 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 250),
-                GestureDetector(
-                  onTap: () async {
-                    final Uri telUri = Uri(scheme: 'tel', path: '988');
-                    if (await canLaunchUrl(telUri)) {
-                      await launchUrl(telUri);
-                    } else {
-                      print('Não foi possível iniciar a chamada.');
-                    }
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(vertical: 2),
-                    width: MediaQuery.of(context).size.width * 0.95,
-                    height: 200,
-                    decoration: BoxDecoration(
-                      image: const DecorationImage(
-                        image: AssetImage('assets/A_Button.png'),
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: Row(
+
+                // Content with scroll
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
                       children: [
-                        Expanded(
-                          child: _ImageButton(
-                            label: "",
-                            imageAsset: 'assets/About.png',
-                            onTap: () {
-                              Navigator.pushNamed(context, '/about');
-                            },
+                        const SizedBox(height: 250),
+                        GestureDetector(
+                          onTap: () async {
+                            final Uri telUri = Uri(scheme: 'tel', path: '988');
+                            if (await canLaunchUrl(telUri)) {
+                              await launchUrl(telUri);
+                            }
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(vertical: 2),
+                            width: MediaQuery.of(context).size.width * 0.95,
+                            height: 200,
+                            decoration: BoxDecoration(
+                              image: const DecorationImage(
+                                image: AssetImage('assets/A_Button.png'),
+                                fit: BoxFit.cover,
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                           ),
                         ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: _ImageButton(
-                            label: "",
-                            imageAsset: 'assets/Resources.png',
-                            onTap: () {
-                              Navigator.pushNamed(context, '/resources');
-                            },
+                        const SizedBox(height: 10),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: _ImageButton(
+                                  label: "",
+                                  imageAsset: 'assets/About.png',
+                                  onTap: () =>
+                                      Navigator.pushNamed(context, '/about'),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: _ImageButton(
+                                  label: "",
+                                  imageAsset: 'assets/Resources.png',
+                                  onTap: () => Navigator.pushNamed(
+                                    context,
+                                    '/resources',
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: _ImageButton(
+                                  label: "",
+                                  imageAsset: 'assets/Share.png',
+                                  onTap: _compartilharApp,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: _ImageButton(
-                            label: "",
-                            imageAsset: 'assets/Share.png',
-                            onTap: _compartilharApp,
-                          ),
-                        ),
+                        const SizedBox(height: 10),
                       ],
                     ),
                   ),
                 ),
 
-                // BANNER CONTROLADO POR REMOTE CONFIG
-                const SizedBox(height: 10),
+                // Banner fixo no final
                 if (showStatus && statusImageUrl.isNotEmpty)
                   GestureDetector(
                     onTap: _launchBanner,
                     child: Container(
                       height: 100,
                       width: double.infinity,
-                      margin: const EdgeInsets.symmetric(horizontal: 0),
+                      margin: const EdgeInsets.symmetric(vertical: 15),
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           image: NetworkImage(statusImageUrl),
