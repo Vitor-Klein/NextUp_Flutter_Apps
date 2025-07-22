@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'firebase_options.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'services/message_storage.dart';
+import 'package:pwa_install/pwa_install.dart';
 
 import 'pages/home_page.dart';
 import 'pages/resources_page.dart';
@@ -57,6 +58,12 @@ void main() async {
     print('Opened app from notification: ${message.notification?.title}');
     await saveMessageLocally(message);
   });
+
+  PWAInstall().setup(
+    installCallback: () {
+      debugPrint('APP INSTALLED!');
+    },
+  );
 
   runApp(const MyApp());
 }
