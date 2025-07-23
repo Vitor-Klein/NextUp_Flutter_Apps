@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:oklahoma_pharmacist/pages/annual_meeting_page.dart';
+import 'package:oklahoma_pharmacist/pages/education_page.dart';
+import 'package:oklahoma_pharmacist/pages/membership_page.dart';
 import 'firebase_options.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'services/message_storage.dart';
@@ -93,6 +96,15 @@ class MyApp extends StatelessWidget {
             break;
           case '/contact':
             builder = (_) => const ContactPage();
+            break;
+          case '/annual_meeting':
+            builder = (_) => const AnnualMeetingPage();
+            break;
+          case '/membership':
+            builder = (_) => const MembershipPage();
+            break;
+          case '/education':
+            builder = (_) => const EducationPage();
             break;
           case '/messages':
             builder = (_) => const MessagesPage();

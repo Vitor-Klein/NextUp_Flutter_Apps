@@ -168,12 +168,12 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(width: 0),
                       _ImageButton(
                         imageAsset: 'assets/events.png',
-                        onTap: () {},
+                        onTap: () => Navigator.pushNamed(context, '/events'),
                       ),
                       const SizedBox(width: 0),
                       _ImageButton(
                         imageAsset: 'assets/contact.png',
-                        onTap: () {},
+                        onTap: () => Navigator.pushNamed(context, '/contact'),
                       ),
                     ],
                   ),
@@ -183,21 +183,24 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         _ImageCard(
                           imageAsset: 'assets/annual_meeting.png',
-                          onTap: () {},
+                          onTap: () =>
+                              Navigator.pushNamed(context, '/annual_meeting'),
                         ),
                         const SizedBox(
                           height: 8,
                         ), // Espaçamento vertical pequeno
                         _ImageCard(
                           imageAsset: 'assets/membership.png',
-                          onTap: () {},
+                          onTap: () =>
+                              Navigator.pushNamed(context, '/membership'),
                         ),
                         const SizedBox(
                           height: 8,
                         ), // Espaçamento vertical pequeno
                         _ImageCard(
                           imageAsset: 'assets/education.png',
-                          onTap: () {},
+                          onTap: () =>
+                              Navigator.pushNamed(context, '/education'),
                         ),
                       ],
                     ),
