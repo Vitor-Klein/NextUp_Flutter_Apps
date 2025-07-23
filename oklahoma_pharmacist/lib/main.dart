@@ -70,7 +70,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: const Color(0xFFF5F5F5),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.brown,
+          backgroundColor: Colors.blueAccent,
           titleTextStyle: TextStyle(
             color: Colors.white,
             fontSize: 20,

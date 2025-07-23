@@ -43,6 +43,7 @@ dependencies:
   url_launcher: ^6.2.6
   font_awesome_flutter: ^10.8.0
   firebase_remote_config: ^5.4.5
+  flutter_animate: ^4.5.2
 
 dev_dependencies:
   flutter_test:
@@ -79,14 +80,18 @@ flutter:
     - assets/about.png
     - assets/background.jpg
     - assets/contact.png
-    - assets/DASHBOARD.png
-    - assets/Description.png
+    - assets/dashboard.png
+    - assets/description.png
     - assets/education.png
     - assets/events.png
-    - assets/Logo.png
+    - assets/logo.png
     - assets/membership.png
-    - assets/Menu_Buttons.png
+    - assets/menu.png
     - assets/splash.png
+    - assets/header-events.jpg
+    - assets/header-membership.jpg
+    - assets/header-more.jpg
+    - assets/header-about.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

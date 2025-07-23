@@ -23,25 +23,6 @@
           "other_platform_oauth_client": []
         }
       }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:869348706938:android:df39b9d402910809c789c3",
-        "android_client_info": {
-          "package_name": "com.example.oklahoma_pharmacist"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDPecOxtwsdTVXBI-n-Swpnno5MwUDkH5o"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
     }
   ],
   "configuration_version": "1"

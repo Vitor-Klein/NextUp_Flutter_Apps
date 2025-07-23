@@ -1,4 +1,4 @@
-package com.example.oklahoma_pharmacist
+package app.android.opha
 
 import io.flutter.embedding.android.FlutterActivity
 
