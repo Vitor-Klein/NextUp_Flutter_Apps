@@ -14,6 +14,7 @@ import 'pages/splash_screen.dart';
 import 'pages/messages_page.dart';
 import 'pages/about_page.dart';
 import 'pages/contact_page.dart';
+import 'pages/social_page.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -105,6 +106,9 @@ class MyApp extends StatelessWidget {
             break;
           case '/education':
             builder = (_) => const EducationPage();
+            break;
+          case '/social':
+            builder = (_) => const SocialPage();
             break;
           case '/messages':
             builder = (_) => const MessagesPage();

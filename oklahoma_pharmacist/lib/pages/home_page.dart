@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
       FlutterLocalNotificationsPlugin();
 
   bool showStatus = false;
-  bool showMenu = false; // <- novo controle via Remote Config
+  bool showMenu = false;
   String statusImageUrl = '';
   String statusLinkUrl = '';
 
@@ -126,6 +126,23 @@ class _HomePageState extends State<HomePage> {
     await SharePlus.instance.share(ShareParams(text: mensagem));
   }
 
+  void _onMenuSelected(String value) {
+    switch (value) {
+      case 'share':
+        _compartilharApp();
+        break;
+      case 'social_wall':
+        Navigator.pushNamed(context, '/social_wall');
+        break;
+      case 'messages':
+        Navigator.pushNamed(context, '/messages');
+        break;
+      case 'social':
+        Navigator.pushNamed(context, '/social');
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -147,9 +164,27 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Image.asset('assets/logo.png', height: 60),
                         if (showMenu)
-                          GestureDetector(
-                            onTap: () {},
-                            child: Image.asset('assets/menu.png', height: 40),
+                          PopupMenuButton<String>(
+                            icon: Image.asset('assets/menu.png', height: 40),
+                            onSelected: _onMenuSelected,
+                            itemBuilder: (BuildContext context) => [
+                              const PopupMenuItem(
+                                value: 'share',
+                                child: Text('Share'),
+                              ),
+                              const PopupMenuItem(
+                                value: 'social_wall',
+                                child: Text('Social Wall'),
+                              ),
+                              const PopupMenuItem(
+                                value: 'messages',
+                                child: Text('Messages'),
+                              ),
+                              const PopupMenuItem(
+                                value: 'social',
+                                child: Text('Social'),
+                              ),
+                            ],
                           ),
                       ],
                     ),
@@ -179,24 +214,21 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Expanded(
                     child: ListView(
-                      padding: EdgeInsets.zero, // Remove padding extra
+                      padding: EdgeInsets.zero,
                       children: [
+                        const SizedBox(height: 8),
                         _ImageCard(
                           imageAsset: 'assets/annual_meeting.png',
                           onTap: () =>
                               Navigator.pushNamed(context, '/annual_meeting'),
                         ),
-                        const SizedBox(
-                          height: 8,
-                        ), // Espaçamento vertical pequeno
+                        const SizedBox(height: 8),
                         _ImageCard(
                           imageAsset: 'assets/membership.png',
                           onTap: () =>
                               Navigator.pushNamed(context, '/membership'),
                         ),
-                        const SizedBox(
-                          height: 8,
-                        ), // Espaçamento vertical pequeno
+                        const SizedBox(height: 8),
                         _ImageCard(
                           imageAsset: 'assets/education.png',
                           onTap: () =>
@@ -205,21 +237,6 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
-
-                  if (showStatus && statusImageUrl.isNotEmpty)
-                    GestureDetector(
-                      onTap: _launchBanner,
-                      child: Container(
-                        height: 80,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(statusImageUrl),
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ),
-                    ),
                 ],
               ),
             ),
@@ -245,7 +262,7 @@ class _ImageButtonState extends State<_ImageButton> {
 
   void _handleTap() {
     setState(() {
-      animateKey = UniqueKey(); // força reinício da animação
+      animateKey = UniqueKey();
     });
     widget.onTap();
   }
@@ -257,13 +274,12 @@ class _ImageButtonState extends State<_ImageButton> {
       effects: [
         ScaleEffect(
           begin: Offset(1.0, 1.0),
-          end: Offset(1.1, 1.1), // cresce 10%
+          end: Offset(1.1, 1.1),
           duration: 150.ms,
           curve: Curves.easeOut,
         ),
       ],
-      onComplete: (controller) =>
-          controller.reverse(), // volta ao tamanho normal
+      onComplete: (controller) => controller.reverse(),
       child: GestureDetector(
         onTap: _handleTap,
         child: Image.asset(
@@ -304,7 +320,7 @@ class _ImageCardState extends State<_ImageCard> {
       effects: [
         ScaleEffect(
           begin: Offset(1.0, 1.0),
-          end: Offset(1.1, 1.1), // cresce 10%
+          end: Offset(1.1, 1.1),
           duration: 150.ms,
           curve: Curves.easeOut,
         ),
