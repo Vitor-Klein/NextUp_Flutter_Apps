@@ -44,7 +44,7 @@ class ResourcesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('About Us'),
+        title: const Text('Resources'),
         backgroundColor: Colors.brown,
         foregroundColor: Colors.white,
       ),
@@ -55,7 +55,7 @@ class ResourcesPage extends StatelessWidget {
           children: [
             Image.asset('assets/header.jpg'),
             const Text(
-              'About Us',
+              'Resources',
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
