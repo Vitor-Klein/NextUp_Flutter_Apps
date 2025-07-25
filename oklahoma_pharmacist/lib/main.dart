@@ -96,7 +96,8 @@ class MyApp extends StatelessWidget {
             builder = (_) => const EventsPage();
             break;
           case '/contact':
-            builder = (_) => const ContactPage();
+            builder = (_) => ContactPage();
+
             break;
           case '/annual_meeting':
             builder = (_) => const AnnualMeetingPage();
