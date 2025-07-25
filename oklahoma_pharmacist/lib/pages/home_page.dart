@@ -131,9 +131,6 @@ class _HomePageState extends State<HomePage> {
       case 'share':
         _compartilharApp();
         break;
-      case 'social_wall':
-        Navigator.pushNamed(context, '/social_wall');
-        break;
       case 'messages':
         Navigator.pushNamed(context, '/messages');
         break;
