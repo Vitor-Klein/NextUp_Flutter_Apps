@@ -22,6 +22,13 @@ class MorePage extends StatelessWidget {
                 Navigator.pushNamed(context, '/meet_greet');
               },
             ),
+            SocialButton(
+              label: 'Contact Us',
+              icon: FontAwesomeIcons.envelope,
+              onPressed: () {
+                Navigator.pushNamed(context, '/contact_us');
+              },
+            ),
           ],
         ),
       ),

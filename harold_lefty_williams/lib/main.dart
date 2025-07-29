@@ -14,6 +14,7 @@ import 'pages/messages_page.dart';
 import 'pages/social_page.dart';
 import 'pages/more_page.dart';
 import 'pages/Meet_And_Greet/meet_greet_page.dart';
+import 'pages/contact_us_page.dart';
 import 'pages/splash_screen.dart'; // ⬅️ Certifique-se de importar isso
 
 @pragma('vm:entry-point')
@@ -119,6 +120,9 @@ class MyApp extends StatelessWidget {
             break;
           case '/meet_greet':
             builder = (_) => const MeetGreetPage();
+            break;
+          case '/contact_us':
+            builder = (_) => const ContactUsPage();
             break;
           default:
             builder = (_) => const HomePage(); // fallback
