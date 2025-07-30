@@ -88,6 +88,10 @@ flutter:
     - assets/notification.png
     - assets/pictures.png
     - assets/splash.png
+    - assets/pictures/01.jpg
+    - assets/pictures/02.jpg
+    - assets/pictures/03.jpg
+    - assets/pictures/04.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
