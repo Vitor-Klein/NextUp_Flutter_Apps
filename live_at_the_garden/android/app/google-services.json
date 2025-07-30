@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "120940615600",
+    "project_id": "live-at-the-garden-9eb57",
+    "storage_bucket": "live-at-the-garden-9eb57.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:120940615600:android:164bd2313f132233656875",
+        "android_client_info": {
+          "package_name": "bfac.android.liveatthegarden"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdzd-7W6vzx_jL0k5OfL8N-6gHITRmA5s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

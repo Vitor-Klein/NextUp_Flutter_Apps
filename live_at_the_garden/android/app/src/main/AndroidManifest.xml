@@ -1,6 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
     <application
-        android:label="live_at_the_garden"
+        android:label="Live at the Garden"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

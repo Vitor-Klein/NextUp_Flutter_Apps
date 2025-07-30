@@ -34,6 +34,18 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  firebase_core: ^3.13.1
+  firebase_messaging: ^15.2.6
+  flutter_local_notifications: ^19.2.1
+  shared_preferences: ^2.5.3
+  provider: ^6.1.1
+  share_plus: ^11.0.0
+  url_launcher: ^6.2.6
+  font_awesome_flutter: ^10.8.0
+  firebase_remote_config: ^5.4.5
+  pwa_install: ^0.0.6
+  webview_flutter: ^4.13.0
+  flutter_animate: ^4.5.2
 
 dev_dependencies:
   flutter_test:
@@ -45,7 +57,13 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  flutter_launcher_icons: "^0.14.4"
 
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path_android: "assets/icon/playstore.png"
+  image_path_ios: "assets/icon/appstore.png"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -58,9 +76,18 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/about.png
+    - assets/background.jpg
+    - assets/banner.png
+    - assets/event_gallery.png
+    - assets/events.png
+    - assets/header.jpg
+    - assets/logo.png
+    - assets/more.png
+    - assets/notification.png
+    - assets/pictures.png
+    - assets/splash.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

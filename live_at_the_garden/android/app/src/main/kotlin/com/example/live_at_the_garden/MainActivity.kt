@@ -1,4 +1,4 @@
-package com.example.live_at_the_garden
+package bfac.android.liveatthegarden
 
 import io.flutter.embedding.android.FlutterActivity
 
