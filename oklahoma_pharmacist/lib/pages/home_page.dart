@@ -170,10 +170,6 @@ class _HomePageState extends State<HomePage> {
                                 child: Text('Share'),
                               ),
                               const PopupMenuItem(
-                                value: 'social_wall',
-                                child: Text('Social Wall'),
-                              ),
-                              const PopupMenuItem(
                                 value: 'messages',
                                 child: Text('Messages'),
                               ),
