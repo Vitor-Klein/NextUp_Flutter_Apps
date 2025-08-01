@@ -230,6 +230,23 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
+                  if (showStatus)
+                    GestureDetector(
+                      onTap: _launchBanner,
+                      child: Container(
+                        height: 68,
+                        width: double.infinity,
+                        margin: const EdgeInsets.only(bottom: 2),
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          image: DecorationImage(
+                            image: AssetImage('assets/banner.png'),
+                            fit: BoxFit.contain,
+                          ),
+                          borderRadius: BorderRadius.circular(0),
+                        ),
+                      ),
+                    ),
                 ],
               ),
             ),

@@ -40,11 +40,11 @@ dependencies:
   shared_preferences: ^2.5.3
   provider: ^6.1.1
   share_plus: ^11.0.0
-  url_launcher: ^6.2.6
   font_awesome_flutter: ^10.8.0
   firebase_remote_config: ^5.4.5
   flutter_animate: ^4.5.2
   webview_flutter: ^4.13.0
+  url_launcher: ^6.2.6
 
 dev_dependencies:
   flutter_test:
@@ -94,7 +94,11 @@ flutter:
     - assets/header-membership.jpg
     - assets/header-more.jpg
     - assets/header-about.jpg
-    - assets/contact-background.jpg
+    - assets/agenda1.png
+    - assets/agenda2.png
+    - assets/agenda3.png
+    - assets/banner.png
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

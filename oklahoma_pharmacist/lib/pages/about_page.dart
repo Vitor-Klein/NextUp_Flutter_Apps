@@ -8,7 +8,7 @@ class AboutPage extends StatelessWidget {
   Future<void> _abrirLink(String url) async {
     final Uri uri = Uri.parse(url);
     if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
+      await launchUrl(uri, mode: LaunchMode.inAppWebView);
     } else {
       print('Não foi possível abrir o link: $url');
     }
