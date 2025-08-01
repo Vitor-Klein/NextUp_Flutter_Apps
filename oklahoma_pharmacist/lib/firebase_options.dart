@@ -66,7 +66,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyDNuSPH-0xYfPntoE8s8-cOmJJh1mQAzWw',
-    appId: '1:869348706938:ios:8740eec56d08e7b8c789c3',
+    appId: '1:869348706938:ios:05c959765464e637c789c3',
     messagingSenderId: '869348706938',
     projectId: 'oklahoma-pharmacist',
     storageBucket: 'oklahoma-pharmacist.firebasestorage.app',

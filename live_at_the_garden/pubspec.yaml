@@ -46,6 +46,8 @@ dependencies:
   pwa_install: ^0.0.6
   webview_flutter: ^4.13.0
   flutter_animate: ^4.5.2
+  flutter_markdown: ^0.7.7+1
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:
@@ -88,6 +90,9 @@ flutter:
     - assets/notification.png
     - assets/pictures.png
     - assets/splash.png
+    - assets/darius.jpeg
+    - assets/zz_top.jpeg
+    - assets/steve_miller.jpeg
     - assets/pictures/01.jpg
     - assets/pictures/02.jpg
     - assets/pictures/03.jpg
