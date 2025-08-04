@@ -11,6 +11,7 @@ import 'pages/splash_screen.dart';
 import 'pages/messages_page.dart';
 import 'pages/about_page.dart';
 import 'pages/pictures_page.dart';
+import 'pages/know_before_page.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -99,6 +100,9 @@ class MyApp extends StatelessWidget {
             break;
           case '/about':
             builder = (_) => const AboutPage();
+            break;
+          case '/know_before':
+            builder = (_) => const KnowBeforePage();
             break;
 
           default:

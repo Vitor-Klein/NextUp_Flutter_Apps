@@ -123,7 +123,7 @@ class _HomePageState extends State<HomePage> {
           ),
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 24),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
               child: Column(
                 children: [
                   Row(
@@ -134,13 +134,51 @@ class _HomePageState extends State<HomePage> {
                       // Ícones no canto superior direito
                       Row(
                         children: [
-                          GestureDetector(
-                            onTap: () => Navigator.pushNamed(context, '/more'),
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 12.0),
-                              child: Image.asset('assets/more.png', height: 40),
-                            ),
+                          PopupMenuButton<String>(
+                            icon: Image.asset('assets/more.png', height: 40),
+                            onSelected: (value) {
+                              switch (value) {
+                                case 'submit_photo':
+                                  Navigator.pushNamed(context, '/submit_photo');
+                                  break;
+                                case 'know_before':
+                                  Navigator.pushNamed(context, '/know_before');
+                                  break;
+                                case 'share_app':
+                                  _compartilharApp();
+                                  break;
+                                case 'social':
+                                  Navigator.pushNamed(context, '/social');
+                                  break;
+                                case 'email_us':
+                                  // _launchEmail();
+                                  break;
+                              }
+                            },
+                            itemBuilder: (context) => [
+                              const PopupMenuItem(
+                                value: 'submit_photo',
+                                child: Text('Submit a Photo'),
+                              ),
+                              const PopupMenuItem(
+                                value: 'know_before',
+                                child: Text('Know Before You Go'),
+                              ),
+                              const PopupMenuItem(
+                                value: 'share_app',
+                                child: Text('Share Our App'),
+                              ),
+                              const PopupMenuItem(
+                                value: 'social',
+                                child: Text('Social'),
+                              ),
+                              const PopupMenuItem(
+                                value: 'email_us',
+                                child: Text('Email Us'),
+                              ),
+                            ],
                           ),
+
                           GestureDetector(
                             onTap: () =>
                                 Navigator.pushNamed(context, '/messages'),
