@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:live_at_the_garden/pages/upload_image_page.dart';
 import 'firebase_options.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'services/message_storage.dart';
@@ -12,6 +13,7 @@ import 'pages/messages_page.dart';
 import 'pages/about_page.dart';
 import 'pages/pictures_page.dart';
 import 'pages/know_before_page.dart';
+import 'pages/contact_page.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -104,7 +106,12 @@ class MyApp extends StatelessWidget {
           case '/know_before':
             builder = (_) => const KnowBeforePage();
             break;
-
+          case '/contact':
+            builder = (_) => const ContactPage();
+            break;
+          case '/upload_image':
+            builder = (_) => const UploadImagePage();
+            break;
           default:
             builder = (_) => const HomePage();
         }

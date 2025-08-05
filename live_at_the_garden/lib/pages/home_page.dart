@@ -139,7 +139,7 @@ class _HomePageState extends State<HomePage> {
                             onSelected: (value) {
                               switch (value) {
                                 case 'submit_photo':
-                                  Navigator.pushNamed(context, '/submit_photo');
+                                  Navigator.pushNamed(context, '/upload_image');
                                   break;
                                 case 'know_before':
                                   Navigator.pushNamed(context, '/know_before');
@@ -216,7 +216,7 @@ class _HomePageState extends State<HomePage> {
                   const SizedBox(height: 20),
                   _ImageCard(
                     imageAsset: 'assets/event_gallery.png',
-                    onTap: () => Navigator.pushNamed(context, '/gallery'),
+                    onTap: () => Navigator.pushNamed(context, '/contact'),
                     height: 120,
                   ),
                   const SizedBox(height: 18),
