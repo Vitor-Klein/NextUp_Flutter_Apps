@@ -66,10 +66,10 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCafCNKS3C6HEaDVOuwSL0ENf5jXg71Kmg',
-    appId: '1:120940615600:ios:b92a1ee81a260638656875',
+    appId: '1:120940615600:ios:a663184e947ced56656875',
     messagingSenderId: '120940615600',
     projectId: 'live-at-the-garden-9eb57',
     storageBucket: 'live-at-the-garden-9eb57.firebasestorage.app',
-    iosBundleId: 'com.example.liveAtTheGarden',
+    iosBundleId: 'com.partnerbfacmobile.BotanicGarden',
   );
 }
