@@ -175,19 +175,19 @@ class _HomePageState extends State<HomePage> {
                   // 4 Botões principais com animação individual
                   _buildCard(
                     'assets/consultoria.png',
-                    () => Navigator.pushNamed(context, '/consultoria'),
+                    () => Navigator.pushNamed(context, '/consult'),
                   ),
                   _buildCard(
                     'assets/tecnologia.png',
-                    () => Navigator.pushNamed(context, '/tecnologia'),
+                    () => Navigator.pushNamed(context, '/tecnologi'),
                   ),
                   _buildCard(
                     'assets/servicos.png',
-                    () => Navigator.pushNamed(context, '/servicos'),
+                    () => Navigator.pushNamed(context, '/services'),
                   ),
                   _buildCard(
                     'assets/suporte.png',
-                    () => Navigator.pushNamed(context, '/suporte'),
+                    () => Navigator.pushNamed(context, '/suport'),
                   ),
                 ],
               ),
