@@ -58,7 +58,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyADP9VZT0CvkrZgQIirVdllAnKblRRC0b0',
-    appId: '1:786330643683:android:14e9e7d024cff6f8a1e9d6',
+    appId: '1:786330643683:android:8c405d3ca2c25572a1e9d6',
     messagingSenderId: '786330643683',
     projectId: 'next-up-consultoria',
     storageBucket: 'next-up-consultoria.firebasestorage.app',
@@ -66,10 +66,10 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyA-BpAoW_uh9ZemmlVb6LNcT8NqjrPsiQU',
-    appId: '1:786330643683:ios:fb0c5a8d4a0c6567a1e9d6',
+    appId: '1:786330643683:ios:7e3505f16634086ea1e9d6',
     messagingSenderId: '786330643683',
     projectId: 'next-up-consultoria',
     storageBucket: 'next-up-consultoria.firebasestorage.app',
-    iosBundleId: 'com.example.nextupConsultoria',
+    iosBundleId: 'app.ios.nextupconsultoria',
   );
 }

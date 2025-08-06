@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:786330643683:android:14e9e7d024cff6f8a1e9d6",
+        "mobilesdk_app_id": "1:786330643683:android:8c405d3ca2c25572a1e9d6",
         "android_client_info": {
-          "package_name": "com.example.nextup_consultoria"
+          "package_name": "app.android.nextupconsultoria"
         }
       },
       "oauth_client": [],
