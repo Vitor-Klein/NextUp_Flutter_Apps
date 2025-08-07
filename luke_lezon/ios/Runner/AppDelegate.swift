@@ -4,7 +4,7 @@ import Firebase
 import FirebaseMessaging
 
 @main
-@objc class AppDelegate: FlutterAppDelegate, MessagingDelegate {
+@objc class AppDelegate: FlutterAppDelegate, MessagingDelegate, UNUserNotificationCenterDelegate {
   override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
@@ -25,11 +25,12 @@ import FirebaseMessaging
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 
-  override func userNotificationCenter(_ center: UNUserNotificationCenter,
+  // Removido "override" pois não é método da superclasse
+  func userNotificationCenter(_ center: UNUserNotificationCenter,
       willPresent notification: UNNotification,
       withCompletionHandler completionHandler:
          @escaping (UNNotificationPresentationOptions) -> Void) {
-    completionHandler([[.banner, .sound]])
+    completionHandler([.banner, .sound])
   }
 
   func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
