@@ -1,4 +1,4 @@
-package com.example.associated_industries
+package app.com.associatedindustries
 
 import io.flutter.embedding.android.FlutterActivity
 

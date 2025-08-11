@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "904657405963",
+    "project_id": "associated-industries",
+    "storage_bucket": "associated-industries.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:904657405963:android:23d47f941739fcf4fcdf0e",
+        "android_client_info": {
+          "package_name": "app.com.associatedindustries"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuIvYdvjFXYuNur1b7sAzlEFjeW7diEm4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
