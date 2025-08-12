@@ -32,6 +32,7 @@ class _HomePageState extends State<HomePage> {
     await remoteConfig.fetchAndActivate();
     setState(() {
       showMenu = remoteConfig.getBool('show_menu');
+      print(showMenu);
     });
   }
 
@@ -114,7 +115,6 @@ class _HomePageState extends State<HomePage> {
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               child: Column(
                 children: [
-                  // Top icons
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -125,43 +125,23 @@ class _HomePageState extends State<HomePage> {
                           height: 28,
                         ),
                       ),
-                      PopupMenuButton<String>(
-                        icon: Image.asset('assets/menu.png', height: 28),
-                        onSelected: (value) {
-                          switch (value) {
-                            case 'consultoria':
-                              Navigator.pushNamed(context, '/consultoria');
-                              break;
-                            case 'tecnologia':
-                              Navigator.pushNamed(context, '/tecnologia');
-                              break;
-                            case 'servicos':
-                              Navigator.pushNamed(context, '/servicos');
-                              break;
-                            case 'suporte':
-                              Navigator.pushNamed(context, '/suporte');
-                              break;
-                          }
-                        },
-                        itemBuilder: (context) => [
-                          const PopupMenuItem(
-                            value: 'consultoria',
-                            child: Text('Consultoria'),
-                          ),
-                          const PopupMenuItem(
-                            value: 'tecnologia',
-                            child: Text('Tecnologia'),
-                          ),
-                          const PopupMenuItem(
-                            value: 'servicos',
-                            child: Text('Serviços'),
-                          ),
-                          const PopupMenuItem(
-                            value: 'suporte',
-                            child: Text('Suporte'),
-                          ),
-                        ],
-                      ),
+                      if (showMenu) // só exibe se vier true do Remote Config
+                        PopupMenuButton<String>(
+                          icon: Image.asset('assets/menu.png', height: 28),
+                          onSelected: (value) {
+                            switch (value) {
+                              case 'agendar':
+                                Navigator.pushNamed(context, '/schedule');
+                                break;
+                            }
+                          },
+                          itemBuilder: (context) => const [
+                            PopupMenuItem(
+                              value: 'agendar',
+                              child: Text('Agendar reunião'),
+                            ),
+                          ],
+                        ),
                     ],
                   ),
 

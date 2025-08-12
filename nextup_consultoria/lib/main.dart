@@ -8,6 +8,7 @@ import 'package:nextup_consultoria/pages/services_page.dart';
 import 'package:nextup_consultoria/pages/splash_screen.dart';
 import 'package:nextup_consultoria/pages/suport_page.dart';
 import 'package:nextup_consultoria/pages/tecnologi_page.dart';
+import 'package:nextup_consultoria/pages/schedule_page.dart';
 import 'firebase_options.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'services/message_storage.dart';
@@ -102,6 +103,9 @@ class MyApp extends StatelessWidget {
             break;
           case '/messages':
             builder = (_) => const MessagesPage();
+            break;
+          case '/schedule':
+            builder = (_) => const SchedulePage();
             break;
           default:
             builder = (_) => const HomePage();
