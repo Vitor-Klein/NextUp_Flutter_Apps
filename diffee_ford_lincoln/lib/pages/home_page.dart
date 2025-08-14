@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:diffee_ford_lincoln/pages/webview_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -128,7 +129,6 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // === Top bar (padding só aqui) ===
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 15,
@@ -189,7 +189,11 @@ class _HomePageState extends State<HomePage> {
                   child: Center(
                     child: _CentralActionButton(
                       imageAsset: 'assets/shop_button.png',
-                      onTap: () => Navigator.pushNamed(context, '/connect'),
+                      onTap: () => openWeb(
+                        context,
+                        'https://www.diffeeford.net/used-inventory/index.htm',
+                        title: 'Shop Pré-owned', // opcional
+                      ),
                     ),
                   ),
                 ),
@@ -203,11 +207,19 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       _TopImageButton(
                         imageAsset: 'assets/shop_new_ford.png',
-                        onTap: () => Navigator.pushNamed(context, '/about'),
+                        onTap: () => openWeb(
+                          context,
+                          'https://www.diffeeford.net/',
+                          title: 'Shop New Ford', // opcional
+                        ),
                       ),
                       _TopImageButton(
                         imageAsset: 'assets/shop_new_lincoln.png',
-                        onTap: () => Navigator.pushNamed(context, '/events'),
+                        onTap: () => openWeb(
+                          context,
+                          'https://www.diffeelincoln.com/',
+                          title: 'Shop New Lincoln', // opcional
+                        ),
                       ),
                     ],
                   ),
@@ -215,7 +227,6 @@ class _HomePageState extends State<HomePage> {
 
                 const SizedBox(height: 60),
 
-                // === Segunda linha: 3 botões pequenos colados (padding só aqui) ===
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: Row(
@@ -223,7 +234,11 @@ class _HomePageState extends State<HomePage> {
                       Expanded(
                         child: _BottomImageButton(
                           imageAsset: 'assets/service_button.png',
-                          onTap: () => Navigator.pushNamed(context, '/about'),
+                          onTap: () => openWeb(
+                            context,
+                            'https://www.diffeeford.net/schedule-service.htm',
+                            title: 'Service', // opcional
+                          ),
                         ),
                       ),
                       Expanded(
