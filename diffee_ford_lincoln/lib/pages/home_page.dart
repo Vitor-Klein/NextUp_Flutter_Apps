@@ -184,7 +184,6 @@ class _HomePageState extends State<HomePage> {
 
                 const SizedBox(height: 80),
 
-                // === Botão central (padding só aqui) ===
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: Center(
@@ -197,7 +196,6 @@ class _HomePageState extends State<HomePage> {
 
                 const SizedBox(height: 20),
 
-                // === Primeira linha: 2 botões grandes (padding só aqui) ===
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: Row(
