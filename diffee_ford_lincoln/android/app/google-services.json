@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "181346515703",
+    "project_id": "diffee-ford-lincoln",
+    "storage_bucket": "diffee-ford-lincoln.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:181346515703:android:f7cb5613dc5606f86cb1f2",
+        "android_client_info": {
+          "package_name": "app.android.diffeefordlincoln"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZAn2kE3lO2jSkTqJajnx6JczXK88YBdQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
