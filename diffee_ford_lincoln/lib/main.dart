@@ -1,3 +1,4 @@
+import 'package:diffee_ford_lincoln/pages/contact_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -81,11 +82,15 @@ class MyApp extends StatelessWidget {
           case '/home':
             builder = (_) => const HomePage();
             break;
+          case '/contact':
+            builder = (_) => const ContactPage();
+            break;
           default:
             builder = (_) => const HomePage();
         }
         return PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => builder(context),
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              builder(context),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(opacity: animation, child: child);
           },

@@ -231,14 +231,13 @@ class _HomePageState extends State<HomePage> {
                       Expanded(
                         child: _BottomImageButton(
                           imageAsset: 'assets/contact_us_button.png',
-                          onTap: () => Navigator.pushNamed(context, '/events'),
+                          onTap: () => Navigator.pushNamed(context, '/contact'),
                         ),
                       ),
                       Expanded(
                         child: _BottomImageButton(
                           imageAsset: 'assets/share_button.png',
-                          onTap: () =>
-                              Navigator.pushNamed(context, '/pictures'),
+                          onTap: _compartilharApp,
                         ),
                       ),
                     ],
@@ -250,7 +249,6 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          // === Footer sem padding, largura infinita ===
           Positioned(
             bottom: 0,
             left: 0,
@@ -268,8 +266,6 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-/// Botão central (fica acima do primeiro row) – pode ser circular ou retangular.
-/// Aqui vai como circular com leve sombra.
 class _CentralActionButton extends StatelessWidget {
   final String imageAsset;
   final VoidCallback onTap;
@@ -300,7 +296,6 @@ class _CentralActionButton extends StatelessWidget {
   }
 }
 
-/// Botões do TOPO (maiores, estilo diferente dos de baixo)
 class _TopImageButton extends StatelessWidget {
   final String imageAsset;
   final VoidCallback onTap;
@@ -333,7 +328,6 @@ class _TopImageButton extends StatelessWidget {
   }
 }
 
-/// Botões de BAIXO (menores, colados em fila, estilo próprio)
 class _BottomImageButton extends StatelessWidget {
   final String imageAsset;
   final VoidCallback onTap;
