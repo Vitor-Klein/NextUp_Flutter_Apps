@@ -21,6 +21,8 @@ class _HomePageState extends State<HomePage> {
       FlutterLocalNotificationsPlugin();
 
   bool showMenu = false;
+  String footerLink =
+      'https://www.diffeeford.net/schedule-service.htm'; // fallback
 
   @override
   void initState() {
@@ -35,8 +37,14 @@ class _HomePageState extends State<HomePage> {
     final remoteConfig = FirebaseRemoteConfig.instance;
     await remoteConfig.fetchAndActivate();
 
+    final rcShowMenu = remoteConfig.getBool('show_menu');
+    final rcFooter = remoteConfig.getString('footer_link').trim();
+
     setState(() {
-      showMenu = remoteConfig.getBool('show_menu');
+      showMenu = rcShowMenu;
+      footerLink = rcFooter.isNotEmpty
+          ? rcFooter
+          : 'https://www.diffeeford.net/schedule-service.htm'; // fallback seguro
     });
   }
 
@@ -132,57 +140,41 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 15,
-                    vertical: 35,
+                    vertical: 25,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      PopupMenuButton<String>(
-                        icon: Image.asset('assets/more_icon.png', height: 25),
-                        onSelected: (value) {
-                          switch (value) {
-                            case 'submit_photo':
-                              Navigator.pushNamed(context, '/upload_image');
-                              break;
-                            case 'know_before':
-                              Navigator.pushNamed(context, '/know_before');
-                              break;
-                            case 'share_app':
-                              _compartilharApp();
-                              break;
-                            case 'social':
-                              Navigator.pushNamed(context, '/social');
-                              break;
-                            case 'email_us':
-                              // _launchEmail();
-                              break;
-                          }
-                        },
-                        itemBuilder: (context) => const [
-                          PopupMenuItem(
-                            value: 'submit_photo',
-                            child: Text('Submit a Photo'),
-                          ),
-                          PopupMenuItem(
-                            value: 'know_before',
-                            child: Text('Know Before You Go'),
-                          ),
-                          PopupMenuItem(
-                            value: 'share_app',
-                            child: Text('Share Our App'),
-                          ),
-                          PopupMenuItem(value: 'social', child: Text('Social')),
-                          PopupMenuItem(
-                            value: 'email_us',
-                            child: Text('Email Us'),
-                          ),
-                        ],
+                      Visibility(
+                        visible: showMenu,
+                        maintainSize: true,
+                        maintainAnimation: true,
+                        maintainState: true,
+                        child: PopupMenuButton<String>(
+                          icon: Image.asset('assets/more_icon.png', height: 25),
+                          onSelected: (value) {
+                            switch (value) {
+                              case 'make_reservation':
+                                Navigator.pushNamed(
+                                  context,
+                                  '/make_reservation',
+                                );
+                                break;
+                            }
+                          },
+                          itemBuilder: (context) => const [
+                            PopupMenuItem(
+                              value: 'make_reservation',
+                              child: Text('Make a Reservation'),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
                 ),
 
-                const SizedBox(height: 80),
+                const SizedBox(height: 100),
 
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -257,20 +249,28 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
 
-                const SizedBox(height: 76), // dá espaço para o footer fixo
+                const SizedBox(height: 76), // espaço para o footer fixo
               ],
             ),
           ),
 
+          // Footer clicável controlado por 'footer_link'
           Positioned(
             bottom: 0,
             left: 0,
             right: 0,
-            child: Image.asset(
-              'assets/footer.png',
-              height: 100,
-              width: double.infinity,
-              fit: BoxFit.cover,
+            child: GestureDetector(
+              onTap: () => openWeb(
+                context,
+                footerLink, // <-- do Remote Config
+                title: 'Employee Pricing',
+              ),
+              child: Image.asset(
+                'assets/footer.png',
+                height: 100,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ],
@@ -331,7 +331,6 @@ class _TopImageButton extends StatelessWidget {
         child: Container(
           height: 220,
           width: 180,
-          // padding horizontal total 24 + gap 8
           decoration: BoxDecoration(borderRadius: BorderRadius.circular(6)),
           clipBehavior: Clip.antiAlias,
           child: Image.asset(imageAsset, fit: BoxFit.cover),
@@ -360,7 +359,7 @@ class _BottomImageButton extends StatelessWidget {
           ),
         ],
         onComplete: (c) => c.reverse(),
-        child: Container(
+        child: SizedBox(
           height: 110,
           child: Image.asset(imageAsset, fit: BoxFit.cover),
         ),
