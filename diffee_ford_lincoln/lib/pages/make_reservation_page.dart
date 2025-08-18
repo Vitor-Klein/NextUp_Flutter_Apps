@@ -21,7 +21,7 @@ class MakeReservationPage extends StatelessWidget {
             // Campo Nome
             const TextField(
               decoration: InputDecoration(
-                labelText: 'Nome',
+                labelText: 'Name',
                 border: OutlineInputBorder(),
               ),
             ),
@@ -40,7 +40,7 @@ class MakeReservationPage extends StatelessWidget {
             // Campo Mensagem
             const TextField(
               decoration: InputDecoration(
-                labelText: 'Mensagem',
+                labelText: 'Message',
                 border: OutlineInputBorder(),
               ),
               maxLines: 4,
