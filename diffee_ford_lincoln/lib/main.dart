@@ -1,5 +1,3 @@
-import 'package:diffee_ford_lincoln/pages/contact_page.dart';
-import 'package:diffee_ford_lincoln/pages/make_reservation_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -9,6 +7,9 @@ import 'services/message_storage.dart';
 
 import 'pages/home_page.dart';
 import 'pages/splash_screen.dart';
+import 'pages/contact_page.dart';
+import 'pages/make_reservation_page.dart';
+import 'pages/schedule_test_drive_page.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -88,6 +89,9 @@ class MyApp extends StatelessWidget {
             break;
           case '/make_reservation':
             builder = (_) => const MakeReservationPage();
+            break;
+          case '/schedule_test_drive':
+            builder = (_) => const ScheduleTestDrivePage();
             break;
           default:
             builder = (_) => const HomePage();

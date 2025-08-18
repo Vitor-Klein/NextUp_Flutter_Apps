@@ -46,6 +46,7 @@ dependencies:
   pwa_install: ^0.0.6
   webview_flutter: ^4.13.0
   flutter_animate: ^4.5.2
+  intl: ^0.20.2
 
 
 dev_dependencies:

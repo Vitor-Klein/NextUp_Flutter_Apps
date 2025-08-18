@@ -160,12 +160,22 @@ class _HomePageState extends State<HomePage> {
                                   '/make_reservation',
                                 );
                                 break;
+                              case 'schedule_reservation':
+                                Navigator.pushNamed(
+                                  context,
+                                  '/schedule_test_drive',
+                                );
+                                break;
                             }
                           },
                           itemBuilder: (context) => const [
                             PopupMenuItem(
                               value: 'make_reservation',
                               child: Text('Make a Reservation'),
+                            ),
+                            PopupMenuItem(
+                              value: 'schedule_reservation',
+                              child: Text('Schedule a Reservation'),
                             ),
                           ],
                         ),
