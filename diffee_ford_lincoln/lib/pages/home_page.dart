@@ -230,30 +230,26 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: 60),
 
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Row(
+                    mainAxisAlignment:
+                        MainAxisAlignment.spaceBetween, // aqui aplica
                     children: [
-                      Expanded(
-                        child: _BottomImageButton(
-                          imageAsset: 'assets/service_button.png',
-                          onTap: () => openWeb(
-                            context,
-                            'https://www.diffeeford.net/schedule-service.htm',
-                            title: 'Service', // opcional
-                          ),
+                      _BottomImageButton(
+                        imageAsset: 'assets/service_button.png',
+                        onTap: () => openWeb(
+                          context,
+                          'https://www.diffeeford.net/schedule-service.htm',
+                          title: 'Service',
                         ),
                       ),
-                      Expanded(
-                        child: _BottomImageButton(
-                          imageAsset: 'assets/contact_us_button.png',
-                          onTap: () => Navigator.pushNamed(context, '/contact'),
-                        ),
+                      _BottomImageButton(
+                        imageAsset: 'assets/contact_us_button.png',
+                        onTap: () => Navigator.pushNamed(context, '/contact'),
                       ),
-                      Expanded(
-                        child: _BottomImageButton(
-                          imageAsset: 'assets/share_button.png',
-                          onTap: _compartilharApp,
-                        ),
+                      _BottomImageButton(
+                        imageAsset: 'assets/share_button.png',
+                        onTap: _compartilharApp,
                       ),
                     ],
                   ),
@@ -371,6 +367,7 @@ class _BottomImageButton extends StatelessWidget {
         onComplete: (c) => c.reverse(),
         child: SizedBox(
           height: 110,
+          width: 110,
           child: Image.asset(imageAsset, fit: BoxFit.cover),
         ),
       ),
