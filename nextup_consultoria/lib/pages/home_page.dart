@@ -1,8 +1,12 @@
+import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
+import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:share_plus/share_plus.dart';
+import 'dart:io';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,6 +22,9 @@ class _HomePageState extends State<HomePage> {
 
   bool showMenu = false;
 
+  // Bottom bar: começa no centro (Home)
+  int _selectedIndex = 2;
+
   @override
   void initState() {
     super.initState();
@@ -32,12 +39,12 @@ class _HomePageState extends State<HomePage> {
     await remoteConfig.fetchAndActivate();
     setState(() {
       showMenu = remoteConfig.getBool('show_menu');
-      print(showMenu);
+      // print(showMenu);
     });
   }
 
   void _requestNotificationPermissions() async {
-    NotificationSettings settings = await _firebaseMessaging.requestPermission(
+    final settings = await _firebaseMessaging.requestPermission(
       alert: true,
       badge: true,
       sound: true,
@@ -58,6 +65,7 @@ class _HomePageState extends State<HomePage> {
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('Usuário abriu a notificação');
+      // aqui você pode navegar conforme o payload
     });
 
     _firebaseMessaging.getToken().then((token) {
@@ -66,30 +74,22 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _initializeLocalNotifications() {
-    const AndroidInitializationSettings androidSettings =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
-
-    const InitializationSettings initSettings = InitializationSettings(
-      android: androidSettings,
+    const androidSettings = AndroidInitializationSettings(
+      '@mipmap/ic_launcher',
     );
-
+    const initSettings = InitializationSettings(android: androidSettings);
     _localNotifications.initialize(initSettings);
   }
 
   void _showLocalNotification(RemoteMessage message) {
-    const AndroidNotificationDetails androidDetails =
-        AndroidNotificationDetails(
-          'channel_id',
-          'channel_name',
-          channelDescription: 'Descrição do canal',
-          importance: Importance.max,
-          priority: Priority.high,
-        );
-
-    const NotificationDetails platformDetails = NotificationDetails(
-      android: androidDetails,
+    const androidDetails = AndroidNotificationDetails(
+      'channel_id',
+      'channel_name',
+      channelDescription: 'Descrição do canal',
+      importance: Importance.max,
+      priority: Priority.high,
     );
-
+    const platformDetails = NotificationDetails(android: androidDetails);
     _localNotifications.show(
       0,
       message.notification?.title ?? 'Sem título',
@@ -98,78 +98,185 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildCard(String image, VoidCallback onTap) {
-    return _AnimatedCardButton(image: image, onTap: onTap);
+  // SHARE (igual seu exemplo)
+  Future<void> _compartilharApp() async {
+    final remoteConfig = FirebaseRemoteConfig.instance;
+    final String link = Platform.isAndroid
+        ? remoteConfig.getString('android_share_url')
+        : remoteConfig.getString('ios_share_url');
+
+    final String mensagem = 'Check out this amazing app! Download now:\n$link';
+    await SharePlus.instance.share(ShareParams(text: mensagem));
+  }
+
+  // --- Helper para animar entrada lateral ---
+  Widget _introSlide({
+    required Widget child,
+    required bool fromLeft,
+    required int delayMs,
+  }) {
+    final w = MediaQuery.of(context).size.width;
+    final begin = Offset(fromLeft ? -w : w, 0);
+    return child
+        .animate(delay: Duration(milliseconds: delayMs))
+        .move(
+          begin: begin,
+          end: Offset.zero,
+          duration: 450.ms,
+          curve: Curves.easeOutCubic,
+        )
+        .fadeIn(duration: 300.ms, curve: Curves.easeOut);
+  }
+
+  Widget _buildCard({
+    required String image,
+    required VoidCallback onTap,
+    double height = 160,
+  }) {
+    return _AnimatedCardButton(image: image, onTap: onTap, height: height);
+  }
+
+  Widget _homeBody() {
+    final servicos = _introSlide(
+      child: _buildCard(
+        image: 'assets/servicos.png',
+        onTap: () => Navigator.pushNamed(context, '/services'),
+        height: 160,
+      ),
+      fromLeft: true,
+      delayMs: 0,
+    );
+
+    final suporte = _introSlide(
+      child: _buildCard(
+        image: 'assets/oportunidades.png',
+        onTap: () => Navigator.pushNamed(context, '/oportuniti'),
+        height: 160,
+      ),
+      fromLeft: false,
+      delayMs: 120,
+    );
+
+    final consultTecnologiRow = Row(
+      children: [
+        Expanded(
+          child: _introSlide(
+            child: _buildCard(
+              image: 'assets/consultoria.png',
+              onTap: () => Navigator.pushNamed(context, '/consult'),
+              height: 140,
+            ),
+            fromLeft: true,
+            delayMs: 240,
+          ),
+        ),
+        const SizedBox(width: 50),
+        Expanded(
+          child: _introSlide(
+            child: _buildCard(
+              image: 'assets/suporte.png',
+              onTap: () => Navigator.pushNamed(context, '/suport'),
+              height: 140,
+            ),
+            fromLeft: false,
+            delayMs: 300,
+          ),
+        ),
+      ],
+    );
+
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: Image.asset('assets/background.jpg', fit: BoxFit.cover),
+        ),
+        SafeArea(
+          child: Padding(
+            // 👇 padding inferior dinâmico para não ficar atrás da barra
+            padding: EdgeInsets.only(left: 20, right: 20, top: 2, bottom: 0),
+            child: Column(
+              children: [
+                // Top bar
+                const SizedBox(height: 220),
+
+                servicos,
+                const SizedBox(height: 10),
+
+                suporte,
+                const SizedBox(height: 10),
+
+                consultTecnologiRow,
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final Widget body = _selectedIndex == 2
+        ? _homeBody()
+        : const SizedBox.shrink();
+
     return Scaffold(
       body: Stack(
         children: [
-          Positioned.fill(
-            child: Image.asset('assets/background.jpg', fit: BoxFit.cover),
-          ),
-          SafeArea(
+          body,
+          // Barra por cima
+          Align(
+            alignment: Alignment.bottomCenter,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () => Navigator.pushNamed(context, '/messages'),
-                        child: Image.asset(
-                          'assets/notifications.png',
-                          height: 28,
-                        ),
-                      ),
-                      if (showMenu) // só exibe se vier true do Remote Config
-                        PopupMenuButton<String>(
-                          icon: Image.asset('assets/menu.png', height: 28),
-                          onSelected: (value) {
-                            switch (value) {
-                              case 'agendar':
-                                Navigator.pushNamed(context, '/schedule');
-                                break;
-                            }
-                          },
-                          itemBuilder: (context) => const [
-                            PopupMenuItem(
-                              value: 'agendar',
-                              child: Text('Agendar reunião'),
-                            ),
-                          ],
-                        ),
-                    ],
+              padding: const EdgeInsets.only(bottom: 0), // pode ajustar
+              child: CurvedNavigationBar(
+                index: _selectedIndex,
+                height: 60,
+                backgroundColor: Colors.transparent,
+                color: const Color(0xFFffffff),
+                animationDuration: const Duration(milliseconds: 300),
+                iconPadding: 18,
+                items: const [
+                  CurvedNavigationBarItem(
+                    child: Icon(Icons.calendar_month, color: Color(0xFF2b4a83)),
+                    label: '',
                   ),
-
-                  const SizedBox(height: 0),
-
-                  // Logo
-                  Image.asset('assets/logo.png', height: 180),
-
-                  const SizedBox(height: 0),
-
-                  // 4 Botões principais com animação individual
-                  _buildCard(
-                    'assets/consultoria.png',
-                    () => Navigator.pushNamed(context, '/consult'),
+                  CurvedNavigationBarItem(
+                    child: Icon(Icons.share, color: Color(0xFF2b4a83)),
+                    label: '',
                   ),
-                  _buildCard(
-                    'assets/tecnologia.png',
-                    () => Navigator.pushNamed(context, '/tecnologi'),
+                  CurvedNavigationBarItem(
+                    child: Icon(Icons.home, color: Color(0xFF2b4a83)),
+                    label: '',
                   ),
-                  _buildCard(
-                    'assets/servicos.png',
-                    () => Navigator.pushNamed(context, '/services'),
+                  CurvedNavigationBarItem(
+                    child: Icon(Icons.place, color: Color(0xFF2b4a83)),
+                    label: '',
                   ),
-                  _buildCard(
-                    'assets/suporte.png',
-                    () => Navigator.pushNamed(context, '/suport'),
+                  CurvedNavigationBarItem(
+                    child: Icon(Icons.more_horiz, color: Color(0xFF2b4a83)),
+                    label: '',
                   ),
                 ],
+                onTap: (index) async {
+                  switch (index) {
+                    case 0:
+                      Navigator.pushNamed(context, '/calendar');
+                      break;
+                    case 1:
+                      await _compartilharApp();
+                      break;
+                    case 2:
+                      setState(() => _selectedIndex = 2);
+                      break;
+                    case 3:
+                      Navigator.pushNamed(context, '/visit');
+                      break;
+                    case 4:
+                      Navigator.pushNamed(context, '/more');
+                      break;
+                  }
+                },
               ),
             ),
           ),
@@ -179,12 +286,17 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-// --- Componente do botão com animação individual ---
+// --- Botão com animação de "press" ---
 class _AnimatedCardButton extends StatefulWidget {
   final String image;
   final VoidCallback onTap;
+  final double height;
 
-  const _AnimatedCardButton({required this.image, required this.onTap});
+  const _AnimatedCardButton({
+    required this.image,
+    required this.onTap,
+    this.height = 150,
+  });
 
   @override
   State<_AnimatedCardButton> createState() => _AnimatedCardButtonState();
@@ -200,13 +312,13 @@ class _AnimatedCardButtonState extends State<_AnimatedCardButton>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: 100.ms,
+      duration: 300.ms,
       reverseDuration: 200.ms,
     );
 
     _scale = Tween<double>(
-      begin: 1.0,
-      end: 0.92,
+      begin: 1,
+      end: 1.1,
     ).chain(CurveTween(curve: Curves.easeOut)).animate(_controller);
   }
 
@@ -229,12 +341,11 @@ class _AnimatedCardButtonState extends State<_AnimatedCardButton>
       child: GestureDetector(
         onTap: _handleTap,
         child: Container(
-          margin: const EdgeInsets.only(bottom: 12),
-          height: 110,
+          margin: const EdgeInsets.only(bottom: 10),
+          height: widget.height,
           width: double.infinity,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-
             image: DecorationImage(
               image: AssetImage(widget.image),
               fit: BoxFit.contain,

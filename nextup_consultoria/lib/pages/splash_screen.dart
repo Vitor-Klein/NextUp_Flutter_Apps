@@ -26,10 +26,15 @@ class _SplashScreenState extends State<SplashScreen> {
 
       Navigator.of(context).pushReplacement(
         PageRouteBuilder(
-          transitionDuration: const Duration(milliseconds: 2000),
+          transitionDuration: const Duration(milliseconds: 800),
           pageBuilder: (_, animation, __) => const HomePage(),
           transitionsBuilder: (_, animation, __, child) {
-            return FadeTransition(opacity: animation, child: child);
+            // aqui o fade começa já visível em 40% e termina em 100%
+            final fadeAnimation = Tween<double>(begin: 0.4, end: 1.0).animate(
+              CurvedAnimation(parent: animation, curve: Curves.easeOut),
+            );
+
+            return FadeTransition(opacity: fadeAnimation, child: child);
           },
         ),
       );
@@ -42,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
       key: scaffoldKey,
       backgroundColor: const Color.fromRGBO(247, 242, 222, 1),
       body: SizedBox.expand(
-        child: Image.asset('assets/splash.jpg', fit: BoxFit.cover),
+        child: Image.asset('assets/splash.png', fit: BoxFit.cover),
       ),
     );
   }

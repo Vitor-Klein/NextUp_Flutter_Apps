@@ -7,7 +7,7 @@ import 'package:nextup_consultoria/pages/messages_page.dart';
 import 'package:nextup_consultoria/pages/services_page.dart';
 import 'package:nextup_consultoria/pages/splash_screen.dart';
 import 'package:nextup_consultoria/pages/suport_page.dart';
-import 'package:nextup_consultoria/pages/tecnologi_page.dart';
+import 'package:nextup_consultoria/pages/oportuniti_page.dart';
 import 'package:nextup_consultoria/pages/schedule_page.dart';
 import 'firebase_options.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
@@ -92,8 +92,8 @@ class MyApp extends StatelessWidget {
           case '/consult':
             builder = (_) => const ConsultPage();
             break;
-          case '/tecnologi':
-            builder = (_) => const TecnologiPage();
+          case '/oportuniti':
+            builder = (_) => const OportunitiPage();
             break;
           case '/services':
             builder = (_) => const ServicesPage();
@@ -117,7 +117,7 @@ class MyApp extends StatelessWidget {
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(opacity: animation, child: child);
           },
-          transitionDuration: const Duration(milliseconds: 600),
+          transitionDuration: const Duration(milliseconds: 800),
           settings: settings,
         );
       },
