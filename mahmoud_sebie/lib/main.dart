@@ -6,10 +6,9 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'services/message_storage.dart';
 
 import 'pages/home_page.dart';
+import 'pages/about_page.dart';
+import 'pages/social_page.dart';
 import 'pages/messages_page.dart';
-import 'pages/about_jyaire_page.dart';
-import 'pages/about_cade_page.dart';
-import 'pages/about_lathan_page.dart';
 import 'pages/splash_screen.dart';
 
 @pragma('vm:entry-point')
@@ -85,19 +84,15 @@ class MyApp extends StatelessWidget {
           case '/home':
             builder = (_) => const HomePage();
             break;
+          case '/about':
+            builder = (_) => const AboutPage();
+            break;
+          case '/social':
+            builder = (_) => const SocialPage();
+            break;
           case '/messages':
             builder = (_) => const MessagesPage();
             break;
-          case '/about_jyaire':
-            builder = (_) => const AboutJyairePage();
-            break;
-          case '/about_cade':
-            builder = (_) => const AboutCadePage();
-            break;
-          case '/about_lathan':
-            builder = (_) => const AboutLathanPage();
-            break;
-
           default:
             builder = (_) => const HomePage();
         }

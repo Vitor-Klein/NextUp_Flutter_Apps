@@ -143,10 +143,7 @@ class _HomePageState extends State<HomePage> {
                         asset:
                             'assets/notification_bell.png', // TODO: ícone de notificação
                         tooltip: 'Notificações',
-                        onTap: () {
-                          // Pode abrir uma tela de notificações, permissões, etc.
-                          _requestNotificationPermissions();
-                        },
+                        onTap: () => Navigator.pushNamed(context, '/messages'),
                       ),
                       const Spacer(),
 
@@ -165,7 +162,7 @@ class _HomePageState extends State<HomePage> {
                       const SizedBox(width: 6),
                       _ImageButtonTop(
                         asset: 'assets/share.png', // TODO
-                        onTap: () => _openUrl('https://exemplo.com/top-right'),
+                        onTap: () => _compartilharApp(),
                       ),
                     ],
                   ),
@@ -177,21 +174,24 @@ class _HomePageState extends State<HomePage> {
                       Expanded(
                         child: _ImageButtonAthletes(
                           asset: 'assets/jyaire_brown.png', // TODO
-                          onTap: () => _openUrl('https://exemplo.com/grid1'),
+                          onTap: () =>
+                              Navigator.pushNamed(context, '/about_jyaire'),
                         ),
                       ),
                       const SizedBox(width: 10),
                       Expanded(
                         child: _ImageButtonAthletes(
                           asset: 'assets/cade_stover.png', // TODO
-                          onTap: () => _openUrl('https://exemplo.com/grid2'),
+                          onTap: () =>
+                              Navigator.pushNamed(context, '/about_cade'),
                         ),
                       ),
                       const SizedBox(width: 10),
                       Expanded(
                         child: _ImageButtonAthletes(
                           asset: 'assets/lathan_ranson.png', // TODO
-                          onTap: () => _openUrl('https://exemplo.com/grid3'),
+                          onTap: () =>
+                              Navigator.pushNamed(context, '/about_lathan'),
                         ),
                       ),
                       const SizedBox(width: 10),
