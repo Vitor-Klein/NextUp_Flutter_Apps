@@ -157,7 +157,7 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       _ImageButtonTop(
                         asset: 'assets/social.png', // TODO
-                        onTap: () => _openUrl('https://exemplo.com/top-left'),
+                        onTap: () => Navigator.pushNamed(context, '/social'),
                       ),
                       const SizedBox(width: 6),
                       _ImageButtonTop(

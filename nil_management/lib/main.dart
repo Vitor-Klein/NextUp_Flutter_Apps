@@ -10,6 +10,7 @@ import 'pages/messages_page.dart';
 import 'pages/about_jyaire_page.dart';
 import 'pages/about_cade_page.dart';
 import 'pages/about_lathan_page.dart';
+import 'pages/social_page.dart';
 import 'pages/splash_screen.dart';
 
 @pragma('vm:entry-point')
@@ -96,6 +97,10 @@ class MyApp extends StatelessWidget {
             break;
           case '/about_lathan':
             builder = (_) => const AboutLathanPage();
+            break;
+
+          case '/social':
+            builder = (_) => const SocialPage();
             break;
 
           default:

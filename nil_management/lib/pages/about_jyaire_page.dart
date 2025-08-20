@@ -19,7 +19,9 @@ class AboutJyairePage extends StatelessWidget {
                     width: 350,
                     margin: const EdgeInsets.only(top: 20, bottom: 20),
                     child: const Text(
-                      '''Kiara “KiKi” Williams is a rising multi-hyphenate talent, known for her standout voice work on Disney’s Moon Girl, national commercial campaigns, and her memorable role as Latanya on ABC’s reimagined The Wonder Years. The daughter of Harlem Globetrotter legend Harold “Lefty” Williams and author Shyneefa Williams, KiKi brings passion, charisma, and heart to every project she touches. A gifted storyteller, she recently launched her clothing brand, Don’t I Have a Say, debuting it alongside a song and music video of the same name. Beyond the spotlight, KiKi is a devoted sister to her rising star brothers EJ and CJ, admired not only for her artistic gifts but also for her intelligence, kindness, and grounded spirit.''',
+                      '''Jyaire Brown (born February 15, 2004) is an American college football cornerback for the UCF Knights. He previously played for the LSU Tigers, and the Ohio State Buckeyes.
+
+Brown attended Warren Easton Charter High School for two years before transferring to Lakota West High School during his junior year. As a senior, he had 26 receptions for 416 yards and four touchdowns, as well as five interceptions. Coming out of high school, Brown was rated as a four-star recruit, the 19th best cornerback, and the 155th overall player in the class of 2022. Brown committed to play college football for the Ohio State Buckeyes over offers from schools such as Alabama, LSU, and Mississippi State.''',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
