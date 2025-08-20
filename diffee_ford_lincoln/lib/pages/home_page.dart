@@ -20,7 +20,8 @@ class _HomePageState extends State<HomePage> {
   final FlutterLocalNotificationsPlugin _localNotifications =
       FlutterLocalNotificationsPlugin();
 
-  bool showMenu = false;
+  bool showMakeReservation = false;
+  bool showScheduleReservation = false;
   String footerLink =
       'https://www.diffeeford.net/schedule-service.htm'; // fallback
 
@@ -37,14 +38,18 @@ class _HomePageState extends State<HomePage> {
     final remoteConfig = FirebaseRemoteConfig.instance;
     await remoteConfig.fetchAndActivate();
 
-    final rcShowMenu = remoteConfig.getBool('show_menu');
+    final rcShowMakeReservation = remoteConfig.getBool('show_make_reservation');
+    final rcShowScheduleReservation = remoteConfig.getBool(
+      'show_schedule_reservation',
+    );
     final rcFooter = remoteConfig.getString('footer_link').trim();
 
     setState(() {
-      showMenu = rcShowMenu;
+      showMakeReservation = rcShowMakeReservation;
+      showScheduleReservation = rcShowScheduleReservation;
       footerLink = rcFooter.isNotEmpty
           ? rcFooter
-          : 'https://www.diffeeford.net/schedule-service.htm'; // fallback seguro
+          : 'https://www.diffeeford.net/schedule-service.html'; // fallback seguro
     });
   }
 
@@ -146,7 +151,6 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Visibility(
-                        visible: showMenu,
                         maintainSize: true,
                         maintainAnimation: true,
                         maintainState: true,
@@ -166,18 +170,42 @@ class _HomePageState extends State<HomePage> {
                                   '/schedule_test_drive',
                                 );
                                 break;
+                              case 'messages':
+                                Navigator.pushNamed(context, '/messages');
+                                break;
                             }
                           },
-                          itemBuilder: (context) => const [
-                            PopupMenuItem(
-                              value: 'make_reservation',
-                              child: Text('Make a Reservation'),
-                            ),
-                            PopupMenuItem(
-                              value: 'schedule_reservation',
-                              child: Text('Schedule a Reservation'),
-                            ),
-                          ],
+                          itemBuilder: (context) {
+                            final items = <PopupMenuEntry<String>>[];
+
+                            if (showMakeReservation) {
+                              items.add(
+                                const PopupMenuItem(
+                                  value: 'make_reservation',
+                                  child: Text('Make a Reservation'),
+                                ),
+                              );
+                            }
+
+                            if (showScheduleReservation) {
+                              items.add(
+                                const PopupMenuItem(
+                                  value: 'schedule_reservation',
+                                  child: Text('Schedule a Reservation'),
+                                ),
+                              );
+                            }
+
+                            // Sempre visível
+                            items.add(
+                              const PopupMenuItem(
+                                value: 'messages',
+                                child: Text('Messages'),
+                              ),
+                            );
+
+                            return items;
+                          },
                         ),
                       ),
                     ],
@@ -194,7 +222,7 @@ class _HomePageState extends State<HomePage> {
                       onTap: () => openWeb(
                         context,
                         'https://www.diffeeford.net/used-inventory/index.htm',
-                        title: 'Shop Pré-owned', // opcional
+                        title: 'Shop Pre-owned', // opcional
                       ),
                     ),
                   ),

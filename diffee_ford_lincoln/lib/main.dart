@@ -10,6 +10,7 @@ import 'pages/splash_screen.dart';
 import 'pages/contact_page.dart';
 import 'pages/make_reservation_page.dart';
 import 'pages/schedule_test_drive_page.dart';
+import 'pages/messages_page.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -92,6 +93,9 @@ class MyApp extends StatelessWidget {
             break;
           case '/schedule_test_drive':
             builder = (_) => const ScheduleTestDrivePage();
+            break;
+          case '/messages':
+            builder = (_) => const MessagesPage();
             break;
           default:
             builder = (_) => const HomePage();
