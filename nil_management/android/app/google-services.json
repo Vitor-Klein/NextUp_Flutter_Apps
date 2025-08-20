@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "362068981425",
+    "project_id": "nil-management",
+    "storage_bucket": "nil-management.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:362068981425:android:464a504bc0d2fa3e3c9490",
+        "android_client_info": {
+          "package_name": "app.athlete.nilmanagement"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuk9wzqRdaGLxXOLbIbcPCZ9Ng_q6Lze0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
