@@ -18,7 +18,7 @@ class _HomePageState extends State<HomePage> {
   final FlutterLocalNotificationsPlugin _localNotifications =
       FlutterLocalNotificationsPlugin();
 
-  bool showMenu = false;
+  bool showMore = false;
 
   @override
   void initState() {
@@ -32,7 +32,9 @@ class _HomePageState extends State<HomePage> {
   Future<void> _loadBannerConfig() async {
     final remoteConfig = FirebaseRemoteConfig.instance;
     await remoteConfig.fetchAndActivate();
-    setState(() => showMenu = remoteConfig.getBool('show_menu'));
+    setState(() {
+      showMore = remoteConfig.getBool('more_visible'); // <- lê o flag
+    });
   }
 
   void _requestNotificationPermissions() async {
@@ -181,10 +183,16 @@ class _HomePageState extends State<HomePage> {
                         align: Alignment.centerLeft,
                         onTap: () => Navigator.pushNamed(context, '/messages'),
                       ),
-                      _ImageTile(
-                        imageAsset: 'assets/more.png',
-                        align: Alignment.centerRight,
-                        onTap: () => Navigator.pushNamed(context, '/more'),
+                      Visibility(
+                        visible: showMore,
+                        maintainSize: true,
+                        maintainAnimation: true,
+                        maintainState: true,
+                        child: _ImageTile(
+                          imageAsset: 'assets/more.png',
+                          align: Alignment.centerRight,
+                          onTap: () => Navigator.pushNamed(context, '/more'),
+                        ),
                       ),
                     ],
                   ),

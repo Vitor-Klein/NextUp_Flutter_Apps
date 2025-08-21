@@ -1,9 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'webview_page.dart';
 
-class MerchPage extends StatelessWidget {
+class MerchPage extends StatefulWidget {
   const MerchPage({super.key});
+
+  @override
+  State<MerchPage> createState() => _MerchPageState();
+}
+
+class _MerchPageState extends State<MerchPage> {
+  String merchLink = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadMerchLink();
+  }
+
+  Future<void> _loadMerchLink() async {
+    final remoteConfig = FirebaseRemoteConfig.instance;
+    await remoteConfig.fetchAndActivate();
+    setState(() {
+      merchLink = remoteConfig.getString('merch_link');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,26 +36,24 @@ class MerchPage extends StatelessWidget {
           Image.asset('assets/header.jpg'), // header sem padding
           const SizedBox(height: 24),
 
-          // Botões com padding
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               children: [
                 SocialButton(
-                  label: 'Get your tickets from here',
+                  label: 'Merch',
                   icon: FontAwesomeIcons.ticket,
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const WebViewPage(
-                          title: 'Get your tickets from here',
-                          url:
-                              'https://www.ticketmaster.com/tuffnuff-143-las-vegas-nevada-04-25-2025/event/1700625AE3406E31',
-                        ),
-                      ),
-                    );
-                  },
+                  onPressed: merchLink.isEmpty
+                      ? null // botão desativado até carregar o link
+                      : () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  WebViewPage(title: 'Merch', url: merchLink),
+                            ),
+                          );
+                        },
                 ),
               ],
             ),
@@ -47,7 +67,7 @@ class MerchPage extends StatelessWidget {
 class SocialButton extends StatelessWidget {
   final String label;
   final IconData icon;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
 
   const SocialButton({
     super.key,
@@ -66,7 +86,7 @@ class SocialButton extends StatelessWidget {
         icon: FaIcon(icon, color: Colors.black, size: 18),
         label: Text(label, style: const TextStyle(color: Colors.black)),
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFFFFF59D), // amarelo pastel
+          backgroundColor: const Color(0xFF90CAF9),
           side: const BorderSide(color: Colors.black),
           padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
           alignment: Alignment.centerLeft,
