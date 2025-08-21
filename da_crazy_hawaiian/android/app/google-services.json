@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1039857978257",
+    "project_id": "da-crazy-hawaiian-8a400",
+    "storage_bucket": "da-crazy-hawaiian-8a400.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1039857978257:android:025b3a870b7af7caa8a830",
+        "android_client_info": {
+          "package_name": "app.com.dacrazyhawaiian"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBY7S4xinx3r37y1WQAa3ksmTzxVAiltAk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
