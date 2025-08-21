@@ -238,7 +238,7 @@ class _HomePageState extends State<HomePage> {
                 iconPadding: 18,
                 items: const [
                   CurvedNavigationBarItem(
-                    child: Icon(Icons.calendar_month, color: Color(0xFF2b4a83)),
+                    child: Icon(Icons.group, color: Color(0xFF2b4a83)),
                     label: '',
                   ),
                   CurvedNavigationBarItem(
@@ -261,7 +261,7 @@ class _HomePageState extends State<HomePage> {
                 onTap: (index) async {
                   switch (index) {
                     case 0:
-                      Navigator.pushNamed(context, '/calendar');
+                      Navigator.pushNamed(context, '/peoples');
                       break;
                     case 1:
                       await _compartilharApp();
