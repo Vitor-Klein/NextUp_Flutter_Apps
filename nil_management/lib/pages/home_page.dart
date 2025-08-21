@@ -200,7 +200,7 @@ class _HomePageState extends State<HomePage> {
                           asset: 'assets/athletes_talent.png', // TODO
                           onTap: () => openWeb(
                             context,
-                            'https://nilmanagement.com/athletes/talent',
+                            'https://nilmanagement.com/pages/influencers-athletes',
                             title: 'Athletes Talent',
                           ),
                         ),
@@ -218,7 +218,7 @@ class _HomePageState extends State<HomePage> {
                           aspectRatio: 16 / 9,
                           onTap: () => openWeb(
                             context,
-                            'https://nilmanagement.com/en-us/about-us',
+                            'https://nilmanagement.com/pages/about',
                             title: 'About Us',
                           ),
                         ),
@@ -230,7 +230,7 @@ class _HomePageState extends State<HomePage> {
                           aspectRatio: 16 / 9,
                           onTap: () => openWeb(
                             context,
-                            'https://nilmanagement.com/contact-us',
+                            'https://nilmanagement.com/pages/contact',
                             title: 'Contact Us',
                           ),
                         ),
@@ -249,7 +249,7 @@ class _HomePageState extends State<HomePage> {
                     careersHeight: 35,
                     onCareersTap: () => openWeb(
                       context,
-                      'https://nilmanagement.com/careers',
+                      'https://nilmanagement.com/pages/careers',
                       title: 'Careers',
                     ),
                   ),

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "308668237939",
+    "project_id": "mahmoud-sebie-961c7",
+    "storage_bucket": "mahmoud-sebie-961c7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308668237939:android:c7eeb73f12673f119dc206",
+        "android_client_info": {
+          "package_name": "app.com.mahmoudsebie"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAM8jNEQSC_4DgMH83Tuj6ydvfz9wT1Azw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

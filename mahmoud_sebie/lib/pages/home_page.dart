@@ -32,66 +32,51 @@ class _HomePageState extends State<HomePage> {
   Future<void> _loadBannerConfig() async {
     final remoteConfig = FirebaseRemoteConfig.instance;
     await remoteConfig.fetchAndActivate();
-
-    setState(() {
-      showMenu = remoteConfig.getBool('show_menu');
-    });
+    setState(() => showMenu = remoteConfig.getBool('show_menu'));
   }
 
   void _requestNotificationPermissions() async {
-    NotificationSettings settings = await _firebaseMessaging.requestPermission(
+    final settings = await _firebaseMessaging.requestPermission(
       alert: true,
       badge: true,
       sound: true,
     );
-
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      print('Permissões de notificação concedidas');
-    } else {
-      print('Permissões de notificação negadas');
+      // ok
     }
   }
 
   void _initializeFirebaseMessaging() {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Recebeu mensagem no foreground: ${message.notification?.title}');
       _showLocalNotification(message);
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('Usuário abriu a notificação');
+      // handle tap
     });
 
     _firebaseMessaging.getToken().then((token) {
-      print('Token FCM: $token');
+      // print('Token FCM: $token');
     });
   }
 
   void _initializeLocalNotifications() {
-    const AndroidInitializationSettings androidSettings =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
-
-    const InitializationSettings initSettings = InitializationSettings(
-      android: androidSettings,
+    const androidSettings = AndroidInitializationSettings(
+      '@mipmap/ic_launcher',
     );
-
+    const initSettings = InitializationSettings(android: androidSettings);
     _localNotifications.initialize(initSettings);
   }
 
   void _showLocalNotification(RemoteMessage message) {
-    const AndroidNotificationDetails androidDetails =
-        AndroidNotificationDetails(
-          'channel_id',
-          'channel_name',
-          channelDescription: 'Descrição do canal',
-          importance: Importance.max,
-          priority: Priority.high,
-        );
-
-    const NotificationDetails platformDetails = NotificationDetails(
-      android: androidDetails,
+    const androidDetails = AndroidNotificationDetails(
+      'channel_id',
+      'channel_name',
+      channelDescription: 'Descrição do canal',
+      importance: Importance.max,
+      priority: Priority.high,
     );
-
+    const platformDetails = NotificationDetails(android: androidDetails);
     _localNotifications.show(
       0,
       message.notification?.title ?? 'Sem título',
@@ -100,23 +85,141 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _compartilharApp() async {
-    final remoteConfig = FirebaseRemoteConfig.instance;
+  Future<void> _launchUrl(String url) async {
+    final uri = Uri.parse(url);
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Não foi possível abrir o link')),
+      );
+    }
+  }
 
+  void _shareApp() async {
+    final remoteConfig = FirebaseRemoteConfig.instance;
     final String link = Platform.isAndroid
         ? remoteConfig.getString('android_share_url')
         : remoteConfig.getString('ios_share_url');
-
-    final String mensagem = 'Check out this amazing app! Download now:\n$link';
-
-    await SharePlus.instance.share(ShareParams(text: mensagem));
+    final String message = 'Check out this amazing app! Download now:\n$link';
+    await SharePlus.instance.share(ShareParams(text: message));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Home Page')),
-      body: Center(child: Text('Welcome to the Home Page!')),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: const Text(''),
+      ),
+      body: Stack(
+        children: [
+          /// Fundo em tela cheia (troque por Asset/Network à sua escolha)
+          Positioned.fill(
+            child: Image.asset(
+              'assets/background.jpg', // <- sua imagem de fundo
+              fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
+            ),
+          ),
+
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10,
+              ), // padding left e right
+              child: Column(
+                children: [
+                  const Spacer(),
+                  const SizedBox(height: 300),
+
+                  // Primeira linha
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _ImageTile(
+                        imageAsset: 'assets/about.png',
+                        onTap: () => Navigator.pushNamed(context, '/about'),
+                      ),
+                      _ImageTile(
+                        imageAsset: 'assets/social.png',
+                        onTap: () => Navigator.pushNamed(context, '/social'),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(
+                    height: 30,
+                  ), // espaçamento vertical entre as duas linhas
+                  // Segunda linha
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _ImageTile(
+                        imageAsset: 'assets/merch.png',
+                        onTap: () => Navigator.pushNamed(context, '/merch'),
+                      ),
+                      _ImageTile(
+                        imageAsset: 'assets/messages.png',
+                        onTap: () => Navigator.pushNamed(context, '/messages'),
+                      ),
+                    ],
+                  ),
+
+                  const Spacer(),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Botão de imagem com ripple, cantos arredondados e leve sombra
+class _ImageTile extends StatefulWidget {
+  final String imageAsset;
+  final VoidCallback onTap;
+
+  const _ImageTile({required this.imageAsset, required this.onTap});
+
+  @override
+  State<_ImageTile> createState() => _ImageTileState();
+}
+
+class _ImageTileState extends State<_ImageTile> {
+  double _scale = 1.0;
+
+  void _pressed(bool down) {
+    setState(() => _scale = down ? 0.75 : 1.0);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: GestureDetector(
+        onTapDown: (_) => _pressed(true),
+        onTapCancel: () => _pressed(false),
+        onTapUp: (_) => _pressed(false),
+        onTap: widget.onTap,
+        child: AnimatedScale(
+          scale: _scale,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeOut,
+          child: SizedBox(
+            width: 175, // largura do “botão” (imagem)
+            height: 50, // altura
+            child: ClipRRect(
+              child: Image.asset(
+                widget.imageAsset,
+                fit: BoxFit.contain,
+                alignment: Alignment.center,
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -8,6 +8,7 @@ import 'services/message_storage.dart';
 import 'pages/home_page.dart';
 import 'pages/about_page.dart';
 import 'pages/social_page.dart';
+import 'pages/merch_page.dart';
 import 'pages/messages_page.dart';
 import 'pages/splash_screen.dart';
 
@@ -89,6 +90,9 @@ class MyApp extends StatelessWidget {
             break;
           case '/social':
             builder = (_) => const SocialPage();
+            break;
+          case '/merch':
+            builder = (_) => const MerchPage();
             break;
           case '/messages':
             builder = (_) => const MessagesPage();
