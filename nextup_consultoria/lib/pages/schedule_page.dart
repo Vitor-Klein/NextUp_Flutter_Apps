@@ -8,7 +8,7 @@ class SchedulePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return WebViewPage(
       title: 'Schedule Meeting',
-      url: 'https://appstorepublishing.com/suporte-nextup/',
+      url: 'https://calendly.com/nextupconsultoria/15min',
     );
   }
 }
