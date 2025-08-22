@@ -36,7 +36,7 @@ class _OportunitiPageState extends State<OportunitiPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Oportunidades'),
+        title: const Text('Oportunities'),
         backgroundColor: Colors.black87,
       ),
       body: Stack(

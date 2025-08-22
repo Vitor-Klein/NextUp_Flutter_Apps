@@ -1,7 +1,23 @@
 import 'package:flutter/material.dart';
 
-class PeoplesPage extends StatelessWidget {
+class PeoplesPage extends StatefulWidget {
   const PeoplesPage({super.key});
+
+  @override
+  State<PeoplesPage> createState() => _PeoplesPageState();
+}
+
+class _PeoplesPageState extends State<PeoplesPage> {
+  bool _ready = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Dispara as animações de entrada após o primeiro frame
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) setState(() => _ready = true);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,8 +74,18 @@ class PeoplesPage extends StatelessWidget {
       ),
     ];
 
+    final theme = Theme.of(context);
+    final bg = theme.colorScheme.surface;
+    final onBg = theme.colorScheme.onSurface.withOpacity(0.8);
+    final accent = theme.colorScheme.primary;
+
     return Scaffold(
-      appBar: AppBar(title: const Text("Peoples")),
+      backgroundColor: bg,
+      appBar: AppBar(
+        centerTitle: true,
+        elevation: 0,
+        title: const Text("Peoples"),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(12),
         child: GridView.builder(
@@ -68,13 +94,26 @@ class PeoplesPage extends StatelessWidget {
             crossAxisCount: 2,
             crossAxisSpacing: 12,
             mainAxisSpacing: 12,
-            childAspectRatio: 0.8,
+            childAspectRatio: 0.86,
           ),
           itemBuilder: (context, index) {
             final person = people[index];
-            return _PersonCard(
-              person: person,
-              onTap: () => _openPersonModal(context, person),
+            final duration = Duration(milliseconds: 320 + index * 60);
+
+            return AnimatedOpacity(
+              duration: duration,
+              opacity: _ready ? 1 : 0,
+              curve: Curves.easeOut,
+              child: AnimatedSlide(
+                duration: duration,
+                curve: Curves.easeOutCubic,
+                offset: _ready ? Offset.zero : const Offset(0, .08),
+                child: _PersonCard(
+                  person: person,
+                  accent: accent,
+                  onTap: () => _openPersonModal(context, person),
+                ),
+              ),
             );
           },
         ),
@@ -83,50 +122,93 @@ class PeoplesPage extends StatelessWidget {
   }
 
   void _openPersonModal(BuildContext context, Person person) {
-    showDialog(
+    showGeneralDialog(
       context: context,
-      builder: (context) {
-        return Dialog(
-          insetPadding: const EdgeInsets.all(16),
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(6),
-                  child: Image.asset(
-                    person.photo,
-                    width: 160,
-                    height: 160,
-                    fit: BoxFit.cover,
+      barrierLabel: 'Detalhes',
+      barrierDismissible: true,
+      barrierColor: Colors.black54,
+      transitionDuration: const Duration(milliseconds: 220),
+      pageBuilder: (_, __, ___) {
+        final theme = Theme.of(context);
+        final cardColor = theme.colorScheme.surface;
+        final textColor = theme.colorScheme.onSurface;
+
+        return Center(
+          child: Material(
+            color: Colors.transparent,
+            child: Container(
+              constraints: const BoxConstraints(maxWidth: 520),
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: cardColor,
+                borderRadius: BorderRadius.circular(14),
+                boxShadow: [
+                  BoxShadow(
+                    blurRadius: 24,
+                    spreadRadius: 0,
+                    color: Colors.black.withOpacity(0.12),
+                    offset: const Offset(0, 10),
                   ),
+                ],
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Hero(
+                      tag: 'avatar-${person.photo}',
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(72),
+                        child: Image.asset(
+                          person.photo,
+                          width: 120,
+                          height: 120,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                    Text(
+                      person.name,
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        color: textColor,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    _RoleChip(role: person.role),
+                    const SizedBox(height: 16),
+                    const Divider(height: 24),
+                    Text(
+                      person.bio,
+                      textAlign: TextAlign.justify,
+                      style: theme.textTheme.bodyMedium?.copyWith(height: 1.5),
+                    ),
+                    const SizedBox(height: 12),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text('Fechar'),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 16),
-                Text(
-                  person.name,
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  person.role,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.blue,
-                  ),
-                ),
-                const Divider(height: 30),
-                Text(
-                  person.bio,
-                  textAlign: TextAlign.justify,
-                  style: const TextStyle(fontSize: 15, height: 1.4),
-                ),
-              ],
+              ),
             ),
+          ),
+        );
+      },
+      transitionBuilder: (_, anim, __, child) {
+        return FadeTransition(
+          opacity: CurvedAnimation(parent: anim, curve: Curves.easeOut),
+          child: ScaleTransition(
+            scale: Tween<double>(
+              begin: .96,
+              end: 1,
+            ).animate(CurvedAnimation(parent: anim, curve: Curves.easeOut)),
+            child: child,
           ),
         );
       },
@@ -134,43 +216,120 @@ class PeoplesPage extends StatelessWidget {
   }
 }
 
-class _PersonCard extends StatelessWidget {
+class _PersonCard extends StatefulWidget {
   final Person person;
   final VoidCallback onTap;
+  final Color accent;
 
-  const _PersonCard({required this.person, required this.onTap});
+  const _PersonCard({
+    required this.person,
+    required this.onTap,
+    required this.accent,
+  });
+
+  @override
+  State<_PersonCard> createState() => _PersonCardState();
+}
+
+class _PersonCardState extends State<_PersonCard> {
+  bool _pressed = false;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-        elevation: 3,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(50),
-              child: Image.asset(
-                person.photo,
-                width: 80,
-                height: 80,
-                fit: BoxFit.cover,
+    final theme = Theme.of(context);
+
+    return TweenAnimationBuilder<double>(
+      duration: const Duration(milliseconds: 180),
+      tween: Tween(begin: 1, end: _pressed ? 0.97 : 1),
+      builder: (_, scale, child) {
+        return Transform.scale(scale: scale, child: child);
+      },
+      child: InkWell(
+        onTapDown: (_) => setState(() => _pressed = true),
+        onTapCancel: () => setState(() => _pressed = false),
+        onTapUp: (_) => setState(() => _pressed = false),
+        onTap: widget.onTap,
+        borderRadius: BorderRadius.circular(16),
+        child: Container(
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surface,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.08),
+                blurRadius: 12,
+                offset: const Offset(0, 6),
               ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              person.name,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            Text(
-              person.role,
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.grey, fontSize: 12),
-            ),
-          ],
+            ],
+          ),
+          padding: const EdgeInsets.fromLTRB(12, 20, 12, 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Hero(
+                tag: 'avatar-${widget.person.photo}',
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(48),
+                  child: Image.asset(
+                    widget.person.photo,
+                    width: 96,
+                    height: 96,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                widget.person.name,
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 15,
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                widget.person.role,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.labelMedium?.copyWith(
+                  color: theme.colorScheme.primary.withOpacity(.8),
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _RoleChip extends StatelessWidget {
+  final String role;
+  const _RoleChip({required this.role});
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final bg = theme.colorScheme.primary.withOpacity(.08);
+    final fg = theme.colorScheme.primary;
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      decoration: BoxDecoration(
+        color: bg,
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Text(
+        role,
+        style: theme.textTheme.labelMedium?.copyWith(
+          color: fg,
+          fontWeight: FontWeight.w600,
+          letterSpacing: .2,
         ),
       ),
     );

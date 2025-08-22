@@ -197,10 +197,10 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               children: [
                 // Top bar
-                const SizedBox(height: 220),
+                const SizedBox(height: 155),
 
                 servicos,
-                const SizedBox(height: 10),
+                const SizedBox(height: 0),
 
                 suporte,
                 const SizedBox(height: 10),
@@ -221,6 +221,24 @@ class _HomePageState extends State<HomePage> {
         : const SizedBox.shrink();
 
     return Scaffold(
+      extendBodyBehindAppBar: true, // 👈 faz o body ocupar atrás da AppBar
+      appBar: AppBar(
+        backgroundColor: Colors.transparent, // transparente
+        elevation: 0, // sem sombra
+        title: const Text(''), // sem título
+        actions: [
+          IconButton(
+            icon: const Icon(
+              Icons.notifications,
+              color: Colors.white,
+              size: 30,
+            ),
+            onPressed: () {
+              Navigator.pushNamed(context, '/messages');
+            },
+          ),
+        ],
+      ),
       body: Stack(
         children: [
           body,
@@ -270,10 +288,10 @@ class _HomePageState extends State<HomePage> {
                       setState(() => _selectedIndex = 2);
                       break;
                     case 3:
-                      Navigator.pushNamed(context, '/visit');
+                      Navigator.pushNamed(context, '/contact');
                       break;
                     case 4:
-                      Navigator.pushNamed(context, '/more');
+                      Navigator.pushNamed(context, '/schedule');
                       break;
                   }
                 },

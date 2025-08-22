@@ -7,7 +7,7 @@ class ServicesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Serviços'),
+        title: const Text('Services'),
         backgroundColor: Colors.black87,
       ),
       body: SingleChildScrollView(
