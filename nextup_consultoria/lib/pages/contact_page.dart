@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class ContactPage extends StatelessWidget {
   const ContactPage({super.key});
@@ -117,7 +118,7 @@ Dom: Fechado
                     child: InkWell(
                       onTap: () => _openMaps(mapsQuery),
                       child: Image.network(
-                        'https://maps.googleapis.com/maps/api/staticmap?center=${Uri.encodeComponent(mapsQuery)}&zoom=15&size=600x300&maptype=roadmap&markers=color:red%7C${Uri.encodeComponent(mapsQuery)}&key=AIzaSyCAQEhMMmPC3okxrFLG3iiGCftz6lcx1HM',
+                        'https://maps.googleapis.com/maps/api/staticmap?center=${Uri.encodeComponent(mapsQuery)}&zoom=15&size=600x300&maptype=roadmap&markers=color:red%7C${Uri.encodeComponent(mapsQuery)}&key=${dotenv.env['GMAPS_STATIC_KEY']}',
                         fit: BoxFit.cover,
                         height: 180,
                         width: double.infinity,

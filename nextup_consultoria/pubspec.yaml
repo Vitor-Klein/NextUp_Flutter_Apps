@@ -52,6 +52,7 @@ dependencies:
   flutter_email_sender: ^7.0.0
   curved_labeled_navigation_bar: ^2.0.6
   wordpress_client: ^8.5.4
+  flutter_dotenv: ^6.0.0
 
 dev_dependencies:
   flutter_test:
@@ -84,6 +85,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
+    - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
