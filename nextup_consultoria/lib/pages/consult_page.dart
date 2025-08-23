@@ -7,7 +7,7 @@ class ConsultPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Consultancy'),
+        title: const Text('Consultoria'),
         backgroundColor: Colors.black87,
       ),
       body: SingleChildScrollView(

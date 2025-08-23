@@ -7,7 +7,7 @@ class SchedulePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WebViewPage(
-      title: 'Schedule Meeting',
+      title: 'Agendar Reunião',
       url: 'https://calendly.com/nextupconsultoria/15min',
     );
   }

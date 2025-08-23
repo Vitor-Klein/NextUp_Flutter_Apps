@@ -7,7 +7,7 @@ class SuportPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WebViewPage(
-      title: 'Suport',
+      title: 'Suporte',
       url: 'https://appstorepublishing.com/suporte-nextup/',
     );
   }

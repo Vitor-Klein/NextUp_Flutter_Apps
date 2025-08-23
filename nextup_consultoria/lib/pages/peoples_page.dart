@@ -84,7 +84,7 @@ class _PeoplesPageState extends State<PeoplesPage> {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
-        title: const Text("Peoples"),
+        title: const Text("Nosso Time"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(12),

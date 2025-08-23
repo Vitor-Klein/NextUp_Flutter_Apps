@@ -11,7 +11,7 @@ class ContactPage extends StatelessWidget {
   static const String companyName = 'Next.up';
   static const String phone = '+55 41 2626-4007';
   static const String whatsapp = '+55 41 2626-4007';
-  static const String email = 'nextup.consultoria@gmail.com';
+  static const String email = 'contato@nextup.com.br';
   static const String address =
       'Rua Somis Fellini, 600, Industrial, Medianeira-PR';
   static const String mapsQuery =
@@ -32,7 +32,7 @@ Dom: Fechado
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Contact",
+          "Contatos",
           style: TextStyle(
             color: Colors.black87, // título preto
             fontSize: 20,
