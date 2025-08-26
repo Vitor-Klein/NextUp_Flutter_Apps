@@ -291,7 +291,7 @@ class _HomePageState extends State<HomePage> {
                       Navigator.pushNamed(context, '/contact');
                       break;
                     case 4:
-                      Navigator.pushNamed(context, '/schedule');
+                      Navigator.pushNamed(context, '/radio');
                       break;
                   }
                 },

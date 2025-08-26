@@ -11,25 +11,33 @@ import 'package:nextup_consultoria/pages/oportuniti_page.dart';
 import 'package:nextup_consultoria/pages/schedule_page.dart';
 import 'package:nextup_consultoria/pages/peoples_page.dart';
 import 'package:nextup_consultoria/pages/contact_page.dart';
+import 'package:nextup_consultoria/pages/radio_player_page.dart';
 import 'firebase_options.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'services/message_storage.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import 'package:audio_service/audio_service.dart';
+import 'audio_handler.dart';
+
+late AudioHandler audioHandler;
+
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
   print("Handling a background message: ${message.messageId}");
   print('Message data: ${message.data}');
-
-  await saveMessageLocally(message); // 💾 Salvar mesmo com app fechado
+  await saveMessageLocally(message);
 }
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await dotenv.load(fileName: ".env");
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Inicializa o serviço de áudio (background/controles do sistema)
+  audioHandler = await initAudioService();
 
   final remoteConfig = FirebaseRemoteConfig.instance;
   await remoteConfig.setConfigSettings(
@@ -81,14 +89,15 @@ class MyApp extends StatelessWidget {
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
-          iconTheme: const IconThemeData(color: Colors.white),
+          iconTheme: IconThemeData(color: Colors.white),
           elevation: 0,
         ),
+        useMaterial3: true,
       ),
-      home: const SplashScreen(),
+      home:
+          const SplashScreen(), // ou troque por RadioPlayerPage() para abrir direto
       onGenerateRoute: (settings) {
         WidgetBuilder builder;
-
         switch (settings.name) {
           case '/home':
             builder = (_) => const HomePage();
@@ -117,6 +126,9 @@ class MyApp extends StatelessWidget {
           case '/schedule':
             builder = (_) => const SchedulePage();
             break;
+          case '/radio':
+            builder = (_) => const RadioPlayerPage();
+            break;
           default:
             builder = (_) => const HomePage();
         }
@@ -124,9 +136,8 @@ class MyApp extends StatelessWidget {
         return PageRouteBuilder(
           pageBuilder: (context, animation, secondaryAnimation) =>
               builder(context),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return FadeTransition(opacity: animation, child: child);
-          },
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              FadeTransition(opacity: animation, child: child),
           transitionDuration: const Duration(milliseconds: 800),
           settings: settings,
         );
