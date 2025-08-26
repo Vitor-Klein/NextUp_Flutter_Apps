@@ -109,6 +109,69 @@ class _HomePageState extends State<HomePage> {
     await SharePlus.instance.share(ShareParams(text: mensagem));
   }
 
+  Future<void> _openMoreMenu() async {
+    final result = await showModalBottomSheet<String>(
+      context: context,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (ctx) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 8),
+              Container(
+                width: 40,
+                height: 4,
+                margin: const EdgeInsets.only(bottom: 4),
+                decoration: BoxDecoration(
+                  color: Colors.black12,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 12),
+                child: Text(
+                  'Mais opções',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                ),
+              ),
+              const Divider(height: 1),
+              ListTile(
+                leading: const Icon(Icons.radio, color: Color(0xFF2b4a83)),
+                title: const Text('Rádio'),
+                onTap: () => Navigator.pop(ctx, 'radio'),
+              ),
+              const Divider(height: 1),
+              ListTile(
+                leading: const Icon(Icons.schedule, color: Color(0xFF2b4a83)),
+                title: const Text('Schedule'),
+                onTap: () => Navigator.pop(ctx, 'schedule'),
+              ),
+              const SizedBox(height: 8),
+            ],
+          ),
+        );
+      },
+    );
+
+    if (!mounted) return;
+
+    switch (result) {
+      case 'radio':
+        Navigator.pushNamed(context, '/radio');
+        break;
+      case 'schedule': // certifique-se que sua rota é /schedule
+        Navigator.pushNamed(context, '/schedule');
+        break;
+      default:
+        // usuário fechou o sheet sem escolher nada
+        break;
+    }
+  }
+
   // --- Helper para animar entrada lateral ---
   Widget _introSlide({
     required Widget child,
@@ -291,7 +354,7 @@ class _HomePageState extends State<HomePage> {
                       Navigator.pushNamed(context, '/contact');
                       break;
                     case 4:
-                      Navigator.pushNamed(context, '/radio');
+                      await _openMoreMenu();
                       break;
                   }
                 },
