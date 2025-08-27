@@ -1,10 +1,8 @@
-// audio_handler.dart
 import 'dart:async';
 import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:just_audio/just_audio.dart';
 
-// 🔹 Global acessível em toda a app
 late AudioHandler audioHandler;
 
 class RadioAudioHandler extends BaseAudioHandler with SeekHandler {
@@ -18,11 +16,30 @@ class RadioAudioHandler extends BaseAudioHandler with SeekHandler {
     final session = await AudioSession.instance;
     await session.configure(const AudioSessionConfiguration.music());
 
-    // Não adiciona nada em queue nem mediaItem.
-    // Estado do player atualizado sempre que algo mudar.
+await _player.setAndroidAudioAttributes(
+  const AndroidAudioAttributes(
+    contentType: AndroidAudioContentType.music,
+    usage: AndroidAudioUsage.media,
+  ),
+);
+
+
+    session.becomingNoisyEventStream.listen((_) {
+      if (_player.playing) pause();
+    });
+
+    session.interruptionEventStream.listen((event) async {
+      if (event.begin) {
+        if (event.type == AudioInterruptionType.pause ||
+            event.type == AudioInterruptionType.duck) {
+          if (_player.playing) await pause();
+        }
+      } else {}
+    });
+
     _player.playbackEventStream.listen((event) {
       playbackState.add(
-        PlaybackState(
+        playbackState.value.copyWith(
           controls: [
             _player.playing ? MediaControl.pause : MediaControl.play,
             MediaControl.stop,
@@ -31,6 +48,7 @@ class RadioAudioHandler extends BaseAudioHandler with SeekHandler {
           processingState: _mapProcessingState(_player.processingState),
           playing: _player.playing,
           updatePosition: _player.position,
+          bufferedPosition: _player.bufferedPosition,
           speed: _player.speed,
           systemActions: const {
             MediaAction.play,
@@ -57,18 +75,14 @@ class RadioAudioHandler extends BaseAudioHandler with SeekHandler {
     }
   }
 
-  // ✅ Carrega e toca SEMPRE a URL do Remote Config (vem em item.id)
   @override
   Future<void> playMediaItem(MediaItem item) async {
     final url = item.id.trim();
     if (url.isEmpty) return;
 
-    // Troca de fonte
-    await _player.setAudioSource(AudioSource.uri(Uri.parse(url)));
-    // Atualiza metadados (title/artist/artUri/id) vindos do RC
     mediaItem.add(item);
 
-    // Toca
+    await _player.setAudioSource(AudioSource.uri(Uri.parse(url)));
     if (!_player.playing) {
       await _player.play();
     }
@@ -82,18 +96,33 @@ class RadioAudioHandler extends BaseAudioHandler with SeekHandler {
 
   @override
   Future<void> stop() async {
-    await _player.stop();
-    return super.stop();
+    try {
+      await _player.stop();
+    } finally {
+      playbackState.add(
+        playbackState.value.copyWith(
+          processingState: AudioProcessingState.idle,
+          playing: false,
+          controls: const [MediaControl.play],
+        ),
+      );
+      await super.stop();
+    }
   }
 
-  // (Opcional) caso queira trocar só a URL manualmente em outro ponto
+  @override
+  Future<void> onTaskRemoved() async {
+    if (_player.playing) {
+      return;
+    }
+    await stop();
+  }
+
   Future<void> setStreamUrl(String url) async {
     await _player.setAudioSource(AudioSource.uri(Uri.parse(url)));
-    // Não seta metadados aqui — playMediaItem é a fonte da verdade.
   }
 }
 
-// Inicializa e preenche o global
 Future<AudioHandler> initAudioService() async {
   audioHandler = await AudioService.init(
     builder: () => RadioAudioHandler(),
@@ -101,7 +130,11 @@ Future<AudioHandler> initAudioService() async {
       androidResumeOnClick: true,
       androidNotificationChannelId: 'radio_player_channel',
       androidNotificationChannelName: 'Radio Playback',
-      androidNotificationOngoing: true,
+      androidNotificationChannelDescription:
+          'Canal de notificação para reprodução de rádio',
+      androidShowNotificationBadge: false,
+      androidStopForegroundOnPause: false,
+      androidNotificationClickStartsActivity: true,
     ),
   );
   return audioHandler;

@@ -54,8 +54,8 @@ dependencies:
   wordpress_client: ^8.5.4
   flutter_dotenv: ^6.0.0
   audio_service: ^0.18.12
-  just_audio: ^0.9.40
-  audio_session: ^0.1.19
+  just_audio: ^0.10.4
+  audio_session: ^0.2.2
   rxdart: ^0.27.7
 
 dev_dependencies:

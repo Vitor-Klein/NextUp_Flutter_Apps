@@ -112,46 +112,66 @@ class _HomePageState extends State<HomePage> {
   Future<void> _openMoreMenu() async {
     final result = await showModalBottomSheet<String>(
       context: context,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
+      backgroundColor: Colors.transparent, // deixa transparente
       builder: (ctx) {
-        return SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(height: 8),
-              Container(
-                width: 40,
-                height: 4,
-                margin: const EdgeInsets.only(bottom: 4),
-                decoration: BoxDecoration(
-                  color: Colors.black12,
-                  borderRadius: BorderRadius.circular(2),
+        return Align(
+          alignment: Alignment.bottomCenter,
+          child: FractionallySizedBox(
+            widthFactor: 1.0, // 90% da largura da tela
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(16),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 12),
-                child: Text(
-                  'Mais opções',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              child: SafeArea(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox(height: 8),
+                    Container(
+                      width: 40,
+                      height: 4,
+                      margin: const EdgeInsets.only(bottom: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.black12,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 12),
+                      child: Text(
+                        'Mais opções',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                    const Divider(height: 1),
+                    ListTile(
+                      leading: const Icon(
+                        Icons.radio,
+                        color: Color(0xFF2b4a83),
+                      ),
+                      title: const Text('Rádio'),
+                      onTap: () => Navigator.pop(ctx, 'radio'),
+                    ),
+                    const Divider(height: 1),
+                    ListTile(
+                      leading: const Icon(
+                        Icons.schedule,
+                        color: Color(0xFF2b4a83),
+                      ),
+                      title: const Text('Schedule'),
+                      onTap: () => Navigator.pop(ctx, 'schedule'),
+                    ),
+                    const SizedBox(height: 8),
+                  ],
                 ),
               ),
-              const Divider(height: 1),
-              ListTile(
-                leading: const Icon(Icons.radio, color: Color(0xFF2b4a83)),
-                title: const Text('Rádio'),
-                onTap: () => Navigator.pop(ctx, 'radio'),
-              ),
-              const Divider(height: 1),
-              ListTile(
-                leading: const Icon(Icons.schedule, color: Color(0xFF2b4a83)),
-                title: const Text('Schedule'),
-                onTap: () => Navigator.pop(ctx, 'schedule'),
-              ),
-              const SizedBox(height: 8),
-            ],
+            ),
           ),
         );
       },
