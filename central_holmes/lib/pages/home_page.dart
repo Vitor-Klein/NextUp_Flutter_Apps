@@ -227,16 +227,20 @@ class _HomePageState extends State<HomePage> {
                           fit: BoxFit.contain,
                         ),
                       ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: _ImageButton(
-                          imageAsset: 'assets/more.png',
-                          onTap: () => Navigator.pushNamed(context, '/more'),
-                          height: 80,
-                          borderRadius: 14,
-                          fit: BoxFit.contain,
+
+                      // só renderiza o botão "More" se showMenu for true
+                      if (showMenu) ...[
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: _ImageButton(
+                            imageAsset: 'assets/more.png',
+                            onTap: () => Navigator.pushNamed(context, '/more'),
+                            height: 80,
+                            borderRadius: 14,
+                            fit: BoxFit.contain,
+                          ),
                         ),
-                      ),
+                      ],
                     ],
                   ),
                 ),
