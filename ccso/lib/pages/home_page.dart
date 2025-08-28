@@ -43,6 +43,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _launchBanner() async {
+    if (statusLinkUrl.isEmpty) return;
     final Uri uri = Uri.parse(statusLinkUrl);
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.platformDefault);
@@ -50,31 +51,30 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _requestNotificationPermissions() async {
-    NotificationSettings settings = await _firebaseMessaging.requestPermission(
+    final settings = await _firebaseMessaging.requestPermission(
       alert: true,
       badge: true,
       sound: true,
     );
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      print('Permissões de notificação concedidas');
+      // Permissões concedidas
     } else {
-      print('Permissões de notificação negadas');
+      // Permissões negadas
     }
   }
 
   void _initializeFirebaseMessaging() {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Recebeu mensagem no foreground: ${message.notification?.title}');
       _showLocalNotification(message);
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('Usuário abriu a notificação');
+      // Usuário abriu a notificação
     });
 
     _firebaseMessaging.getToken().then((token) {
-      print('Token FCM: $token');
+      // print('Token FCM: $token');
     });
   }
 
@@ -119,28 +119,34 @@ class _HomePageState extends State<HomePage> {
         : remoteConfig.getString('ios_share_url');
 
     final String mensagem = 'Check out this amazing app! Download now:\n$link';
-
     await SharePlus.instance.share(ShareParams(text: mensagem));
   }
 
   @override
   Widget build(BuildContext context) {
+    final double buttonsBottom = (showStatus && statusImageUrl.isNotEmpty)
+        ? 110
+        : 30;
+
     return Scaffold(
       body: Stack(
         children: [
+          // Fundo
           SizedBox.expand(
             child: Image.asset('assets/background.jpg', fit: BoxFit.cover),
           ),
+
+          // Conteúdo
           SafeArea(
-            child: Column(
-              children: [
-                // Top menu
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      PopupMenuButton<String>(
+            child: SizedBox.expand(
+              child: Stack(
+                children: [
+                  // Top menu
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Align(
+                      alignment: Alignment.topRight,
+                      child: PopupMenuButton<String>(
                         icon: const Icon(
                           Icons.more_vert,
                           size: 28,
@@ -166,95 +172,96 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ],
                       ),
-                    ],
-                  ),
-                ),
-
-                // Content with scroll
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 250),
-                        GestureDetector(
-                          onTap: () async {
-                            final Uri telUri = Uri(scheme: 'tel', path: '988');
-                            if (await canLaunchUrl(telUri)) {
-                              await launchUrl(telUri);
-                            }
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.symmetric(vertical: 2),
-                            width: MediaQuery.of(context).size.width * 0.95,
-                            height: 200,
-                            decoration: BoxDecoration(
-                              image: const DecorationImage(
-                                image: AssetImage('assets/A_Button.png'),
-                                fit: BoxFit.cover,
-                              ),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: _ImageButton(
-                                  label: "",
-                                  imageAsset: 'assets/About.png',
-                                  onTap: () =>
-                                      Navigator.pushNamed(context, '/about'),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: _ImageButton(
-                                  label: "",
-                                  imageAsset: 'assets/Resources.png',
-                                  onTap: () => Navigator.pushNamed(
-                                    context,
-                                    '/resources',
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: _ImageButton(
-                                  label: "",
-                                  imageAsset: 'assets/Share.png',
-                                  onTap: _compartilharApp,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                      ],
                     ),
                   ),
-                ),
 
-                // Banner fixo no final
-                if (showStatus && statusImageUrl.isNotEmpty)
-                  GestureDetector(
-                    onTap: _launchBanner,
-                    child: Container(
-                      height: 100,
-                      width: double.infinity,
-                      margin: const EdgeInsets.symmetric(vertical: 15),
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(statusImageUrl),
-                          fit: BoxFit.contain,
+                  // Botão grande (ligar 988)
+                  Positioned.fill(
+                    top: 300,
+                    bottom: 220,
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: GestureDetector(
+                        onTap: () async {
+                          final Uri telUri = Uri(scheme: 'tel', path: '988');
+                          if (await canLaunchUrl(telUri)) {
+                            await launchUrl(telUri);
+                          }
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.95,
+                          height: 200,
+                          decoration: BoxDecoration(
+                            image: const DecorationImage(
+                              image: AssetImage('assets/A_Button.png'),
+                              fit: BoxFit.cover,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
-                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
                   ),
-              ],
+
+                  // Banner fixo no fundo (atrás dos botões)
+                  if (showStatus && statusImageUrl.isNotEmpty)
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      child: GestureDetector(
+                        onTap: _launchBanner,
+                        child: Container(
+                          height: 100,
+                          margin: const EdgeInsets.symmetric(vertical: 15),
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: NetworkImage(statusImageUrl),
+                              fit: BoxFit.contain,
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                  // Três botões (sempre acima do banner)
+                  Positioned(
+                    left: 8,
+                    right: 8,
+                    bottom: buttonsBottom,
+                    top: 500,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: _ImageButton(
+                            label: "",
+                            imageAsset: 'assets/About.png',
+                            onTap: () => Navigator.pushNamed(context, '/about'),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: _ImageButton(
+                            label: "",
+                            imageAsset: 'assets/Resources.png',
+                            onTap: () =>
+                                Navigator.pushNamed(context, '/resources'),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: _ImageButton(
+                            label: "",
+                            imageAsset: 'assets/Share.png',
+                            onTap: _compartilharApp,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -298,14 +305,15 @@ class _ImageButton extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          Text(
-            label,
-            style: const TextStyle(
-              fontSize: 14,
-              color: Colors.white,
-              fontWeight: FontWeight.w500,
+          if (label.isNotEmpty)
+            Text(
+              label,
+              style: const TextStyle(
+                fontSize: 14,
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
             ),
-          ),
         ],
       ),
     );
