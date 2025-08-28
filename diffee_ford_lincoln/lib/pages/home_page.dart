@@ -61,24 +61,23 @@ class _HomePageState extends State<HomePage> {
     );
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      print('Permissões de notificação concedidas');
+      // Permissões concedidas
     } else {
-      print('Permissões de notificação negadas');
+      // Permissões negadas
     }
   }
 
   void _initializeFirebaseMessaging() {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('Recebeu mensagem no foreground: ${message.notification?.title}');
       _showLocalNotification(message);
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('Usuário abriu a notificação');
+      // Usuário abriu a notificação
     });
 
     _firebaseMessaging.getToken().then((token) {
-      print('Token FCM: $token');
+      // print('Token FCM: $token');
     });
   }
 
@@ -130,184 +129,224 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          // Fundo
-          Positioned.fill(
-            child: Image.asset('assets/background.jpg', fit: BoxFit.cover),
-          ),
+      body: LayoutBuilder(
+        builder: (context, c) {
+          final h = c.maxHeight;
+          final w = c.maxWidth;
 
-          // Conteúdo
-          SafeArea(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 15,
-                    vertical: 25,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+          double clamp(double v, double min, double max) =>
+              v < min ? min : (v > max ? max : v);
+
+          // Margens gerais
+          final side = clamp(w * 0.05, 14, 22);
+          final topBarPad = clamp(h * 0.02, 12, 24);
+
+          // Gaps verticais entre blocos
+          final gapXS = clamp(h * 0.18, 23, 120);
+          final gapS = clamp(h * 0.02, 12, 20);
+          final gapM = clamp(h * 0.03, 16, 28);
+          final gapL = clamp(h * 0.04, 20, 36);
+
+          // Botão central (maior, próximo ao mockup)
+          final centralW = clamp(w * 0.40, 180, 250);
+          final centralH = clamp(h * 0.07, 48, 56);
+
+          // Cards do topo (2 lado a lado) — mais “retangulares”
+          final topCardW = (w - side * 2 - gapS) / 2;
+          final topCardAspect = 4 / 5; // w:h (mais próximo do mock)
+          final topCardH = topCardW / topCardAspect;
+
+          // Trinca inferior — um pouco menores
+          final bottomSide = clamp(w * 0.5, 80, 117);
+          final bottomHeight = clamp(h * 0.5, 80, 135);
+
+          // Footer
+          final footerH = clamp(h * 0.12, 88, 110);
+
+          return Stack(
+            children: [
+              // Fundo
+              Positioned.fill(
+                child: Image.asset('assets/background.jpg', fit: BoxFit.cover),
+              ),
+
+              // Conteúdo
+              SafeArea(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: side),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Visibility(
-                        maintainSize: true,
-                        maintainAnimation: true,
-                        maintainState: true,
-                        child: PopupMenuButton<String>(
-                          icon: Image.asset('assets/more_icon.png', height: 25),
-                          onSelected: (value) {
-                            switch (value) {
-                              case 'make_reservation':
-                                Navigator.pushNamed(
-                                  context,
-                                  '/make_reservation',
-                                );
-                                break;
-                              case 'schedule_reservation':
-                                Navigator.pushNamed(
-                                  context,
-                                  '/schedule_test_drive',
-                                );
-                                break;
-                              case 'messages':
-                                Navigator.pushNamed(context, '/messages');
-                                break;
-                            }
-                          },
-                          itemBuilder: (context) {
-                            final items = <PopupMenuEntry<String>>[];
-
-                            if (showMakeReservation) {
-                              items.add(
-                                const PopupMenuItem(
-                                  value: 'make_reservation',
-                                  child: Text('Make a Reservation'),
-                                ),
-                              );
-                            }
-
-                            if (showScheduleReservation) {
-                              items.add(
-                                const PopupMenuItem(
-                                  value: 'schedule_reservation',
-                                  child: Text('Schedule a Reservation'),
-                                ),
-                              );
-                            }
-
-                            // Sempre visível
-                            items.add(
-                              const PopupMenuItem(
-                                value: 'messages',
-                                child: Text('Messages'),
+                      // Top bar com menu
+                      Padding(
+                        padding: EdgeInsets.only(top: topBarPad, bottom: gapS),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            PopupMenuButton<String>(
+                              padding: EdgeInsets.zero,
+                              icon: Image.asset(
+                                'assets/more_icon.png',
+                                height: clamp(h * 0.03, 20, 26),
                               ),
-                            );
-
-                            return items;
-                          },
+                              onSelected: (v) {
+                                switch (v) {
+                                  case 'make_reservation':
+                                    Navigator.pushNamed(
+                                      context,
+                                      '/make_reservation',
+                                    );
+                                    break;
+                                  case 'schedule_reservation':
+                                    Navigator.pushNamed(
+                                      context,
+                                      '/schedule_test_drive',
+                                    );
+                                    break;
+                                  case 'messages':
+                                    Navigator.pushNamed(context, '/messages');
+                                    break;
+                                }
+                              },
+                              itemBuilder: (context) {
+                                final it = <PopupMenuEntry<String>>[];
+                                if (showMakeReservation) {
+                                  it.add(
+                                    const PopupMenuItem(
+                                      value: 'make_reservation',
+                                      child: Text('Make a Reservation'),
+                                    ),
+                                  );
+                                }
+                                if (showScheduleReservation) {
+                                  it.add(
+                                    const PopupMenuItem(
+                                      value: 'schedule_reservation',
+                                      child: Text('Schedule a Reservation'),
+                                    ),
+                                  );
+                                }
+                                it.add(
+                                  const PopupMenuItem(
+                                    value: 'messages',
+                                    child: Text('Messages'),
+                                  ),
+                                );
+                                return it;
+                              },
+                            ),
+                          ],
                         ),
                       ),
+
+                      // Hero + botão central (fica um pouco mais alto e respiro melhor)
+                      SizedBox(height: gapXS),
+                      Center(
+                        child: _CentralActionButton(
+                          imageAsset: 'assets/shop_button.png',
+                          width: centralW,
+                          height: centralH,
+                          onTap: () => openWeb(
+                            context,
+                            'https://www.diffeeford.net/used-inventory/index.htm',
+                            title: 'Shop Pre-owned',
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(height: gapM),
+
+                      // Linha com 2 cards (Ford / Lincoln)
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _TopImageButton(
+                              imageAsset: 'assets/shop_new_ford.png',
+                              width: topCardW,
+                              height: topCardH,
+                              onTap: () => openWeb(
+                                context,
+                                'https://www.diffeeford.net/',
+                                title: 'Shop New Ford',
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: gapS),
+                          Expanded(
+                            child: _TopImageButton(
+                              imageAsset: 'assets/shop_new_lincoln.png',
+                              width: topCardW,
+                              height: topCardH,
+                              onTap: () => openWeb(
+                                context,
+                                'https://www.diffeelincoln.com/',
+                                title: 'Shop New Lincoln',
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      SizedBox(height: gapL),
+
+                      // Trinca inferior (Service / Contact / Share)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          _BottomImageButton(
+                            imageAsset: 'assets/service_button.png',
+                            side: bottomSide,
+                            height: bottomHeight,
+                            onTap: () => openWeb(
+                              context,
+                              'https://www.diffeeford.net/schedule-service.htm',
+                              title: 'Service',
+                            ),
+                          ),
+                          _BottomImageButton(
+                            imageAsset: 'assets/contact_us_button.png',
+                            side: bottomSide,
+                            height: bottomHeight,
+
+                            onTap: () =>
+                                Navigator.pushNamed(context, '/contact'),
+                          ),
+                          _BottomImageButton(
+                            imageAsset: 'assets/share_button.png',
+                            side: bottomSide,
+                            height: bottomHeight,
+
+                            onTap: _compartilharApp,
+                          ),
+                        ],
+                      ),
+
+                      // Reserva pro footer
+                      SizedBox(height: footerH * 0.70),
                     ],
                   ),
                 ),
-
-                const SizedBox(height: 100),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Center(
-                    child: _CentralActionButton(
-                      imageAsset: 'assets/shop_button.png',
-                      onTap: () => openWeb(
-                        context,
-                        'https://www.diffeeford.net/used-inventory/index.htm',
-                        title: 'Shop Pre-owned', // opcional
-                      ),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _TopImageButton(
-                        imageAsset: 'assets/shop_new_ford.png',
-                        onTap: () => openWeb(
-                          context,
-                          'https://www.diffeeford.net/',
-                          title: 'Shop New Ford', // opcional
-                        ),
-                      ),
-                      _TopImageButton(
-                        imageAsset: 'assets/shop_new_lincoln.png',
-                        onTap: () => openWeb(
-                          context,
-                          'https://www.diffeelincoln.com/',
-                          title: 'Shop New Lincoln', // opcional
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 60),
-
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween, // aqui aplica
-                    children: [
-                      _BottomImageButton(
-                        imageAsset: 'assets/service_button.png',
-                        onTap: () => openWeb(
-                          context,
-                          'https://www.diffeeford.net/schedule-service.htm',
-                          title: 'Service',
-                        ),
-                      ),
-                      _BottomImageButton(
-                        imageAsset: 'assets/contact_us_button.png',
-                        onTap: () => Navigator.pushNamed(context, '/contact'),
-                      ),
-                      _BottomImageButton(
-                        imageAsset: 'assets/share_button.png',
-                        onTap: _compartilharApp,
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 76), // espaço para o footer fixo
-              ],
-            ),
-          ),
-
-          // Footer clicável controlado por 'footer_link'
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: GestureDetector(
-              onTap: () => openWeb(
-                context,
-                footerLink, // <-- do Remote Config
-                title: 'Employee Pricing',
               ),
-              child: Image.asset(
-                'assets/footer.png',
-                height: 100,
-                width: double.infinity,
-                fit: BoxFit.cover,
+
+              // Footer fixo clicável
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: GestureDetector(
+                  onTap: () =>
+                      openWeb(context, footerLink, title: 'Employee Pricing'),
+                  child: Image.asset(
+                    'assets/footer.png',
+                    height: footerH,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
-            ),
-          ),
-        ],
+            ],
+          );
+        },
       ),
     );
   }
@@ -316,26 +355,32 @@ class _HomePageState extends State<HomePage> {
 class _CentralActionButton extends StatelessWidget {
   final String imageAsset;
   final VoidCallback onTap;
-
-  const _CentralActionButton({required this.imageAsset, required this.onTap});
+  final double width;
+  final double height;
+  const _CentralActionButton({
+    required this.imageAsset,
+    required this.onTap,
+    required this.width,
+    required this.height,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: onTap,
       child: Animate(
         effects: [
           ScaleEffect(
-            begin: const Offset(1.0, 1.0),
-            end: const Offset(1.05, 1.05),
-            duration: 200.ms,
+            begin: const Offset(1, 1),
+            end: const Offset(1.04, 1.04),
+            duration: 160.ms,
           ),
         ],
         onComplete: (c) => c.reverse(),
-        child: Container(
-          width: 250,
-          height: 60,
-          padding: const EdgeInsets.all(12),
+        child: SizedBox(
+          width: width,
+          height: height,
           child: Image.asset(imageAsset, fit: BoxFit.contain),
         ),
       ),
@@ -346,26 +391,32 @@ class _CentralActionButton extends StatelessWidget {
 class _TopImageButton extends StatelessWidget {
   final String imageAsset;
   final VoidCallback onTap;
-
-  const _TopImageButton({required this.imageAsset, required this.onTap});
+  final double width;
+  final double height;
+  const _TopImageButton({
+    required this.imageAsset,
+    required this.onTap,
+    required this.width,
+    required this.height,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: onTap,
       child: Animate(
         effects: [
           ScaleEffect(
-            begin: const Offset(1.0, 1.0),
-            end: const Offset(1.05, 1.05),
-            duration: 200.ms,
+            begin: const Offset(1, 1),
+            end: const Offset(1.03, 1.03),
+            duration: 160.ms,
           ),
         ],
         onComplete: (c) => c.reverse(),
         child: Container(
-          height: 220,
-          width: 180,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(6)),
+          height: height,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(12)),
           clipBehavior: Clip.antiAlias,
           child: Image.asset(imageAsset, fit: BoxFit.cover),
         ),
@@ -377,26 +428,30 @@ class _TopImageButton extends StatelessWidget {
 class _BottomImageButton extends StatelessWidget {
   final String imageAsset;
   final VoidCallback onTap;
-
-  const _BottomImageButton({required this.imageAsset, required this.onTap});
+  final double side;
+  final double height;
+  const _BottomImageButton({
+    required this.imageAsset,
+    required this.onTap,
+    required this.side,
+    required this.height,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTap: onTap,
       child: Animate(
-        effects: [
-          ScaleEffect(
-            begin: const Offset(1.0, 1.0),
-            end: const Offset(1.03, 1.03),
-            duration: 160.ms,
-          ),
-        ],
+        effects: [],
         onComplete: (c) => c.reverse(),
         child: SizedBox(
-          height: 110,
-          width: 110,
-          child: Image.asset(imageAsset, fit: BoxFit.cover),
+          width: side,
+          height: height,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(0),
+            child: Image.asset(imageAsset, fit: BoxFit.cover),
+          ),
         ),
       ),
     );
