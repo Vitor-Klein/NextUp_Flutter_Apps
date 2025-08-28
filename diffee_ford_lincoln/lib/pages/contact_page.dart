@@ -67,7 +67,7 @@ class ContactPage extends StatelessWidget {
               icon: Icons.call,
               label: 'Call',
               color: Colors.lightBlue,
-              onTap: () => _launchUrl('tel:+8667285874'),
+              onTap: () => _launchUrl('tel:+14052624546'),
             ),
             const SizedBox(height: 12),
             _contactButton(
