@@ -16,7 +16,7 @@ class AboutPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset('assets/header.jpg'),
+            Image.asset('assets/header.png'),
             const SizedBox(height: 16),
             Text(
               'Associated Environmental Industries, Corp. was founded in 1992 by Robert C. Keyes in Norman, Oklahoma.\n\n'
