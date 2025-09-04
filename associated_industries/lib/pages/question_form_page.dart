@@ -97,133 +97,310 @@ class _QuestionFormPageState extends State<QuestionFormPage> {
   }
 
   @override
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final headline = theme.textTheme.titleLarge?.copyWith(
+      fontWeight: FontWeight.w700,
+      letterSpacing: .2,
+    );
+
+    // Estilos locais só para esta tela (não alteram a lógica)
+    final fieldBorder = OutlineInputBorder(
+      borderRadius: BorderRadius.circular(14),
+      borderSide: BorderSide(color: theme.colorScheme.outlineVariant),
+    );
+
+    final filled = theme.inputDecorationTheme.filled ?? true;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Question Form')),
-      body: SafeArea(
-        child: Center(
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 520),
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Form(
-                key: _formKey,
-                child: ListView(
-                  children: [
-                    Text(
-                      'Tell us a bit about you',
-                      style: theme.textTheme.titleLarge,
-                    ),
-                    const SizedBox(height: 12),
-
-                    // Name
-                    TextFormField(
-                      controller: _nameCtrl,
-                      textInputAction: TextInputAction.next,
-                      decoration: const InputDecoration(
-                        labelText: 'Name',
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: _req,
-                    ),
-                    const SizedBox(height: 12),
-
-                    // Email
-                    TextFormField(
-                      controller: _emailCtrl,
-                      keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next,
-                      decoration: const InputDecoration(
-                        labelText: 'Email',
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: _emailValidator,
-                    ),
-                    const SizedBox(height: 12),
-
-                    // Phone
-                    TextFormField(
-                      controller: _phoneCtrl,
-                      keyboardType: TextInputType.phone,
-                      textInputAction: TextInputAction.next,
-                      decoration: const InputDecoration(
-                        labelText: 'Phone number',
-                        hintText: '(XX) XXXXX-XXXX',
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: _req,
-                    ),
-                    const SizedBox(height: 12),
-
-                    // Company name
-                    TextFormField(
-                      controller: _companyCtrl,
-                      textInputAction: TextInputAction.next,
-                      decoration: const InputDecoration(
-                        labelText: 'Company name',
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: _req,
-                    ),
-                    const SizedBox(height: 12),
-
-                    // Job site address
-                    TextFormField(
-                      controller: _jobSiteCtrl,
-                      textInputAction: TextInputAction.done,
-                      decoration: const InputDecoration(
-                        labelText: 'Job site address',
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: _req,
-                    ),
-                    const SizedBox(height: 12),
-
-                    // Help type
-                    DropdownButtonFormField<String>(
-                      value: _selectedHelpType,
-                      items: _helpTypes
-                          .map(
-                            (t) => DropdownMenuItem(value: t, child: Text(t)),
-                          )
-                          .toList(),
-                      onChanged: _submitting
-                          ? null
-                          : (v) => setState(() => _selectedHelpType = v),
-                      decoration: const InputDecoration(
-                        labelText: 'What can we help you with?',
-                        border: OutlineInputBorder(),
-                      ),
-                      validator: (v) =>
-                          v == null ? 'Please choose an option' : null,
-                    ),
-                    const SizedBox(height: 20),
-
-                    // Submit
-                    SizedBox(
-                      height: 48,
-                      child: FilledButton(
-                        onPressed: _submitting ? null : _submit,
-                        child: _submitting
-                            ? const SizedBox(
-                                width: 22,
-                                height: 22,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
+      // AppBar minimalista combinando com o gradiente
+      appBar: AppBar(
+        title: const Text('Question Form'),
+        centerTitle: true,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              theme.colorScheme.primary.withOpacity(.06),
+              theme.colorScheme.surface,
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 560),
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Card(
+                  elevation: 8,
+                  shadowColor: theme.colorScheme.primary.withOpacity(.25),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  clipBehavior: Clip.antiAlias,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
+                    child: Form(
+                      key: _formKey,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: [
+                          // Cabeçalho
+                          Row(
+                            children: [
+                              Container(
+                                width: 44,
+                                height: 44,
+                                decoration: BoxDecoration(
+                                  color: theme.colorScheme.primaryContainer,
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
-                              )
-                            : const Text('Send'),
+                                child: Icon(
+                                  Icons.forum_rounded,
+                                  color: theme.colorScheme.onPrimaryContainer,
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Tell us a bit about you',
+                                      style: headline,
+                                    ),
+                                    const SizedBox(height: 4),
+                                    Text(
+                                      'We’ll use this info to reach out and help you faster.',
+                                      style: theme.textTheme.bodyMedium
+                                          ?.copyWith(
+                                            color: theme
+                                                .textTheme
+                                                .bodyMedium
+                                                ?.color
+                                                ?.withOpacity(.75),
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 18),
+                          const Divider(height: 24),
+
+                          // NAME
+                          TextFormField(
+                            controller: _nameCtrl,
+                            textInputAction: TextInputAction.next,
+                            decoration: InputDecoration(
+                              labelText: 'Name',
+                              prefixIcon: const Icon(Icons.person_rounded),
+                              filled: filled,
+                              border: fieldBorder,
+                              enabledBorder: fieldBorder,
+                              focusedBorder: fieldBorder.copyWith(
+                                borderSide: BorderSide(
+                                  color: theme.colorScheme.primary,
+                                  width: 1.4,
+                                ),
+                              ),
+                            ),
+                            validator: _req,
+                          ),
+                          const SizedBox(height: 12),
+
+                          // EMAIL
+                          TextFormField(
+                            controller: _emailCtrl,
+                            keyboardType: TextInputType.emailAddress,
+                            textInputAction: TextInputAction.next,
+                            decoration: InputDecoration(
+                              labelText: 'Email',
+                              prefixIcon: const Icon(
+                                Icons.alternate_email_rounded,
+                              ),
+                              filled: filled,
+                              border: fieldBorder,
+                              enabledBorder: fieldBorder,
+                              focusedBorder: fieldBorder.copyWith(
+                                borderSide: BorderSide(
+                                  color: theme.colorScheme.primary,
+                                  width: 1.4,
+                                ),
+                              ),
+                            ),
+                            validator: _emailValidator,
+                          ),
+                          const SizedBox(height: 12),
+
+                          // PHONE
+                          TextFormField(
+                            controller: _phoneCtrl,
+                            keyboardType: TextInputType.phone,
+                            textInputAction: TextInputAction.next,
+                            decoration: InputDecoration(
+                              labelText: 'Phone number',
+                              hintText: '(XX) XXXXX-XXXX',
+                              prefixIcon: const Icon(Icons.phone_rounded),
+                              filled: filled,
+                              border: fieldBorder,
+                              enabledBorder: fieldBorder,
+                              focusedBorder: fieldBorder.copyWith(
+                                borderSide: BorderSide(
+                                  color: theme.colorScheme.primary,
+                                  width: 1.4,
+                                ),
+                              ),
+                            ),
+                            validator: _req,
+                          ),
+                          const SizedBox(height: 12),
+
+                          // COMPANY
+                          TextFormField(
+                            controller: _companyCtrl,
+                            textInputAction: TextInputAction.next,
+                            decoration: InputDecoration(
+                              labelText: 'Company name',
+                              prefixIcon: const Icon(Icons.business_rounded),
+                              filled: filled,
+                              border: fieldBorder,
+                              enabledBorder: fieldBorder,
+                              focusedBorder: fieldBorder.copyWith(
+                                borderSide: BorderSide(
+                                  color: theme.colorScheme.primary,
+                                  width: 1.4,
+                                ),
+                              ),
+                            ),
+                            validator: _req,
+                          ),
+                          const SizedBox(height: 12),
+
+                          // JOB SITE
+                          TextFormField(
+                            controller: _jobSiteCtrl,
+                            textInputAction: TextInputAction.done,
+                            decoration: InputDecoration(
+                              labelText: 'Job site address',
+                              prefixIcon: const Icon(Icons.location_on_rounded),
+                              filled: filled,
+                              border: fieldBorder,
+                              enabledBorder: fieldBorder,
+                              focusedBorder: fieldBorder.copyWith(
+                                borderSide: BorderSide(
+                                  color: theme.colorScheme.primary,
+                                  width: 1.4,
+                                ),
+                              ),
+                            ),
+                            validator: _req,
+                          ),
+                          const SizedBox(height: 12),
+
+                          // HELP TYPE
+                          DropdownButtonFormField<String>(
+                            value: _selectedHelpType,
+                            items: _helpTypes
+                                .map(
+                                  (t) => DropdownMenuItem(
+                                    value: t,
+                                    child: Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.help_center_rounded,
+                                          size: 20,
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Text(t),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                            onChanged: _submitting
+                                ? null
+                                : (v) => setState(() => _selectedHelpType = v),
+                            decoration: InputDecoration(
+                              labelText: 'What can we help you with?',
+                              filled: filled,
+                              border: fieldBorder,
+                              enabledBorder: fieldBorder,
+                              focusedBorder: fieldBorder.copyWith(
+                                borderSide: BorderSide(
+                                  color: theme.colorScheme.primary,
+                                  width: 1.4,
+                                ),
+                              ),
+                            ),
+                            validator: (v) =>
+                                v == null ? 'Please choose an option' : null,
+                          ),
+                          const SizedBox(height: 20),
+
+                          // SUBMIT
+                          SizedBox(
+                            height: 52,
+                            child: FilledButton.icon(
+                              onPressed: _submitting ? null : _submit,
+                              icon: _submitting
+                                  ? const SizedBox(
+                                      width: 22,
+                                      height: 22,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                      ),
+                                    )
+                                  : const Icon(Icons.send_rounded),
+                              label: Text(_submitting ? 'Sending...' : 'Send'),
+                              style: FilledButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(14),
+                                ),
+                                textStyle: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+
+                          // Disclaimer
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.privacy_tip_outlined,
+                                size: 18,
+                                color: theme.textTheme.bodySmall?.color
+                                    ?.withOpacity(.7),
+                              ),
+                              const SizedBox(width: 6),
+                              Flexible(
+                                child: Text(
+                                  'By submitting, you agree to be contacted regarding your request.',
+                                  style: theme.textTheme.bodySmall?.copyWith(
+                                    color: theme.textTheme.bodySmall?.color
+                                        ?.withOpacity(.8),
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-
-                    const SizedBox(height: 12),
-                    Text(
-                      'By submitting, you agree to be contacted regarding your request.',
-                      style: theme.textTheme.bodySmall,
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),

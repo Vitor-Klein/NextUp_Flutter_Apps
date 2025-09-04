@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "202242835455",
+    "project_id": "bob-stoops-546de",
+    "storage_bucket": "bob-stoops-546de.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:202242835455:android:dbe5e07454ff6f822b5dca",
+        "android_client_info": {
+          "package_name": "app.android.bobstoops"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBCAZToP5ZCv-aqmn1tyNqnazcBNX_YYBs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
