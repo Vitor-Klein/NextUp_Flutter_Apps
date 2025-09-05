@@ -1,3 +1,4 @@
+import 'package:bob_stoops/pages/webview_page.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -19,6 +20,9 @@ class _HomePageState extends State<HomePage> {
       FlutterLocalNotificationsPlugin();
 
   bool showMenu = false;
+  bool showStatus = false;
+  String statusImageUrl = '';
+  String statusLinkUrl = '';
 
   @override
   void initState() {
@@ -29,13 +33,13 @@ class _HomePageState extends State<HomePage> {
     _loadBannerConfig();
   }
 
-  Future<void> _loadBannerConfig() async {
-    final remoteConfig = FirebaseRemoteConfig.instance;
-    await remoteConfig.fetchAndActivate();
-    setState(() {
-      showMenu = remoteConfig.getBool('show_menu');
-    });
-  }
+  // Future<void> _loadBannerConfig() async {
+  //   final remoteConfig = FirebaseRemoteConfig.instance;
+  //   await remoteConfig.fetchAndActivate();
+  //   setState(() {
+  //     showMenu = remoteConfig.getBool('show_menu');
+  //   });
+  // }
 
   void _requestNotificationPermissions() async {
     final settings = await _firebaseMessaging.requestPermission(
@@ -96,6 +100,25 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  Future<void> _loadBannerConfig() async {
+    final remoteConfig = FirebaseRemoteConfig.instance;
+    await remoteConfig.fetchAndActivate();
+
+    setState(() {
+      showStatus = remoteConfig.getBool('show_status');
+      statusImageUrl = remoteConfig.getString('status_image_url');
+      statusLinkUrl = remoteConfig.getString('status_link_url');
+    });
+  }
+
+  void _launchBanner() async {
+    if (statusLinkUrl.isEmpty) return;
+    final Uri uri = Uri.parse(statusLinkUrl);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.platformDefault);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final w = MediaQuery.of(context).size.width;
@@ -106,28 +129,62 @@ class _HomePageState extends State<HomePage> {
           true, // deixa a imagem de fundo subir atrás da AppBar
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        elevation: 1,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.notifications, color: Colors.white, size: 30),
+          onPressed: () {
+            Navigator.pushNamed(context, '/messages');
+          },
+        ),
         actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.notifications,
-              color: Colors.white,
-              size: 30,
+          DropdownButtonHideUnderline(
+            child: DropdownButton<String>(
+              icon: const Icon(Icons.more_vert, color: Colors.white, size: 30),
+              items: const [
+                DropdownMenuItem(value: 'Twitter', child: Text('Twitter')),
+                DropdownMenuItem(
+                  value: 'LaunchWithCoach',
+                  child: Text('Launch with Coach'),
+                ),
+              ],
+              onChanged: (value) async {
+                if (value == null) return;
+                switch (value) {
+                  case 'Twitter':
+                    openWeb(
+                      context,
+                      'https://twitter.com/CoachBobStoops',
+                      title: 'Twitter',
+                    );
+                    break;
+                  case 'LaunchWithCoach':
+                    final rc = FirebaseRemoteConfig.instance;
+                    await rc.fetchAndActivate();
+                    final launchUrl = rc
+                        .getString('launch_with_coach_url')
+                        .trim();
+                    if (launchUrl.isEmpty) {
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Link de "Launch with Coach" não configurado no Remote Config.',
+                            ),
+                          ),
+                        );
+                      }
+                      return;
+                    }
+                    openWeb(context, launchUrl, title: 'Launch with Coach');
+                    break;
+                }
+              },
             ),
-            onPressed: () {
-              Navigator.pushNamed(context, '/notifications');
-            },
           ),
-          IconButton(
-            icon: const Icon(Icons.more_vert, color: Colors.white, size: 30),
-            onPressed: () {
-              // ação ao clicar em "more"
-              Navigator.pushNamed(context, '/more');
-            },
-          ),
-          const SizedBox(width: 1),
+          const SizedBox(width: 8),
         ],
       ),
+
       backgroundColor: Colors.black,
       body: Stack(
         children: [
@@ -137,21 +194,26 @@ class _HomePageState extends State<HomePage> {
           ),
 
           // Banner no fundo
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: IgnorePointer(
-              child: Opacity(
-                opacity: 1,
-                child: Image.asset(
-                  'assets/banner.png',
-                  fit: BoxFit.contain,
+          if (showStatus && statusImageUrl.isNotEmpty)
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: GestureDetector(
+                onTap: _launchBanner,
+                child: Container(
                   height: 90,
+                  margin: const EdgeInsets.symmetric(vertical: 15),
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(statusImageUrl),
+                      fit: BoxFit.contain,
+                    ),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
               ),
             ),
-          ),
 
           // Conteúdo principal
           SafeArea(
@@ -185,7 +247,8 @@ class _HomePageState extends State<HomePage> {
                         child: _ImageButton(
                           imageAsset: 'assets/button_photos.png',
                           height: 38,
-                          onTap: () => Navigator.pushNamed(context, '/photos'),
+                          onTap: () =>
+                              Navigator.pushNamed(context, '/pictures'),
                         ),
                       ),
                     ],
@@ -193,17 +256,13 @@ class _HomePageState extends State<HomePage> {
 
                   const SizedBox(height: 18),
 
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Exclusive Content',
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                      ),
+                  Center(
+                    child: Image.asset(
+                      'assets/title.png',
+                      fit: BoxFit.contain,
+                      height: 30,
                     ),
                   ),
-
                   const SizedBox(height: 10),
 
                   Row(
@@ -212,7 +271,11 @@ class _HomePageState extends State<HomePage> {
                         child: _ImageBottomButton(
                           imageAsset: 'assets/watch.png',
                           height: 160,
-                          onTap: () => _openUrl('https://example.com/watch'),
+                          onTap: () => openWeb(
+                            context,
+                            'https://www.youtube.com/@coachbobstoops/videos',
+                            title: 'Watch Now',
+                          ),
                         ),
                       ),
                       const SizedBox(width: 10),
@@ -228,7 +291,11 @@ class _HomePageState extends State<HomePage> {
                         child: _ImageBottomButton(
                           imageAsset: 'assets/enter_win.png',
                           height: 160,
-                          onTap: () => _openUrl('https://example.com/contest'),
+                          onTap: () => openWeb(
+                            context,
+                            'https://docs.google.com/forms/d/e/1FAIpQLSf_cEdpgnMlmd3iyD56BlnnFxEDePYLQzB-DwH_MD3Qrxt2Ug/viewform?usp=pp_url',
+                            title: 'Enter to Win',
+                          ),
                         ),
                       ),
                     ],

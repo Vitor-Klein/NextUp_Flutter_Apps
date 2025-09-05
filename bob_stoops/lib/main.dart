@@ -6,6 +6,9 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'services/message_storage.dart';
 
 import 'pages/home_page.dart';
+import 'pages/about_page.dart';
+import 'pages/pictures_page.dart';
+import 'pages/messages_page.dart';
 import 'pages/splash_screen.dart';
 
 @pragma('vm:entry-point')
@@ -64,7 +67,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: const Color(0xFFF5F5F5),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.black87,
+          backgroundColor: Color(0xFFD32F2F),
           titleTextStyle: TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -81,11 +84,21 @@ class MyApp extends StatelessWidget {
           case '/home':
             builder = (_) => const HomePage();
             break;
+          case '/about':
+            builder = (_) => const AboutPage();
+            break;
+          case '/pictures':
+            builder = (_) => const PicturesPage();
+            break;
+          case '/messages':
+            builder = (_) => const MessagesPage();
+            break;
           default:
             builder = (_) => const HomePage();
         }
         return PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => builder(context),
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              builder(context),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(opacity: animation, child: child);
           },
