@@ -155,6 +155,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    // Define uma margem superior proporcional (ex: 25% da tela)
+    final topMargin = screenHeight * 0.42;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -167,7 +172,7 @@ class _HomePageState extends State<HomePage> {
           SafeArea(
             child: Column(
               children: [
-                const Spacer(flex: 15),
+                SizedBox(height: topMargin), // margem dinâmica
                 Align(
                   alignment: Alignment.centerRight,
                   child: Padding(
@@ -202,8 +207,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                const Spacer(flex: 1),
-
+                const Spacer(),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 0),
                   child: GestureDetector(

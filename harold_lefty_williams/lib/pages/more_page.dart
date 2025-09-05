@@ -13,7 +13,7 @@ class MorePage extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            Image.asset('assets/header.jpg'),
+            Image.asset('assets/header.png'),
             const SizedBox(height: 24),
             SocialButton(
               label: 'Meet & Greet',

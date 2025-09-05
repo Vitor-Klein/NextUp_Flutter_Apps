@@ -11,7 +11,7 @@ class AboutPage extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            Image.asset('assets/header.jpg'),
+            Image.asset('assets/header.png'),
             Container(
               width: 350,
               margin: const EdgeInsets.only(top: 20, bottom: 20),

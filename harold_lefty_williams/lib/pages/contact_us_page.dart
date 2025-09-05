@@ -45,7 +45,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
           key: _formKey,
           child: ListView(
             children: [
-              Image.asset('assets/header.jpg'),
+              Image.asset('assets/header.png'),
               SizedBox(height: 16),
               TextFormField(
                 controller: _nameController,
