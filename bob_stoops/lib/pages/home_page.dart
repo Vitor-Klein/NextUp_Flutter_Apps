@@ -33,14 +33,6 @@ class _HomePageState extends State<HomePage> {
     _loadBannerConfig();
   }
 
-  // Future<void> _loadBannerConfig() async {
-  //   final remoteConfig = FirebaseRemoteConfig.instance;
-  //   await remoteConfig.fetchAndActivate();
-  //   setState(() {
-  //     showMenu = remoteConfig.getBool('show_menu');
-  //   });
-  // }
-
   void _requestNotificationPermissions() async {
     final settings = await _firebaseMessaging.requestPermission(
       alert: true,
@@ -121,20 +113,16 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final w = MediaQuery.of(context).size.width;
-    final isNarrow = w < 380;
+    final paddingTop = MediaQuery.of(context).padding.top;
 
     return Scaffold(
-      extendBodyBehindAppBar:
-          true, // deixa a imagem de fundo subir atrás da AppBar
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.notifications, color: Colors.white, size: 30),
-          onPressed: () {
-            Navigator.pushNamed(context, '/messages');
-          },
+          onPressed: () => Navigator.pushNamed(context, '/messages'),
         ),
         actions: [
           DropdownButtonHideUnderline(
@@ -184,127 +172,128 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(width: 8),
         ],
       ),
-
       backgroundColor: Colors.black,
+
+      // ✅ Fundo 100% tela + artboard por cima
       body: Stack(
         children: [
-          // Fundo com imagem
+          // Fundo ocupando a tela inteira
           Positioned.fill(
             child: Image.asset('assets/background.png', fit: BoxFit.cover),
           ),
 
-          // Banner no fundo
-          if (showStatus && statusImageUrl.isNotEmpty)
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: GestureDetector(
-                onTap: _launchBanner,
-                child: Container(
-                  height: 90,
-                  margin: const EdgeInsets.symmetric(vertical: 15),
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(statusImageUrl),
-                      fit: BoxFit.contain,
+          // Seu layout proporcional por cima
+          ResponsiveArtboard(
+            designSize: const Size(1080, 1920),
+            // opcional: se quiser evitar que o conteúdo passe sob a status bar
+            safePadding: EdgeInsets.only(top: paddingTop),
+            // sem background aqui ✅
+            children: [
+              PercentBox(
+                left: 0.20,
+                top: 0.12,
+                width: 0.95,
+                height: 0.45,
+                child: Image.asset('assets/text.png', fit: BoxFit.contain),
+              ),
+              PercentBox(
+                left: 0.15,
+                top: 0.54,
+                width: 0.95,
+                height: 0.05,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: _ImageButton(
+                        imageAsset: 'assets/button_about.png',
+                        height: double.infinity,
+                        fit: BoxFit.fill,
+                        onTap: () => Navigator.pushNamed(context, '/about'),
+                      ),
                     ),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: _ImageButton(
+                        imageAsset: 'assets/button_photos.png',
+                        height: double.infinity,
+                        fit: BoxFit.fill,
+                        onTap: () => Navigator.pushNamed(context, '/pictures'),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-
-          // Conteúdo principal
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                children: [
-                  const SizedBox(height: 220),
-
-                  // Título grande como imagem
-                  Center(
-                    child: Image.asset(
-                      'assets/text.png',
-                      fit: BoxFit.contain,
-                      height: isNarrow ? 110 : 140,
-                    ),
-                  ),
-
-                  const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _ImageButton(
-                          imageAsset: 'assets/button_about.png',
-                          height: 38,
-                          onTap: () => Navigator.pushNamed(context, '/about'),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: _ImageButton(
-                          imageAsset: 'assets/button_photos.png',
-                          height: 38,
-                          onTap: () =>
-                              Navigator.pushNamed(context, '/pictures'),
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 18),
-
-                  Center(
-                    child: Image.asset(
-                      'assets/title.png',
-                      fit: BoxFit.contain,
-                      height: 30,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _ImageBottomButton(
-                          imageAsset: 'assets/watch.png',
-                          height: 160,
-                          onTap: () => openWeb(
-                            context,
-                            'https://www.youtube.com/@coachbobstoops/videos',
-                            title: 'Watch Now',
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: _ImageBottomButton(
-                          imageAsset: 'assets/share.png',
-                          height: 160,
-                          onTap: _compartilharApp,
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: _ImageBottomButton(
-                          imageAsset: 'assets/enter_win.png',
-                          height: 160,
-                          onTap: () => openWeb(
-                            context,
-                            'https://docs.google.com/forms/d/e/1FAIpQLSf_cEdpgnMlmd3iyD56BlnnFxEDePYLQzB-DwH_MD3Qrxt2Ug/viewform?usp=pp_url',
-                            title: 'Enter to Win',
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  const Spacer(),
-                ],
+              PercentBox(
+                left: 0.25,
+                top: 0.64,
+                width: 0.50,
+                height: 0.050,
+                child: Image.asset('assets/title.png', fit: BoxFit.contain),
               ),
-            ),
+              PercentBox(
+                left: 0.07,
+                top: 0.78,
+                width: 0.86,
+                height: 0.22,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: _ImageBottomButton(
+                        imageAsset: 'assets/watch.png',
+                        height: double.infinity,
+                        fit: BoxFit.contain,
+                        onTap: () => openWeb(
+                          context,
+                          'https://www.youtube.com/@coachbobstoops/videos',
+                          title: 'Watch Now',
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: _ImageBottomButton(
+                        imageAsset: 'assets/share.png',
+                        height: double.infinity,
+                        fit: BoxFit.contain,
+                        onTap: _compartilharApp,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: _ImageBottomButton(
+                        imageAsset: 'assets/enter_win.png',
+                        height: double.infinity,
+                        fit: BoxFit.contain,
+                        onTap: () => openWeb(
+                          context,
+                          'https://docs.google.com/forms/d/e/1FAIpQLSf_cEdpgnMlmd3iyD56BlnnFxEDePYLQzB-DwH_MD3Qrxt2Ug/viewform?usp=pp_url',
+                          title: 'Enter to Win',
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (showStatus && statusImageUrl.isNotEmpty)
+                PercentBox(
+                  // dica: mantenha width <= 1.0; aqui deixei 0.90 como exemplo
+                  left: 0.05,
+                  top: 1,
+                  width: 1,
+                  height: 0.10,
+                  child: GestureDetector(
+                    onTap: _launchBanner,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(statusImageUrl),
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+            ],
           ),
         ],
       ),
@@ -312,11 +301,9 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-/// Botão de imagem reutilizável, garantindo MESMA ALTURA para todos
 class _ImageButton extends StatelessWidget {
   final String imageAsset;
   final double height;
-  final double borderRadius;
   final VoidCallback onTap;
   final BoxFit fit;
 
@@ -324,7 +311,6 @@ class _ImageButton extends StatelessWidget {
     required this.imageAsset,
     required this.onTap,
     this.height = 38,
-    this.borderRadius = 0,
     this.fit = BoxFit.fill,
   });
 
@@ -334,7 +320,6 @@ class _ImageButton extends StatelessWidget {
       height: height,
       child: Material(
         color: Colors.transparent,
-        borderRadius: BorderRadius.circular(borderRadius),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
           onTap: onTap,
@@ -370,6 +355,91 @@ class _ImageBottomButton extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           child: Ink.image(image: AssetImage(imageAsset), fit: fit),
+        ),
+      ),
+    );
+  }
+}
+
+class ResponsiveArtboard extends StatelessWidget {
+  final Size designSize; // ex.: Size(1080,1920)
+  final Widget? background;
+  final List<Widget> children;
+  final EdgeInsets safePadding;
+
+  const ResponsiveArtboard({
+    super.key,
+    required this.designSize,
+    this.background,
+    required this.children,
+    this.safePadding = EdgeInsets.zero,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final aspect = designSize.width / designSize.height;
+
+    return LayoutBuilder(
+      builder: (context, c) {
+        final maxW = c.maxWidth;
+        final maxH = c.maxHeight;
+        final byWidthHeight = maxW / aspect;
+        final useW = byWidthHeight <= maxH;
+        final artW = useW ? maxW : maxH * aspect;
+        final artH = useW ? maxW / aspect : maxH;
+
+        return Center(
+          child: Padding(
+            padding: safePadding,
+            child: SizedBox(
+              width: artW,
+              height: artH,
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  if (background != null) ClipRRect(child: background!),
+                  ...children,
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+/// Posiciona um widget por frações do artboard (0..1)
+class PercentBox extends StatelessWidget {
+  final double left; // 0..1
+  final double top; // 0..1
+  final double width; // 0..1
+  final double height; // 0..1
+  final Widget child;
+
+  const PercentBox({
+    super.key,
+    required this.left,
+    required this.top,
+    required this.width,
+    required this.height,
+    required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final cx = left + width / 2;
+    final cy = top + height / 2;
+    final ax = cx * 2 - 1;
+    final ay = cy * 2 - 1;
+
+    return Positioned.fill(
+      child: Align(
+        alignment: Alignment(ax, ay),
+        child: FractionallySizedBox(
+          widthFactor: width,
+          heightFactor: height,
+          child: child,
         ),
       ),
     );
