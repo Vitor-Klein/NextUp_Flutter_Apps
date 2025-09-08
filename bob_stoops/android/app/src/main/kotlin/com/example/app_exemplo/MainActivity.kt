@@ -1,4 +1,4 @@
-package app.android.bobstoops
+package com.bobstoops.app
 
 import io.flutter.embedding.android.FlutterActivity
 

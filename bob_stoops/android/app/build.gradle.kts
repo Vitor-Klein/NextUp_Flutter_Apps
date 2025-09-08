@@ -15,7 +15,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "app.android.bobstoops"
+    namespace = "com.bobstoops.app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
 
@@ -41,7 +41,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "app.android.bobstoops"
+        applicationId = "com.bobstoops.app"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode

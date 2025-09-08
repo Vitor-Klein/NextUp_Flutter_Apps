@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:202242835455:android:dbe5e07454ff6f822b5dca",
+        "mobilesdk_app_id": "1:202242835455:android:8a20e328654f01f02b5dca",
         "android_client_info": {
-          "package_name": "app.android.bobstoops"
+          "package_name": "com.bobstoops.app"
         }
       },
       "oauth_client": [],
