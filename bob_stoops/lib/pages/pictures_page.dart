@@ -4,20 +4,19 @@ class PicturesPage extends StatelessWidget {
   const PicturesPage({super.key});
 
   final List<String> imagePaths = const [
-    'assets/gallery/01.png',
-    'assets/gallery/02.png',
-    'assets/gallery/03.png',
-    'assets/gallery/04.png',
-    'assets/gallery/05.png',
-    'assets/gallery/06.png',
-    'assets/gallery/07.jpg',
-    'assets/gallery/08.jpg',
-    'assets/gallery/09.jpg',
-    'assets/gallery/10.png',
+    'assets/gallery/1.jpg',
+    'assets/gallery/2.jpg',
+    'assets/gallery/3.jpg',
+    'assets/gallery/4.jpg',
+    'assets/gallery/5.jpg',
+    'assets/gallery/6.jpg',
+    'assets/gallery/7.jpg',
+    'assets/gallery/8.jpg',
+    'assets/gallery/9.jpg',
+    'assets/gallery/10.jpg',
     'assets/gallery/11.jpg',
     'assets/gallery/12.jpg',
     'assets/gallery/13.jpg',
-    'assets/gallery/14.png',
   ];
 
   @override
