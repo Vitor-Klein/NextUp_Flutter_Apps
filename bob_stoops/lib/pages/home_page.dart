@@ -132,7 +132,7 @@ class _HomePageState extends State<HomePage> {
                 DropdownMenuItem(value: 'Twitter', child: Text('Twitter')),
                 DropdownMenuItem(
                   value: 'LaunchWithCoach',
-                  child: Text('Launch with Coach'),
+                  child: Text('Lunch with Coach'),
                 ),
               ],
               onChanged: (value) async {
@@ -156,14 +156,14 @@ class _HomePageState extends State<HomePage> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                             content: Text(
-                              'Link de "Launch with Coach" não configurado no Remote Config.',
+                              'Link de "Lunch with Coach" não configurado no Remote Config.',
                             ),
                           ),
                         );
                       }
                       return;
                     }
-                    openWeb(context, launchUrl, title: 'Launch with Coach');
+                    openWeb(context, launchUrl, title: 'Lunch with Coach');
                     break;
                 }
               },
