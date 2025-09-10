@@ -22,6 +22,7 @@ class _HomePageState extends State<HomePage> {
 
   bool showMakeReservation = false;
   bool showScheduleReservation = false;
+  bool showFooter = false;
   String footerLink =
       'https://www.diffeeford.net/schedule-service.htm'; // fallback
 
@@ -39,6 +40,7 @@ class _HomePageState extends State<HomePage> {
     await remoteConfig.fetchAndActivate();
 
     final rcShowMakeReservation = remoteConfig.getBool('show_make_reservation');
+    final rcShowFooter = remoteConfig.getBool('show_footer');
     final rcShowScheduleReservation = remoteConfig.getBool(
       'show_schedule_reservation',
     );
@@ -47,6 +49,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       showMakeReservation = rcShowMakeReservation;
       showScheduleReservation = rcShowScheduleReservation;
+      showFooter = rcShowFooter;
       footerLink = rcFooter.isNotEmpty
           ? rcFooter
           : 'https://www.diffeeford.net/schedule-service.html'; // fallback seguro
@@ -329,21 +332,22 @@ class _HomePageState extends State<HomePage> {
               ),
 
               // Footer fixo clicável
-              Positioned(
-                left: 0,
-                right: 0,
-                bottom: 0,
-                child: GestureDetector(
-                  onTap: () =>
-                      openWeb(context, footerLink, title: 'Employee Pricing'),
-                  child: Image.asset(
-                    'assets/footer.png',
-                    height: footerH,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
+              if (showFooter)
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: GestureDetector(
+                    onTap: () =>
+                        openWeb(context, footerLink, title: 'Employee Pricing'),
+                    child: Image.asset(
+                      'assets/footer.png',
+                      height: footerH,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              ),
             ],
           );
         },
