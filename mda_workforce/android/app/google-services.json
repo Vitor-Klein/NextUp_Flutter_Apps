@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "530604765160",
+    "project_id": "mda-workforce-239e4",
+    "storage_bucket": "mda-workforce-239e4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:530604765160:android:1aa0f539bced49b27ebe5d",
+        "android_client_info": {
+          "package_name": "bfac.android.mda"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-kcJcmSbhPFqp0sf-JcGlWWf2gtTRhGs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
