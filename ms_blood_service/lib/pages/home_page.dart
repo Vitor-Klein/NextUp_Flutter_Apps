@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:ms_blood_service/pages/webview_page.dart';
 import 'package:share_plus/share_plus.dart';
 import 'dart:io';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 
 class HomePage extends StatefulWidget {
@@ -17,12 +19,24 @@ class _HomePageState extends State<HomePage> {
   final FlutterLocalNotificationsPlugin _localNotifications =
       FlutterLocalNotificationsPlugin();
 
+  bool showMenu = false;
+
   @override
   void initState() {
     super.initState();
     _requestNotificationPermissions();
     _initializeFirebaseMessaging();
     _initializeLocalNotifications();
+    _loadBannerConfig();
+  }
+
+  Future<void> _loadBannerConfig() async {
+    final remoteConfig = FirebaseRemoteConfig.instance;
+    await remoteConfig.fetchAndActivate();
+
+    setState(() {
+      showMenu = remoteConfig.getBool('show_menu');
+    });
   }
 
   void _requestNotificationPermissions() async {
@@ -99,58 +113,136 @@ class _HomePageState extends State<HomePage> {
     await SharePlus.instance.share(ShareParams(text: mensagem));
   }
 
+  Future<void> _openLink(String url, {String? fallbackRoute}) async {
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } else if (mounted && fallbackRoute != null) {
+      Navigator.pushNamed(context, fallbackRoute);
+    } else {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Não foi possível abrir o link.')),
+      );
+    }
+  }
+
+  Future<void> _call(String number) async {
+    final digits = number.replaceAll(RegExp(r'[^0-9+]'), '');
+    final uri = Uri(scheme: 'tel', path: digits);
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Não foi possível abrir o discador.')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        title: const Text('Home Page'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: [
+          if (showMenu)
+            IconButton(
+              icon: const Icon(Icons.share),
+              onPressed: _compartilharApp,
+            ),
+        ],
+      ),
       body: Stack(
         children: [
-          /// Fundo
+          // IMAGEM DE FUNDO
           Positioned.fill(
-            child: Image.asset("assets/background.jpg", fit: BoxFit.cover),
+            child: Image.asset(
+              'assets/background.jpg', // ajuste o caminho
+              fit: BoxFit.cover,
+            ),
           ),
 
-          /// Conteúdo
-          SingleChildScrollView(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 50),
-
-                // Botão retangular comprido (CTA)
-                CtaBannerButton(
-                  assetPath: "assets/donate.png",
-                  routeName: "/donate", // ajuste conforme suas rotas
-                ),
-
-                const SizedBox(height: 24),
-
-                // Linha com 3 botões
-                TripleMenuRow(
-                  items: const [
-                    NavItem(
-                      assetPath: "assets/blood_type.png",
-                      routeName: "/bloodType",
+          // CAMADA DE CONTEÚDO
+          SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // IMAGEM RETANGULAR COMPRIDA CLICÁVEL (banner/topo)
+                  InkWell(
+                    onTap: () => Navigator.pushNamed(context, '/about'),
+                    child: ClipRRect(
+                      child: AspectRatio(
+                        aspectRatio: 16 / 5, // “retangular comprido”
+                        child: Image.asset(
+                          'assets/donate.png', // ajuste
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
-                    NavItem(
-                      assetPath: "assets/donnor_history.png",
-                      routeName: "/donorHistory",
-                    ),
-                    NavItem(
-                      assetPath: "assets/contact_us.png",
-                      routeName: "/contactUs",
-                    ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 20),
 
-                const SizedBox(height: 24),
+                  // 3 IMAGENS CLICÁVEIS EM LINHA
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _ImageTile(
+                          asset: 'assets/blood_type.png', // ajuste
+                          onTap: () => openWeb(
+                            context,
+                            'https://msblood.com/blood-type',
+                            title: "Blood Type",
+                          ),
+                          label: 'Blood Type',
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: _ImageTile(
+                          asset: 'assets/donnor_history.png', // ajuste
+                          onTap: () => openWeb(
+                            context,
+                            'https://xpress.donorhistory.com/1/prescreen',
+                            title: "Donor History",
+                          ),
+                          label: 'Donor History',
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: _ImageTile(
+                          asset: 'assets/contact_us.png', // ajuste
+                          onTap: () => openWeb(
+                            context,
+                            'https://msblood.com/contact',
+                            title: "Contact Us",
+                          ),
+                          label: 'Contact Us',
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
 
-                // Imagem grande clicável embaixo
-                _LargeImageButton(
-                  assetPath: "assets/share.png",
-                  routeName: "/spreadTheWord",
-                ),
-              ],
+                  // GRANDE IMAGEM CLICÁVEL (hero)
+                  InkWell(
+                    onTap: () => _compartilharApp(),
+                    child: ClipRRect(
+                      child: Image.asset(
+                        'assets/share.png', // ajuste
+                        fit: BoxFit.cover,
+                        height: size.height * 0.32, // grande e responsivo
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -159,84 +251,38 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class NavItem {
-  final String assetPath;
-  final String routeName;
-  const NavItem({required this.assetPath, required this.routeName});
-}
+class _ImageTile extends StatelessWidget {
+  final String asset;
+  final VoidCallback onTap;
+  final String? label;
 
-class CtaBannerButton extends StatelessWidget {
-  final String assetPath;
-  final String routeName;
-  const CtaBannerButton({
-    super.key,
-    required this.assetPath,
-    required this.routeName,
-  });
+  const _ImageTile({required this.asset, required this.onTap, this.label});
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: () => Navigator.pushNamed(context, routeName),
-        child: Ink(
-          width: double.infinity,
-          child: ClipRRect(child: Image.asset(assetPath, fit: BoxFit.cover)),
-        ),
-      ),
-    );
-  }
-}
-
-class TripleMenuRow extends StatelessWidget {
-  final List<NavItem> items;
-  const TripleMenuRow({super.key, required this.items})
-    : assert(items.length == 3, "TripleMenuRow requer exatamente 3 itens.");
-
-  @override
-  Widget build(BuildContext context) {
-    Widget buildTile(NavItem item) {
-      return Expanded(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 4),
-          child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: () => Navigator.pushNamed(context, item.routeName),
-              child: Ink(
-                height: 90,
-                child: ClipRRect(
-                  child: Image.asset(item.assetPath, fit: BoxFit.cover),
-                ),
-              ),
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
+      child: Column(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: AspectRatio(
+              aspectRatio: 1, // quadradinho bonito
+              child: Image.asset(asset, fit: BoxFit.cover),
             ),
           ),
-        ),
-      );
-    }
-
-    return Row(children: items.map(buildTile).toList());
-  }
-}
-
-class _LargeImageButton extends StatelessWidget {
-  final String assetPath;
-  final String routeName;
-  const _LargeImageButton({required this.assetPath, required this.routeName});
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: InkWell(
-        onTap: () => Navigator.pushNamed(context, routeName),
-        child: Ink(
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: Image.asset(assetPath, fit: BoxFit.cover),
-          ),
-        ),
+          if (label != null && label!.isNotEmpty) ...[
+            const SizedBox(height: 6),
+            Text(
+              label!,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ],
       ),
     );
   }
