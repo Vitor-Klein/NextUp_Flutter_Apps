@@ -244,7 +244,11 @@ class _HomePageState extends State<HomePage> {
                     right: 16,
                     top: size.height * 0.32,
                     child: GestureDetector(
-                      onTap: () => Navigator.pushNamed(context, '/'),
+                      onTap: () => openWeb(
+                        context,
+                        'https://mississippi.org/contact/',
+                        title: "Let's Talk",
+                      ),
                       child: Center(
                         child: Image.asset(
                           'assets/body.png',
