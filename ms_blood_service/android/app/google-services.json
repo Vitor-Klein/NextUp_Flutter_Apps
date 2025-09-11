@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "720894411577",
+    "project_id": "mississippi-blood-servic-cffcb",
+    "storage_bucket": "mississippi-blood-servic-cffcb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:720894411577:android:4b8d92080e2c4ed3ab1ee8",
+        "android_client_info": {
+          "package_name": "app.android.mbs"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAgKmkrh25g3DPQTxlhmXIpKJt1LmUBnQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
