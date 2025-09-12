@@ -34,6 +34,7 @@ class _HomePageState extends State<HomePage> {
     final remoteConfig = FirebaseRemoteConfig.instance;
     await remoteConfig.fetchAndActivate();
 
+    if (!mounted) return;
     setState(() {
       showMenu = remoteConfig.getBool('show_menu');
     });
@@ -138,62 +139,70 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  // NÃO alterei o openWeb; use como já está definido no seu projeto.
+
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    final size = MediaQuery.sizeOf(context);
+
+    // Helpers de responsividade (frações com limites para evitar distorção)
+    double _bounded(double v, double min, double max) {
+      if (v < min) return min;
+      if (v > max) return max;
+      return v;
+    }
+
+    final bool isShort = size.height < 700;
+
+    // Posições e tamanhos responsivos
+    final double heroTop = isShort ? size.height * 0.08 : size.height * 0.14;
+    final double shareTop = heroTop + _bounded(size.height * 0.50, 120, 320);
+    final double tilesHeight = _bounded(size.height * 0.18, 120, 200);
+    final double tilesBottom = _bounded(size.height * 0.02, 80, 140);
 
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        title: const Text('Home Page'),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        actions: [
-          if (showMenu)
-            IconButton(
-              icon: const Icon(Icons.share),
-              onPressed: _compartilharApp,
-            ),
-        ],
-      ),
-      body: Stack(
-        children: [
-          // IMAGEM DE FUNDO
-          Positioned.fill(
-            child: Image.asset(
-              'assets/background.jpg', // ajuste o caminho
-              fit: BoxFit.cover,
-            ),
+      body: Container(
+        // Fundo cobre 100% da tela
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/background.jpg'),
+            fit: BoxFit.cover,
           ),
-
-          // CAMADA DE CONTEÚDO
-          SafeArea(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  // IMAGEM RETANGULAR COMPRIDA CLICÁVEL (banner/topo)
-                  InkWell(
-                    onTap: () => Navigator.pushNamed(context, '/about'),
-                    child: ClipRRect(
-                      child: AspectRatio(
-                        aspectRatio: 16 / 5, // “retangular comprido”
-                        child: Image.asset(
-                          'assets/donate.png', // ajuste
-                          fit: BoxFit.cover,
-                        ),
+        ),
+        child: SafeArea(
+          child: SizedBox.expand(
+            child: Stack(
+              children: [
+                // Banner superior (donate) — clicável
+                Positioned(
+                  left: 36,
+                  right: 36,
+                  top: heroTop + 160,
+                  child: InkWell(
+                    onTap: () => openWeb(
+                      context,
+                      'https://msblood.com/give/',
+                      title: "Donate Blood",
+                    ),
+                    child: AspectRatio(
+                      aspectRatio: 10 / 5,
+                      child: Image.asset(
+                        'assets/donate.png',
+                        fit: BoxFit.contain,
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                ),
 
-                  // 3 IMAGENS CLICÁVEIS EM LINHA
-                  Row(
+                Positioned(
+                  left: 36,
+                  right: 36,
+                  top: shareTop,
+                  child: Row(
                     children: [
                       Expanded(
                         child: _ImageTile(
-                          asset: 'assets/blood_type.png', // ajuste
+                          asset: 'assets/blood_type.png',
                           onTap: () => openWeb(
                             context,
                             'https://msblood.com/blood-type',
@@ -202,10 +211,9 @@ class _HomePageState extends State<HomePage> {
                           label: 'Blood Type',
                         ),
                       ),
-                      const SizedBox(width: 12),
                       Expanded(
                         child: _ImageTile(
-                          asset: 'assets/donnor_history.png', // ajuste
+                          asset: 'assets/donnor_history.png',
                           onTap: () => openWeb(
                             context,
                             'https://xpress.donorhistory.com/1/prescreen',
@@ -214,10 +222,9 @@ class _HomePageState extends State<HomePage> {
                           label: 'Donor History',
                         ),
                       ),
-                      const SizedBox(width: 12),
                       Expanded(
                         child: _ImageTile(
-                          asset: 'assets/contact_us.png', // ajuste
+                          asset: 'assets/contact_us.png',
                           onTap: () => openWeb(
                             context,
                             'https://msblood.com/contact',
@@ -228,24 +235,28 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 24),
+                ),
 
-                  // GRANDE IMAGEM CLICÁVEL (hero)
-                  InkWell(
-                    onTap: () => _compartilharApp(),
-                    child: ClipRRect(
+                Positioned(
+                  left: 36,
+                  right: 36,
+                  bottom: 0,
+
+                  child: InkWell(
+                    onTap: _compartilharApp,
+                    child: SizedBox(
+                      height: _bounded(size.height * 0.28, 160, 280),
                       child: Image.asset(
-                        'assets/share.png', // ajuste
-                        fit: BoxFit.cover,
-                        height: size.height * 0.32, // grande e responsivo
+                        'assets/share.png',
+                        fit: BoxFit.contain,
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
@@ -262,15 +273,12 @@ class _ImageTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
       child: Column(
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: AspectRatio(
-              aspectRatio: 1, // quadradinho bonito
-              child: Image.asset(asset, fit: BoxFit.cover),
-            ),
+          SizedBox(
+            height: 130, // altura fixa para todos
+            width: 130, // largura fixa para todos
+            child: Image.asset(asset, fit: BoxFit.contain),
           ),
           if (label != null && label!.isNotEmpty) ...[
             const SizedBox(height: 6),
