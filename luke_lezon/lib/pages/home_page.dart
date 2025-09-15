@@ -120,10 +120,9 @@ class _HomePageState extends State<HomePage> {
   void _compartilharApp() async {
     final remoteConfig = FirebaseRemoteConfig.instance;
 
-    final String link =
-        Platform.isAndroid
-            ? remoteConfig.getString('android_share_url')
-            : remoteConfig.getString('ios_share_url');
+    final String link = Platform.isAndroid
+        ? remoteConfig.getString('android_share_url')
+        : remoteConfig.getString('ios_share_url');
 
     final String mensagem = 'Check out this amazing app! Download now:\n$link';
 
@@ -268,25 +267,22 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 0),
                   child: GestureDetector(
-                    onTap:
-                        showBanner && bannerImageUrl.isNotEmpty
-                            ? _launchBanner
-                            : null,
+                    onTap: showBanner && bannerImageUrl.isNotEmpty
+                        ? _launchBanner
+                        : null,
                     child: Container(
                       width: double.infinity,
                       height: 110,
                       decoration: BoxDecoration(
-                        color:
-                            showBanner && bannerImageUrl.isNotEmpty
-                                ? null
-                                : Colors.transparent,
-                        image:
-                            showBanner && bannerImageUrl.isNotEmpty
-                                ? DecorationImage(
-                                  image: NetworkImage(bannerImageUrl),
-                                  fit: BoxFit.cover,
-                                )
-                                : null,
+                        color: showBanner && bannerImageUrl.isNotEmpty
+                            ? null
+                            : Colors.transparent,
+                        image: showBanner && bannerImageUrl.isNotEmpty
+                            ? DecorationImage(
+                                image: NetworkImage(bannerImageUrl),
+                                fit: BoxFit.contain,
+                              )
+                            : null,
                       ),
                     ),
                   ),
