@@ -190,8 +190,8 @@ class _HomePageState extends State<HomePage> {
                           () => Navigator.pushNamed(context, '/social'),
                         ),
                         _buildGradientButton(
-                          "VIDEOS",
-                          () => Navigator.pushNamed(context, '/videos'),
+                          "PODCAST",
+                          () => Navigator.pushNamed(context, '/podcast'),
                         ),
                         _buildGradientButton(
                           "MESSAGES",

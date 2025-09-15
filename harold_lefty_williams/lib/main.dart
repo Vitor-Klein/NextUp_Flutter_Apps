@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'firebase_options.dart';
+import 'pages/podcast_page.dart';
 import 'services/message_storage.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:pwa_install/pwa_install.dart';
@@ -17,6 +18,11 @@ import 'pages/Meet_And_Greet/meet_greet_page.dart';
 import 'pages/contact_us_page.dart';
 import 'pages/splash_screen.dart'; // ⬅️ Certifique-se de importar isso
 
+import 'package:audio_service/audio_service.dart';
+import 'audio_handler.dart';
+
+late PodcastAudioHandler audioHandler;
+
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -30,6 +36,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  audioHandler = await initAudioService();
 
   final remoteConfig = FirebaseRemoteConfig.instance;
   await remoteConfig.setConfigSettings(
@@ -123,6 +131,14 @@ class MyApp extends StatelessWidget {
             break;
           case '/contact_us':
             builder = (_) => const ContactUsPage();
+            break;
+          case '/podcast':
+            final rc = FirebaseRemoteConfig.instance;
+            final rssUrl = rc.getString('podcast_rss_url');
+            builder = (_) => PodcastPage(
+              rssUrl: rssUrl,
+              audioHandler: audioHandler as PodcastAudioHandler,
+            );
             break;
           default:
             builder = (_) => const HomePage(); // fallback
