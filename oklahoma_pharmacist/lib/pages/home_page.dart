@@ -185,7 +185,6 @@ class _HomePageState extends State<HomePage> {
                   const SizedBox(height: 60),
                   Image.asset('assets/description.png', height: 50),
                   const SizedBox(height: 60),
-                  Image.asset('assets/dashboard.png', height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
