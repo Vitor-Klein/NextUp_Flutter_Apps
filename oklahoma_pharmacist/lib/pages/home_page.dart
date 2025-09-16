@@ -211,9 +211,9 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         const SizedBox(height: 8),
                         _ImageCard(
-                          imageAsset: 'assets/annual_meeting.png',
+                          imageAsset: 'assets/district_meeting.png',
                           onTap: () =>
-                              Navigator.pushNamed(context, '/annual_meeting'),
+                              Navigator.pushNamed(context, '/district_meeting'),
                         ),
                         const SizedBox(height: 8),
                         _ImageCard(
